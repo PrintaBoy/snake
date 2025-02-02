@@ -1,1 +1,9 @@
-{"levelWidth":30,"levelHeight":20,"currentScore":0,"bestScore":0,"snakeMovementSpeed":1.0,"snakeLength":1}
+{
+  "levelWidth":5,
+  "levelHeight":5,
+  "gridSize":1,
+  "snakeMovementSpeed":1,
+  "currentScore":0,
+  "bestScore":0,
+  "snakeLength":1  
+}
