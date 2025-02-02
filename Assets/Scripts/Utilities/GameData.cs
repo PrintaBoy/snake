@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class GameData
 {
@@ -5,6 +7,7 @@ public class GameData
     public int levelWidth;
     public int levelHeight;
     public int gridSize;
+    public Vector3 generateLevelStartPoint;
     
     public int currentScore;
     public int bestScore;
@@ -14,6 +17,11 @@ public class GameData
 
     private void Awake()
     {
-        gameData = this;
+        gameData = this;        
+    }
+
+    public void CalculateGenerateStartPoint()
+    {
+        generateLevelStartPoint = new Vector3(-((levelWidth - gridSize) / 2f), 0, -((levelHeight - gridSize) / 2f));        
     }
 }
