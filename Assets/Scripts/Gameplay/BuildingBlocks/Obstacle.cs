@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Obstacle : BuildingBlock, IGeneratable
+public class Obstacle : MonoBehaviour, IObstacle
 {
-    public void Generate()
+    public void GenerateGridBorders()
     {
         GameData gDataRef = GameData.gameData; // here to make code little cleaner
 
@@ -25,5 +25,10 @@ public class Obstacle : BuildingBlock, IGeneratable
         {
             Instantiate(gameObject, new Vector3(-gDataRef.generateLevelStartPoint.x + gDataRef.gridSize, 0, (gDataRef.generateLevelStartPoint.z) + (gDataRef.gridSize * i)), gameObject.transform.rotation);
         }
+    }
+
+    public void GenerateObstacle()
+    {
+
     }
 }

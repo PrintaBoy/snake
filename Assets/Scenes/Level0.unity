@@ -129,7 +129,6 @@ GameObject:
   m_Component:
   - component: {fileID: 80581158}
   - component: {fileID: 80581159}
-  - component: {fileID: 80581160}
   m_Layer: 0
   m_Name: GameDataManager
   m_TagString: Untagged
@@ -164,26 +163,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c23ed633344807446a9e49355b2660d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &80581160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 80581157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850ca166446838a4cb5f5534a7653158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelWidth: 0
-  levelHeight: 0
-  gridSize: 0
-  generateLevelStartPoint: {x: 0, y: 0, z: 0}
-  currentScore: 0
-  bestScore: 0
-  snakeMovementSpeed: 0
-  snakeLength: 0
 --- !u!1 &245228754
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,8 +547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3879ce7377902d45b82d107e344b1e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generatableBlocks:
-  - {fileID: 3133749908184623171, guid: b2cc7d1229daac044bdef47999885a9a, type: 3}
+  gridTilePrefab: {fileID: 3133749908184623171, guid: b2cc7d1229daac044bdef47999885a9a, type: 3}
+  obstaclePrefabs:
   - {fileID: 1307975338273310991, guid: d9ee789c179f2cb41824e0ee58840326, type: 3}
 --- !u!1 &2081254597
 GameObject:

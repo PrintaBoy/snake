@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IGeneratable
+public interface IGridTile
 {
     void Generate();
 }
