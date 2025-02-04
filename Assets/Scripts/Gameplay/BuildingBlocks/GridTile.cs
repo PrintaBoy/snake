@@ -4,16 +4,15 @@ public class GridTile : MonoBehaviour, IGridTile
 {    
     private Grid grid;
     private Vector2Int gridAddress;
-    private ISpawnable spawnableObject;
+    public GameObject spawnedObject;
 
     private void Awake()
     {        
         grid = GameObject.Find("LevelManager").GetComponent<Grid>();
-        Debug.Log(gridAddress);        
-        spawnableObject = null;
+        spawnedObject = null;
     }
 
-    public void Generate()
+    public void GenerateGridTile()
     {
         GameData gDataRef = GameData.gameData; // here to make code little cleaner
         for (int i = 0; i < GameData.gameData.levelWidth; i++)
@@ -26,6 +25,11 @@ public class GridTile : MonoBehaviour, IGridTile
         }
     }
 
+    public void GenerateObstacle(GameObject obstacleToGenerate)
+    {
+        spawnedObject = Instantiate(obstacleToGenerate, transform.position, transform.rotation, transform);
+    }
+
     public void SetupGridTile(Vector2Int gridTileAddress)
     {
         gridAddress = gridTileAddress;
@@ -35,7 +39,7 @@ public class GridTile : MonoBehaviour, IGridTile
 
     public bool HasObject()
     {
-        bool hasObject = spawnableObject == null ? false : true;
+        bool hasObject = spawnedObject == null ? false : true;
         return hasObject;
     }
 }

@@ -10,15 +10,14 @@ public class Grid : MonoBehaviour
     private void Start()
     {
         GameData.gameData.CalculateGenerateStartPoint();
-        GenerateGrid();        
-        GenerateObstacle();
+        GenerateGrid();                
     }
 
     private void GenerateGrid()
     {
         if (gridTilePrefab.TryGetComponent<IGridTile>(out IGridTile gridTile))
         {
-            gridTile.Generate();          
+            gridTile.GenerateGridTile();          
         }
         else
         {
@@ -53,6 +52,7 @@ public class Grid : MonoBehaviour
         } else
         {
             Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
+            gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
         }
     }
 }
