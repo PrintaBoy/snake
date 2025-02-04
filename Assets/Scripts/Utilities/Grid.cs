@@ -10,36 +10,21 @@ public class Grid : MonoBehaviour
     private void Start()
     {
         GameData.gameData.CalculateGenerateStartPoint();
-        GenerateGrid();
-        GenerateGridBorders();        
+        GenerateGrid();        
+        GenerateObstacle();
     }
 
     private void GenerateGrid()
     {
         if (gridTilePrefab.TryGetComponent<IGridTile>(out IGridTile gridTile))
         {
-            gridTile.Generate();
+            gridTile.Generate();          
         }
         else
         {
             Debug.LogError(gridTile + "does not have IGridTile interface");
         }
     }   
-
-    private void GenerateGridBorders()
-    {
-        foreach (GameObject obstaclePrefab in obstaclePrefabs)
-        {
-            if (obstaclePrefab.TryGetComponent<IObstacle>(out IObstacle obstacle))
-            {
-                obstacle.GenerateGridBorders();
-            }
-            else
-            {
-                Debug.LogError(obstacle + "does not have IObstacle interface");
-            }
-        }
-    }
 
     public void AddToGridDictionary(Vector2Int address, IGridTile gridTile) // called when 
     {
@@ -56,5 +41,18 @@ public class Grid : MonoBehaviour
     {
         // upon receiving an event from game manager, here will be generated obstacle in a grid
         // will check for empty grid tile in GridDictionary
+
+        int gridTileX = Random.Range(0, GameData.gameData.levelWidth);
+        int gridTileY = Random.Range(0, GameData.gameData.levelHeight);
+
+        gridDictionary.TryGetValue(new Vector2Int(gridTileX, gridTileY), out IGridTile gridTileForObstacleSpawn);
+
+        if (gridTileForObstacleSpawn.HasObject())
+        {
+            Debug.Log(gridTileForObstacleSpawn + "has object");
+        } else
+        {
+            Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
+        }
     }
 }
