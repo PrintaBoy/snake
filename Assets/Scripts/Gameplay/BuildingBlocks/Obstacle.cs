@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour, IObstacle
+public class Obstacle : MonoBehaviour, ISpawnable
 {    
-    public void GenerateObstacle()
+    public void Spawn()
     {
     }
 }

@@ -4,12 +4,16 @@ public class GridTile : MonoBehaviour, IGridTile
 {    
     private Grid grid;
     private Vector2Int gridAddress;
-    public GameObject spawnedObject;
+    private GameObject spawnedObject = null;
+
+    private GameObject gridNorth;
+    private GameObject gridSouth;
+    private GameObject gridEast;
+    private GameObject gridWest;
 
     private void Awake()
     {        
-        grid = GameObject.Find("LevelManager").GetComponent<Grid>();
-        spawnedObject = null;
+        grid = GameObject.Find("LevelManager").GetComponent<Grid>(); // refactor - create Singleton with important references to avoid constant GetComponent calls
     }
 
     public void GenerateGridTile()

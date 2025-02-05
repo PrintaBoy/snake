@@ -5,12 +5,14 @@ public class Grid : MonoBehaviour
 {
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GameObject[] obstaclePrefabs;
-    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();    
+    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();   
+    
+    // OnGridGenerated;
     
     private void Start()
     {
         GameData.gameData.CalculateGenerateStartPoint();
-        GenerateGrid();                
+        GenerateGrid();        
     }
 
     private void GenerateGrid()
@@ -30,7 +32,7 @@ public class Grid : MonoBehaviour
         gridDictionary.Add(address, gridTile);
     }
 
-    private void GenerateSpawnable()
+    private void GenerateConsumable()
     {
         // upon receiving an event from game manager, here will be generated spawnable object in a grid
         // will check for empty grid tile in GridDictionary
@@ -39,20 +41,25 @@ public class Grid : MonoBehaviour
     private void GenerateObstacle()
     {
         // upon receiving an event from game manager, here will be generated obstacle in a grid
-        // will check for empty grid tile in GridDictionary
 
-        int gridTileX = Random.Range(0, GameData.gameData.levelWidth);
-        int gridTileY = Random.Range(0, GameData.gameData.levelHeight);
-
-        gridDictionary.TryGetValue(new Vector2Int(gridTileX, gridTileY), out IGridTile gridTileForObstacleSpawn);
+        gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForObstacleSpawn);
 
         if (gridTileForObstacleSpawn.HasObject())
         {
-            Debug.Log(gridTileForObstacleSpawn + "has object");
+            Debug.Log(gridTileForObstacleSpawn + "has object");            
         } else
         {
             Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
             gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
         }
+    }
+
+    private Vector2Int GetRandomGridAddress()
+    {
+        int gridTileX = Random.Range(0, GameData.gameData.levelWidth);
+        int gridTileY = Random.Range(0, GameData.gameData.levelHeight);
+        Vector2Int randomGridAddress;
+
+        return randomGridAddress = (new Vector2Int(gridTileX, gridTileY));
     }
 }
