@@ -1,14 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Grid : MonoBehaviour
 {
+    public static Grid instance;
+
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GameObject[] obstaclePrefabs;
-    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();   
-    
-    // OnGridGenerated;
-    
+    private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
+
+    public static event Action<Grid> OnGridGenerated;    
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     private void Start()
     {
         GameData.gameData.CalculateGenerateStartPoint();
@@ -27,9 +38,19 @@ public class Grid : MonoBehaviour
         }
     }   
 
-    public void AddToGridDictionary(Vector2Int address, IGridTile gridTile) // called when 
+    public void AddToGridDictionary(Vector2Int address, IGridTile gridTile) 
     {
         gridDictionary.Add(address, gridTile);
+
+        if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
+        {            
+            OnGridGenerated?.Invoke(this);            
+        }
+    }
+
+    public IGridTile GetTile(Vector2Int address)
+    {
+        return gridDictionary[address];
     }
 
     private void GenerateConsumable()
@@ -56,8 +77,8 @@ public class Grid : MonoBehaviour
 
     private Vector2Int GetRandomGridAddress()
     {
-        int gridTileX = Random.Range(0, GameData.gameData.levelWidth);
-        int gridTileY = Random.Range(0, GameData.gameData.levelHeight);
+        int gridTileX = UnityEngine.Random.Range(0, GameData.gameData.levelWidth);
+        int gridTileY = UnityEngine.Random.Range(0, GameData.gameData.levelHeight);
         Vector2Int randomGridAddress;
 
         return randomGridAddress = (new Vector2Int(gridTileX, gridTileY));
