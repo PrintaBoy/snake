@@ -61,6 +61,7 @@ public class GridTile : MonoBehaviour, IGridTile
         gridAddress = gridTileAddress;
         name = "GridTile_" + gridTileAddress.x.ToString() + "_" + gridTileAddress.y.ToString();
         Grid.instance.AddToGridDictionary(gridAddress, this);
+        transform.parent = Grid.instance.gridParent.transform;
     }
 
     public bool HasObject()

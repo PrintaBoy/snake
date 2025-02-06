@@ -6,6 +6,7 @@ public class Grid : MonoBehaviour
 {
     public static Grid instance;
 
+    public GameObject gridParent;
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GameObject[] obstaclePrefabs;
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
