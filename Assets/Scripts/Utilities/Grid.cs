@@ -7,6 +7,7 @@ public class Grid : MonoBehaviour
     public static Grid instance;
 
     public GameObject gridParent;
+    [SerializeField] private GameObject snake;
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GameObject[] obstaclePrefabs;
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
@@ -45,7 +46,8 @@ public class Grid : MonoBehaviour
 
         if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
         {            
-            OnGridGenerated?.Invoke(this);            
+            OnGridGenerated?.Invoke(this);
+            GenerateSnake();
         }
     }
 
@@ -73,6 +75,21 @@ public class Grid : MonoBehaviour
         {
             Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
             gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
+        }
+    }
+
+    private void GenerateSnake()
+    {
+        gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForSnakeSpawn);
+
+        if (gridTileForSnakeSpawn.HasObject())
+        {
+            Debug.Log(gridTileForSnakeSpawn + "has object");
+        }
+        else
+        {
+            Debug.Log(gridTileForSnakeSpawn + "doesn't have object");
+            gridTileForSnakeSpawn.GenerateSnake(snake);
         }
     }
 
