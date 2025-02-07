@@ -8,6 +8,6 @@ public class Obstacle : MonoBehaviour, ISpawnable
 
     public void Collision()
     {
-
+        Debug.Log("Collision!");
     }
 }

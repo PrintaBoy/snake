@@ -12,7 +12,7 @@ public class Grid : MonoBehaviour
     [SerializeField] private GameObject[] obstaclePrefabs;
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
 
-    public static event Action<Grid> OnGridGenerated;    
+    public static event Action OnGridGenerated;    
 
     private void Awake()
     {
@@ -46,8 +46,9 @@ public class Grid : MonoBehaviour
 
         if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
         {            
-            OnGridGenerated?.Invoke(this);
+            OnGridGenerated?.Invoke();
             GenerateSnake();
+            GenerateObstacle();
         }
     }
 

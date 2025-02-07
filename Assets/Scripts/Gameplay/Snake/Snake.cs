@@ -1,13 +1,12 @@
 using UnityEngine;
-using System;
 
 public class Snake : MonoBehaviour, ISpawnable
 {
     private float movementSpeed = 0f;
     private float doMoveTimer = 0f;
     private float doMoveTimerMax = 0.3f; // refactor to JSON, load from gamedata
-
-    public static event Action<Snake> OnCanMove;
+    private GridTile parentTile;
+    private Directions nextMoveDirection = Directions.North;
 
     private void Awake()
     {
@@ -18,21 +17,34 @@ public class Snake : MonoBehaviour, ISpawnable
     {
         doMoveTimer += Time.deltaTime * movementSpeed;
         if (doMoveTimer >= doMoveTimerMax)
-        {            
-            OnCanMove?.Invoke(this);            
+        {
+            AttemptMovement();                  
             doMoveTimer = 0f;
         }
     }
 
-    public Directions GetMovementDirection()
-    {        
-        return Directions.North;
+    private void AttemptMovement()
+    {
+        IGridTile tileToMoveTo = parentTile.GetAdjecentTile(nextMoveDirection);
+        GameObject tileSpawnedObject = tileToMoveTo.GetSpawnedObject();
+
+        if (tileSpawnedObject == null)
+        {
+            parentTile.spawnedObject = null;
+            tileToMoveTo.BecomeParent(gameObject);
+            DoMovement(tileToMoveTo.GetGridPosition());
+        } else
+        {
+            if (tileSpawnedObject.TryGetComponent<ISpawnable>(out ISpawnable spawnedObject))
+            {
+                spawnedObject.Collision();
+            }
+        }
     }
 
     public void DoMovement(Transform gridToMoveTo)
     {
-        gameObject.transform.position = gridToMoveTo.position;
-        Debug.Log("Do movement to " + gridToMoveTo);
+        gameObject.transform.position = gridToMoveTo.position;       
     }
 
     public void Spawn()
@@ -43,5 +55,10 @@ public class Snake : MonoBehaviour, ISpawnable
     public void Collision()
     {
 
+    }
+
+    public void GetParent(GridTile snakeParentTile)
+    {
+        parentTile = snakeParentTile;
     }
 }

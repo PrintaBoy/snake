@@ -4,48 +4,43 @@ using System.Collections.Generic;
 public class GridTile : MonoBehaviour, IGridTile
 {       
     private Vector2Int gridAddress;
-    private GameObject spawnedObject = null;
+    [HideInInspector] public GameObject spawnedObject = null;
 
     private Dictionary<Directions, IGridTile> adjecentTiles = new Dictionary<Directions, IGridTile>();
 
+    public void SetupGridTile(Vector2Int gridTileAddress)
+    {
+        gridAddress = gridTileAddress;
+        name = "GridTile_" + gridTileAddress.x.ToString() + "_" + gridTileAddress.y.ToString();
+        Grid.instance.AddToGridDictionary(gridAddress, this);
+        transform.parent = Grid.instance.gridParent.transform;
+    }
+
     private void OnEnable()
     {
-        Grid.OnGridGenerated += OnGridGenerated;
-        Snake.OnCanMove += OnCanMove;
+        Grid.OnGridGenerated += OnGridGenerated;        
     }
 
     private void OnDisable()
     {
-        Grid.OnGridGenerated -= OnGridGenerated;
-        Snake.OnCanMove -= OnCanMove;
+        Grid.OnGridGenerated -= OnGridGenerated;        
     }
 
-    private void OnCanMove(Snake snake)
-    {        
-        if (spawnedObject != null)
-        {
-            Debug.Log(gameObject.name + "I have spawned object on me");
-            if (spawnedObject.TryGetComponent<Snake>(out Snake snakeObj))
-            {
-                Debug.Log(gameObject.name + "I have " + snakeObj);
-                IGridTile tileToMoveSnakeTo = adjecentTiles[snake.GetMovementDirection()];
+    private void OnGridGenerated()
+    {
+        GetAdjecentTiles();
+    }
 
-                GameObject tileSpawnedObject = tileToMoveSnakeTo.GetSpawnedObject();                
-                {
-                    if (tileSpawnedObject == null)
-                    {                       
-                        spawnedObject = null;                        
-                        tileToMoveSnakeTo.BecomeParent(snake.gameObject);
-                        snake.DoMovement(tileToMoveSnakeTo.GetGridPosition());
-                    }
-                }
-            }
-        }        
+    public IGridTile GetAdjecentTile(Directions direction)
+    {
+        IGridTile tileToMoveSnakeTo = adjecentTiles[direction];
+        return tileToMoveSnakeTo;
     }
 
     public void BecomeParent(GameObject child)
     {
         spawnedObject = child;
+        spawnedObject.GetComponent<Snake>().GetParent(this);
         child.transform.parent = gameObject.transform;
     }
 
@@ -65,11 +60,6 @@ public class GridTile : MonoBehaviour, IGridTile
     public Transform GetGridPosition()
     {
         return transform;
-    }
-
-    private void OnGridGenerated(Grid grid)
-    {
-        GetAdjecentTiles();
     }
 
     public void GetAdjecentTiles()
@@ -100,17 +90,9 @@ public class GridTile : MonoBehaviour, IGridTile
 
     public void GenerateSnake(GameObject snakeToGenerate)
     {
-        spawnedObject = Instantiate(snakeToGenerate, transform.position, transform.rotation, transform);
-        Debug.Log(gameObject + "generated snake");
-    }
-
-    public void SetupGridTile(Vector2Int gridTileAddress)
-    {
-        gridAddress = gridTileAddress;
-        name = "GridTile_" + gridTileAddress.x.ToString() + "_" + gridTileAddress.y.ToString();
-        Grid.instance.AddToGridDictionary(gridAddress, this);
-        transform.parent = Grid.instance.gridParent.transform;
-    }
+        spawnedObject = Instantiate(snakeToGenerate, transform.position, transform.rotation);
+        BecomeParent(spawnedObject);
+    }    
 
     public bool HasObject()
     {
