@@ -7,6 +7,7 @@ public class Snake : MonoBehaviour, ISpawnable
     private float doMoveTimerMax = 0.3f; // refactor to JSON, load from gamedata
     private GridTile parentTile;
     private Directions nextMoveDirection = Directions.North;
+    private Directions currentMoveDirection = Directions.South;
 
     private void Awake()
     {
@@ -18,13 +19,22 @@ public class Snake : MonoBehaviour, ISpawnable
         doMoveTimer += Time.deltaTime * movementSpeed;
         if (doMoveTimer >= doMoveTimerMax)
         {
-            AttemptMovement();                  
-            doMoveTimer = 0f;
+            AttemptMovement();  
         }
+    }
+
+    public void ChangeDirection(Directions newDirection)
+    {
+        if (newDirection != currentMoveDirection)
+        {
+            nextMoveDirection = newDirection;
+            AttemptMovement();
+        }        
     }
 
     private void AttemptMovement()
     {
+        doMoveTimer = 0f;
         IGridTile tileToMoveTo = parentTile.GetAdjecentTile(nextMoveDirection);
         GameObject tileSpawnedObject = tileToMoveTo.GetSpawnedObject();
 
@@ -44,7 +54,8 @@ public class Snake : MonoBehaviour, ISpawnable
 
     public void DoMovement(Transform gridToMoveTo)
     {
-        gameObject.transform.position = gridToMoveTo.position;       
+        gameObject.transform.position = gridToMoveTo.position;   
+        currentMoveDirection = nextMoveDirection;
     }
 
     public void Spawn()
