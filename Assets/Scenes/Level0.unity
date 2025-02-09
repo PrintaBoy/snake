@@ -193,8 +193,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 80581158}
-  - {fileID: 972404353}
   - {fileID: 941230284}
+  - {fileID: 972404353}
+  - {fileID: 394395125}
   m_Father: {fileID: 2081254598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
@@ -334,6 +335,52 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &394395124
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 394395125}
+  - component: {fileID: 394395126}
+  m_Layer: 0
+  m_Name: SnakeController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &394395125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394395124}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 245228755}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &394395126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394395124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c581f14e77aba714e8b8328a5cf66cf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakeSegments: []
+  snakeSegmentPrefab: {fileID: 5235585412816339680, guid: a2126a6b9692cae4fa7bdf37bce98a89, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,6 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveInput: {fileID: -3450195528973988826, guid: bbc54fedc6c485c459740aa91d957882, type: 3}
+  snakePrefab: {fileID: 394395126}
 --- !u!114 &941230286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -591,7 +639,7 @@ GameObject:
   - component: {fileID: 972404353}
   - component: {fileID: 972404354}
   m_Layer: 0
-  m_Name: LevelManager
+  m_Name: GridController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -621,11 +669,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 972404352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3879ce7377902d45b82d107e344b1e7, type: 3}
+  m_Script: {fileID: 11500000, guid: 6afb94407e3df0d49bd7edad8029072b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gridParent: {fileID: 1359757931}
-  snake: {fileID: 5235585412816339680, guid: 7618ff315ba85b84fa6c49c60d1fabde, type: 3}
   gridTilePrefab: {fileID: 3133749908184623171, guid: b2cc7d1229daac044bdef47999885a9a, type: 3}
   obstaclePrefabs:
   - {fileID: 1307975338273310991, guid: d9ee789c179f2cb41824e0ee58840326, type: 3}

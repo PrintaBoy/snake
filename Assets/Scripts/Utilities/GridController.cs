@@ -2,12 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class Grid : MonoBehaviour
+public class GridController : MonoBehaviour
 {
-    public static Grid instance;
+    public static GridController instance; // Singleton
 
-    public GameObject gridParent;
-    [SerializeField] private GameObject snake;
+    public GameObject gridParent;    
     [SerializeField] private GameObject gridTilePrefab;
     [SerializeField] private GameObject[] obstaclePrefabs;
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
@@ -46,9 +45,7 @@ public class Grid : MonoBehaviour
 
         if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
         {            
-            OnGridGenerated?.Invoke();
-            GenerateSnake();
-            GenerateObstacle();
+            OnGridGenerated?.Invoke();            
         }
     }
 
@@ -61,11 +58,13 @@ public class Grid : MonoBehaviour
     {
         // upon receiving an event from game manager, here will be generated spawnable object in a grid
         // will check for empty grid tile in GridDictionary
+        // refactor to ConsumableController once setup
     }
 
     private void GenerateObstacle()
     {
         // upon receiving an event from game manager, here will be generated obstacle in a grid
+        // refactor to ObstacleController once setup
 
         gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForObstacleSpawn);
 
@@ -79,19 +78,11 @@ public class Grid : MonoBehaviour
         }
     }
 
-    private void GenerateSnake()
+    public IGridTile GetEmptyTile() // change so it looks for new grid tile if the current one has object
     {
-        gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForSnakeSpawn);
+        gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile emptyTile);
 
-        if (gridTileForSnakeSpawn.HasObject())
-        {
-            Debug.Log(gridTileForSnakeSpawn + "has object");
-        }
-        else
-        {
-            Debug.Log(gridTileForSnakeSpawn + "doesn't have object");
-            gridTileForSnakeSpawn.GenerateSnake(snake);
-        }
+        return emptyTile;
     }
 
     private Vector2Int GetRandomGridAddress()

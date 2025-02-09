@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference moveInput;
-    [SerializeField] private Snake snakePrefab;
+    [SerializeField] private SnakeController snakePrefab;
 
 
     private void OnEnable()
@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
         RunMoveCommand(snakePrefab, Directions.West);
     }
 
-    private void RunMoveCommand(Snake snake, Directions moveDirection) // this method creates new move ICommand
+    private void RunMoveCommand(SnakeController snake, Directions moveDirection) // this method creates new move ICommand
     {
         if (snake == null)
         {

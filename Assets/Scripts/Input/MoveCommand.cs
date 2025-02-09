@@ -1,9 +1,9 @@
 public class MoveCommand : ICommand
 {
-    private Snake _snake;
+    private SnakeController _snake;
     private Directions _moveDirection;
 
-    public MoveCommand(Snake snake, Directions moveDirection)
+    public MoveCommand(SnakeController snake, Directions moveDirection)  
     {
         this._snake = snake;
         this._moveDirection = moveDirection;

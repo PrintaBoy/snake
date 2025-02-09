@@ -1,17 +1,25 @@
 using UnityEngine;
 
-public class Snake : MonoBehaviour, ISpawnable
+public class SnakeSegment : MonoBehaviour, ISpawnable
 {
-    private float movementSpeed = 0f;
+    private IGridTile parent;
+
+    private float movementSpeed = 0.3f;
     private float doMoveTimer = 0f;
     private float doMoveTimerMax = 0.3f; // refactor to JSON, load from gamedata
-    private GridTile parentTile;
+
     private Directions nextMoveDirection = Directions.North;
     private Directions currentMoveDirection = Directions.South;
 
-    private void Awake()
+    public void SetupSpawnable(IGridTile parentTile)
     {
-        movementSpeed = GameData.gameData.snakeMovementSpeed;
+        parent = parentTile;
+        parent.BecomeParent(gameObject);
+    }
+
+    public void Collision()
+    {
+        Debug.Log("Snake segment colision");
     }
 
     private void Update()
@@ -19,31 +27,22 @@ public class Snake : MonoBehaviour, ISpawnable
         doMoveTimer += Time.deltaTime * movementSpeed;
         if (doMoveTimer >= doMoveTimerMax)
         {
-            AttemptMovement();  
+            AttemptMovement();
         }
     }
-
-    public void ChangeDirection(Directions newDirection)
-    {
-        if (newDirection != currentMoveDirection)
-        {
-            nextMoveDirection = newDirection;
-            AttemptMovement();
-        }        
-    }
-
     private void AttemptMovement()
     {
         doMoveTimer = 0f;
-        IGridTile tileToMoveTo = parentTile.GetAdjecentTile(nextMoveDirection);
+        IGridTile tileToMoveTo = parent.GetAdjecentTile(nextMoveDirection);
         GameObject tileSpawnedObject = tileToMoveTo.GetSpawnedObject();
 
         if (tileSpawnedObject == null)
         {
-            parentTile.spawnedObject = null;
+            parent.ClearChild();
             tileToMoveTo.BecomeParent(gameObject);
             DoMovement(tileToMoveTo.GetGridPosition());
-        } else
+        }
+        else
         {
             if (tileSpawnedObject.TryGetComponent<ISpawnable>(out ISpawnable spawnedObject))
             {
@@ -54,22 +53,18 @@ public class Snake : MonoBehaviour, ISpawnable
 
     public void DoMovement(Transform gridToMoveTo)
     {
-        gameObject.transform.position = gridToMoveTo.position;   
-        currentMoveDirection = nextMoveDirection;
+        gameObject.transform.position = gridToMoveTo.position;
+        currentMoveDirection = nextMoveDirection;        
     }
 
-    public void Spawn()
+    public void NewMoveDirection(Directions newDirection)
     {
-
-    }
-
-    public void Collision()
-    {
-
+        nextMoveDirection = newDirection;
+        AttemptMovement();
     }
 
     public void GetParent(GridTile snakeParentTile)
     {
-        parentTile = snakeParentTile;
+        parent = snakeParentTile;
     }
 }
