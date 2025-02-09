@@ -2,6 +2,7 @@ using UnityEngine;
 
 public interface ISpawnable
 {
-    void Spawn();
+    GameObject gameObject { get; }
+    void SetupSpawnable(IGridTile parentTile);
     void Collision();
 }

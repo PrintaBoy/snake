@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour, ISpawnable
 {    
-    public void Spawn()
+    public void SetupSpawnable(IGridTile parentTile)
     {
     }
 

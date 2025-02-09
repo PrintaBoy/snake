@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3796330313606056970, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: GridTile
       objectReference: {fileID: 0}
     - target: {fileID: 6724387100416469563, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -61,14 +61,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3796330313606056970, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7384937411360837880}
+      addedObject: {fileID: 3225821044931788661}
   m_SourcePrefab: {fileID: 100100000, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
 --- !u!1 &3133749908184623171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3796330313606056970, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
   m_PrefabInstance: {fileID: 2292920167141254217}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7384937411360837880
+--- !u!114 &3225821044931788661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -77,9 +77,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3133749908184623171}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 454dc1c1a99028f4caf62e8ad13610fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 59b1e358d7395dd4b944e3029a0c7e2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnedObject: {fileID: 0}
 --- !u!4 &8991767618383473311 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7141367314650484438, guid: ef63394c09b933c4e86c7fe5e28bc70a, type: 3}
