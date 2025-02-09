@@ -11,6 +11,11 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     private Directions nextMoveDirection = Directions.North;
     private Directions currentMoveDirection = Directions.South;
 
+    private void Start()
+    {
+        movementSpeed = GameData.gameData.snakeMovementSpeed;
+    }
+
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
@@ -36,7 +41,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         IGridTile tileToMoveTo = parent.GetAdjecentTile(nextMoveDirection);
         GameObject tileSpawnedObject = tileToMoveTo.GetSpawnedObject();
 
-        if (tileSpawnedObject == null)
+        if (tileSpawnedObject == null) // checks of the next tile is empty. If it is, move there
         {
             parent.ClearChild();
             tileToMoveTo.BecomeParent(gameObject);
@@ -44,7 +49,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         }
         else
         {
-            if (tileSpawnedObject.TryGetComponent<ISpawnable>(out ISpawnable spawnedObject))
+            if (tileSpawnedObject.TryGetComponent<ISpawnable>(out ISpawnable spawnedObject)) // checks of the next tile is empty. If not, collision happens
             {
                 spawnedObject.Collision();
             }

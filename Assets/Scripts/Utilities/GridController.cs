@@ -7,8 +7,7 @@ public class GridController : MonoBehaviour
     public static GridController instance; // Singleton
 
     public GameObject gridParent;    
-    [SerializeField] private GameObject gridTilePrefab;
-    [SerializeField] private GameObject[] obstaclePrefabs;
+    [SerializeField] private GameObject gridTilePrefab;    
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
 
     public static event Action OnGridGenerated;    
@@ -52,30 +51,6 @@ public class GridController : MonoBehaviour
     public IGridTile GetTile(Vector2Int address)
     {
         return gridDictionary[address];
-    }
-
-    private void GenerateConsumable()
-    {
-        // upon receiving an event from game manager, here will be generated spawnable object in a grid
-        // will check for empty grid tile in GridDictionary
-        // refactor to ConsumableController once setup
-    }
-
-    private void GenerateObstacle()
-    {
-        // upon receiving an event from game manager, here will be generated obstacle in a grid
-        // refactor to ObstacleController once setup
-
-        gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForObstacleSpawn);
-
-        if (gridTileForObstacleSpawn.HasObject())
-        {
-            Debug.Log(gridTileForObstacleSpawn + "has object");            
-        } else
-        {
-            Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
-            gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
-        }
     }
 
     public IGridTile GetEmptyTile() // change so it looks for new grid tile if the current one has object

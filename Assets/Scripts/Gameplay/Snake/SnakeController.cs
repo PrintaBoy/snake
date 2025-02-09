@@ -6,11 +6,6 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private List<SnakeSegment> snakeSegments;
     [SerializeField] private GameObject snakeSegmentPrefab;
 
-    private void Start()
-    {
-    //    movementSpeed = GameData.gameData.snakeMovementSpeed;
-    }
-
     private void OnEnable()
     {
         GridController.OnGridGenerated += GridGenerated;
