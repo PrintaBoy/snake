@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class GridTile : MonoBehaviour, IGridTile
 {       
     private Vector2Int gridAddress;
-    [HideInInspector] public GameObject spawnedObject = null;
+    public GameObject spawnedObject = null;
     private Dictionary<Directions, IGridTile> adjecentTiles = new Dictionary<Directions, IGridTile>();
 
     public void SetupGridTile(Vector2Int gridTileAddress)
@@ -39,7 +39,7 @@ public class GridTile : MonoBehaviour, IGridTile
     public void BecomeParent(GameObject child) // once something spawns it calls this method to let the GridTile know it's a parent
     {
         spawnedObject = child;
-        spawnedObject.GetComponent<SnakeSegment>().GetParent(this);
+        spawnedObject.GetComponent<ISpawnable>().ParentToTile(this);
         child.transform.parent = gameObject.transform;
     }
 
@@ -59,11 +59,6 @@ public class GridTile : MonoBehaviour, IGridTile
                 generatedTile.GetComponent<GridTile>().SetupGridTile(new Vector2Int(i, j));                
             }
         }
-    }
-
-    public Transform GetGridPosition()
-    {
-        return transform;
     }
 
     public GameObject GetSpawnedObject()

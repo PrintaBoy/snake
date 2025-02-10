@@ -5,9 +5,31 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private List<Consumable> consumables;
     [SerializeField] private GameObject consumablePrefab;
 
+    private void OnEnable()
+    {
+        SnakeController.OnSnakeSpawned += GenerateConsumable;
+        Consumable.OnAppleConsumed += GenerateConsumable;
+    }
+
+    private void OnDisable()
+    {
+        SnakeController.OnSnakeSpawned -= GenerateConsumable;
+        Consumable.OnAppleConsumed -= GenerateConsumable;
+    }
+
     private void GenerateConsumable()
     {
-        // upon receiving an event from game manager, here will be generated spawnable object in a grid
-        // will check for empty grid tile in GridDictionary        
+        IGridTile emptyTile = GridController.instance.GetEmptyTile();
+        GameObject generatedConsumable = Instantiate(consumablePrefab, emptyTile.gameObject.transform.position, emptyTile.gameObject.transform.rotation);
+
+        if (generatedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
+        {
+            spawnable.SetupSpawnable(emptyTile);
+        }
+
+        if (generatedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated SnakeSegment to list
+        {
+            consumables.Add(consumable);            
+        }
     }
 }

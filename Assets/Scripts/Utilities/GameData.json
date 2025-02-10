@@ -1,6 +1,6 @@
 {
-  "levelWidth":5,
-  "levelHeight":5,
+  "levelWidth":20,
+  "levelHeight":10,
   "gridSize":1,
   "snakeMovementSpeed":1,
   "currentScore":0,

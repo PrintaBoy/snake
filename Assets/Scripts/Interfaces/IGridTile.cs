@@ -15,6 +15,4 @@ public interface IGridTile
     void ClearChild();
 
     GameObject GetSpawnedObject();
-
-    Transform GetGridPosition();
 }
