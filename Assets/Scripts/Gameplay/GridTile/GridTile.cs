@@ -61,7 +61,7 @@ public class GridTile : MonoBehaviour, IGridTile
         }
     }
 
-    public GameObject GetSpawnedObject()
+    public GameObject GetSpawnedObject() // refactor to return ISpawnable
     {
         return spawnedObject;
     }

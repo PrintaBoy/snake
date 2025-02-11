@@ -28,21 +28,20 @@ public class SnakeController : MonoBehaviour
 
     public void MoveSnake(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
+        IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(newDirection);
 
-        snakeSegments[0].CheckForCollision(snakeSegments[0].GetParent().GetAdjecentTile(newDirection));
+        snakeSegments[0].CheckForCollision(adjecentTileInDirection);        
+        snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);
 
-        snakeSegments[0].NewMoveDirection(newDirection); // move head later
-        snakeSegments[0].MoveHeadSegment();
-
-        for (int i = 1; i < snakeSegments.Count; i++) // move tail first
+        for (int i = 1; i < snakeSegments.Count; i++)
         {            
-            snakeSegments[i].MoveTailSegment(snakeSegments[i - 1].GetPreviousParent());            
+            snakeSegments[i].MoveSnakeSegment(snakeSegments[i - 1].GetPreviousParent());            
         }
     }
 
     private void GenerateSnakeSegment()
     {
-        IGridTile emptyTile = null;
+        IGridTile emptyTile;
 
         if (snakeSegments.Count == 0) // gets tile for spawning head
         {

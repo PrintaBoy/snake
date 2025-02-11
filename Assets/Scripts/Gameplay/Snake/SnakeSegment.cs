@@ -5,12 +5,9 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     private IGridTile parent;
     private IGridTile previousParent;
 
-    private float movementSpeed = 0.3f;
+    private float movementSpeed = 0.3f; 
     private float doMoveTimer = 0f;
     private float doMoveTimerMax = 0.3f; // refactor to JSON, load from gamedata
-
-    private Directions nextMoveDirection = Directions.North;
-    private Directions currentMoveDirection = Directions.South;
 
     private void Start()
     {
@@ -28,29 +25,21 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         Debug.Log("Snake segment colision");
     }
 
-    private void Update()
+    private void Update() // mve timer to snakeController.cs
     {
-        /*doMoveTimer += Time.deltaTime * movementSpeed;
+        doMoveTimer += Time.deltaTime * movementSpeed;
         if (doMoveTimer >= doMoveTimerMax)
         {
-            MoveHeadSegment();
-        }*/
+            //MoveSnakeSegment();
+        }
     }
 
-    public void MoveTailSegment(IGridTile tileToMoveTo)
+    public void MoveSnakeSegment(IGridTile tileToMoveTo)
     {
+        doMoveTimer = 0f;       
         parent.ClearChild();
-        tileToMoveTo.BecomeParent(gameObject);
-        DoMovement(tileToMoveTo.gameObject.transform);        
-    }
-
-    public void MoveHeadSegment()
-    {
-        doMoveTimer = 0f;
-        IGridTile tileToMoveTo = parent.GetAdjecentTile(nextMoveDirection);
-        parent.ClearChild();
-        tileToMoveTo.BecomeParent(gameObject);
-        DoMovement(tileToMoveTo.gameObject.transform);
+        tileToMoveTo.BecomeParent(gameObject);        
+        gameObject.transform.position = tileToMoveTo.gameObject.transform.position;
     }
 
     public void CheckForCollision(IGridTile tileToCheck)
@@ -62,23 +51,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
                 spawnedObject.Collision();
             }
         }        
-    }
-
-    public void DoMovement(Transform gridToMoveTo)
-    {
-        gameObject.transform.position = gridToMoveTo.position;
-        currentMoveDirection = nextMoveDirection;        
-    }
-
-    public void NewMoveDirection(Directions newDirection)
-    {
-        nextMoveDirection = newDirection;        
-    }
-
-    public Directions GetCurrentDirection()
-    {
-        return currentMoveDirection;
-    }
+    }    
 
     public void ParentToTile(GridTile snakeParentTile)
     {
