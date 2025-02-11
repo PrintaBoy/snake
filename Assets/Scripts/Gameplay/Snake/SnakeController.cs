@@ -31,15 +31,13 @@ public class SnakeController : MonoBehaviour
 
         snakeSegments[0].CheckForCollision(snakeSegments[0].GetParent().GetAdjecentTile(newDirection));
 
-        for (int i = 1; i < snakeSegments.Count; i++) // move tail first
-        {
-            snakeSegments[i].NewMoveDirection(snakeSegments[i - 1].GetCurrentDirection());
-            snakeSegments[i].MoveTailSegment();            
-        }
-
         snakeSegments[0].NewMoveDirection(newDirection); // move head later
         snakeSegments[0].MoveHeadSegment();
 
+        for (int i = 1; i < snakeSegments.Count; i++) // move tail first
+        {            
+            snakeSegments[i].MoveTailSegment(snakeSegments[i - 1].GetPreviousParent());            
+        }
     }
 
     private void GenerateSnakeSegment()
@@ -52,11 +50,8 @@ public class SnakeController : MonoBehaviour
             OnSnakeSpawned?.Invoke();
         }
         else // gets tile for spawning snake segment
-        {
-            // get tile last snake segment is on            
+        {            
             emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
-            // get previous tile
-            Debug.Log(emptyTile);
         }
         
         GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab, emptyTile.gameObject.transform.position, emptyTile.gameObject.transform.rotation);

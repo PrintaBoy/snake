@@ -37,9 +37,8 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         }*/
     }
 
-    public void MoveTailSegment()
+    public void MoveTailSegment(IGridTile tileToMoveTo)
     {
-        IGridTile tileToMoveTo = parent.GetAdjecentTile(nextMoveDirection);
         parent.ClearChild();
         tileToMoveTo.BecomeParent(gameObject);
         DoMovement(tileToMoveTo.gameObject.transform);        
