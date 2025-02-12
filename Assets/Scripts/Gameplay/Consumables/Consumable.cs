@@ -8,7 +8,7 @@ public class Consumable : MonoBehaviour, ISpawnable
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
-        parent.BecomeParent(gameObject);
+        parent.BecomeParent(this);
     }
 
     public void Collision()

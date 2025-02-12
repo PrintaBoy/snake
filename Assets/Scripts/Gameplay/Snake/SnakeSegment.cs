@@ -17,7 +17,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
-        parent.BecomeParent(gameObject);        
+        parent.BecomeParent(this);        
     }
 
     public void Collision()
@@ -38,18 +38,16 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     {
         doMoveTimer = 0f;       
         parent.ClearChild();
-        tileToMoveTo.BecomeParent(gameObject);        
+        tileToMoveTo.BecomeParent(this);        
         gameObject.transform.position = tileToMoveTo.gameObject.transform.position;
     }
 
     public void CheckForCollision(IGridTile tileToCheck)
-    {       
-        if (tileToCheck.GetSpawnedObject() != null)
+    {
+        ISpawnable tileToCheckSpawnedObject = tileToCheck.GetSpawnedObject();
+        if (tileToCheckSpawnedObject != null)
         {
-            if (tileToCheck.GetSpawnedObject().TryGetComponent<ISpawnable>(out ISpawnable spawnedObject)) // checks of the next tile is empty. If not, collision happens
-            {
-                spawnedObject.Collision();
-            }
+            tileToCheckSpawnedObject.Collision();
         }        
     }    
 

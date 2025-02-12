@@ -55,6 +55,11 @@ public class GridController : MonoBehaviour
 
     public IGridTile GetEmptyTile() // change so it looks for new grid tile if the current one has object
     {
+        /*bool emptyTileFound = false;
+        while (!emptyTileFound)
+        {
+
+        }*/
         gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile emptyTile);
 
         return emptyTile;
