@@ -20,14 +20,14 @@ public class ConsumableController : MonoBehaviour
     private void GenerateConsumable()
     {
         IGridTile emptyTile = GridController.instance.GetEmptyTile();
-        GameObject generatedConsumable = Instantiate(consumablePrefab, emptyTile.gameObject.transform.position, emptyTile.gameObject.transform.rotation);
+        GameObject generatedConsumable = Instantiate(consumablePrefab);
 
-        if (generatedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
+        if (generatedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
             spawnable.SetupSpawnable(emptyTile);
         }
 
-        if (generatedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated SnakeSegment to list
+        if (generatedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated Consumable to list
         {
             consumables.Add(consumable);            
         }

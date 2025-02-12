@@ -17,7 +17,9 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
-        parent.BecomeParent(this);        
+        parent.BecomeParent(this);
+        gameObject.transform.position = parentTile.gameObject.transform.position;
+        gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
     public void Collision()

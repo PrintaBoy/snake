@@ -9,6 +9,8 @@ public class Consumable : MonoBehaviour, ISpawnable
     {
         parent = parentTile;
         parent.BecomeParent(this);
+        gameObject.transform.position = parentTile.gameObject.transform.position;   
+        gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
     public void Collision()

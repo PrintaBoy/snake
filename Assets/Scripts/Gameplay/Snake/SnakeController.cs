@@ -53,7 +53,7 @@ public class SnakeController : MonoBehaviour
             emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
         }
         
-        GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab, emptyTile.gameObject.transform.position, emptyTile.gameObject.transform.rotation);
+        GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
         
         if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
         {
