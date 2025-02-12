@@ -30,6 +30,11 @@ public class SnakeController : MonoBehaviour
     {
         IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(newDirection);
 
+        if (adjecentTileInDirection == snakeSegments[0].GetPreviousParent()) // this prevents snake to reverse into itself
+        {
+            return;
+        }
+
         snakeSegments[0].CheckForCollision(adjecentTileInDirection);        
         snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);
 
