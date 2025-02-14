@@ -13,7 +13,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
-    public void Collision()
+    public void Collision(ISpawnable collisionObject)
     {
         Debug.Log("Snake segment colision");
     }
@@ -23,16 +23,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         parent.ClearChild();
         tileToMoveTo.BecomeParent(this);        
         gameObject.transform.position = tileToMoveTo.gameObject.transform.position;
-    }
-
-    public void CheckForCollision(IGridTile tileToCheck)
-    {
-        ISpawnable tileToCheckSpawnedObject = tileToCheck.GetSpawnedObject();
-        if (tileToCheckSpawnedObject != null)
-        {
-            tileToCheckSpawnedObject.Collision();
-        }        
-    }    
+    } 
 
     public void ParentToTile(GridTile snakeParentTile)
     {

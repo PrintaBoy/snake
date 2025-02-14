@@ -14,6 +14,7 @@ public class SnakeController : MonoBehaviour
     private float doMoveTimerMax = 1f; // refactor to JSON, load from gamedata
 
     public static event Action OnSnakeSpawned;
+    public static event Action<ISpawnable> OnSnakeCollision;
 
     private void Start()
     {
@@ -79,9 +80,9 @@ public class SnakeController : MonoBehaviour
         IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(moveDirection);
 
         lastCommandDirection = moveDirection;
-        doMoveTimer = 0f;
-
-        snakeSegments[0].CheckForCollision(adjecentTileInDirection);        
+        doMoveTimer = 0f;        
+        CheckForCollision(adjecentTileInDirection);
+        
         snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);
 
         for (int i = 1; i < snakeSegments.Count; i++)
@@ -115,5 +116,10 @@ public class SnakeController : MonoBehaviour
         {               
             snakeSegments.Add(snakeSegment);            
         }
+    }
+
+    public void CheckForCollision(IGridTile tileToCheck)
+    {
+        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());
     }
 }

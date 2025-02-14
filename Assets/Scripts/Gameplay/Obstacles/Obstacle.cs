@@ -7,7 +7,7 @@ public class Obstacle : MonoBehaviour, ISpawnable
     {
     }
 
-    public void Collision()
+    public void Collision(ISpawnable collisionObject)
     {
         Debug.Log("Collision!");
     }

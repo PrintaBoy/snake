@@ -5,6 +5,17 @@ public class Consumable : MonoBehaviour, ISpawnable
 {
     private IGridTile parent;
     public static event Action OnAppleConsumed;
+
+    private void OnEnable()
+    {
+        SnakeController.OnSnakeCollision += Collision;
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
@@ -13,10 +24,13 @@ public class Consumable : MonoBehaviour, ISpawnable
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
-    public void Collision()
+    public void Collision(ISpawnable collisionObject)
     {
-        OnAppleConsumed?.Invoke();        
-        Destroy(gameObject);
+        if (collisionObject == this)
+        {
+            OnAppleConsumed?.Invoke();
+            Destroy(gameObject);
+        }
     }
 
     public void ParentToTile(GridTile snakeParentTile)
