@@ -549,7 +549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   consumables: []
-  consumablePrefab: {fileID: 1515529557536814964, guid: 710246622da91ae45ade229535ac8ffa, type: 3}
+  applePrefab: {fileID: 4149085016860717517, guid: 1f572b864d0051646892c9a85e9601dd, type: 3}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

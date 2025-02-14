@@ -14,6 +14,7 @@ public class GameData
 
     public float snakeMovementSpeed;
     public int snakeLength;
+    public float moveTimer;
 
     private void Awake()
     {

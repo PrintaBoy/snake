@@ -3,33 +3,36 @@ using System.Collections.Generic;
 public class ConsumableController : MonoBehaviour
 {
     [SerializeField] private List<Consumable> consumables;
-    [SerializeField] private GameObject consumablePrefab;
+    [SerializeField] private GameObject applePrefab;
 
     private void OnEnable()
     {
-        SnakeController.OnSnakeSpawned += GenerateConsumable;
-        Consumable.OnAppleConsumed += GenerateConsumable;
+        SnakeController.OnSnakeSpawned += GenerateApple;
+        Apple.OnAppleConsumed += GenerateApple;
     }
 
     private void OnDisable()
     {
-        SnakeController.OnSnakeSpawned -= GenerateConsumable;
-        Consumable.OnAppleConsumed -= GenerateConsumable;
+        SnakeController.OnSnakeSpawned -= GenerateApple;
+        Apple.OnAppleConsumed -= GenerateApple;
     }
 
-    private void GenerateConsumable()
-    {
-        IGridTile emptyTile = GridController.instance.GetEmptyTile();
-        GameObject generatedConsumable = Instantiate(consumablePrefab);
+    private void GenerateApple()
+    {        
+        GameObject generatedConsumable = Instantiate(applePrefab);
+        SetupConsumable(generatedConsumable);
+    }
 
-        if (generatedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
+    private void SetupConsumable(GameObject spawnedConsumable)
+    {
+        if (spawnedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
-            spawnable.SetupSpawnable(emptyTile);
+            spawnable.SetupSpawnable(GridController.instance.GetEmptyTile());
         }
 
-        if (generatedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated Consumable to list
+        if (spawnedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated Consumable to list
         {
-            consumables.Add(consumable);            
+            consumables.Add(consumable);
         }
     }
 }

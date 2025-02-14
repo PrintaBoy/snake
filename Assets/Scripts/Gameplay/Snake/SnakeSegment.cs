@@ -5,9 +5,19 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     private IGridTile parent;
     private IGridTile previousParent;
 
+    private void OnEnable()
+    {
+        SnakeController.OnSnakeCollision += Collision;
+    }
+
+    private void OnDisable()
+    {
+        SnakeController.OnSnakeCollision -= Collision;
+    }
+
     public void SetupSpawnable(IGridTile parentTile)
     {
-        parent = parentTile;
+        parent = parentTile;        
         parent.BecomeParent(this);
         gameObject.transform.position = parentTile.gameObject.transform.position;
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
@@ -15,7 +25,10 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
 
     public void Collision(ISpawnable collisionObject)
     {
-        Debug.Log("Snake segment colision");
+        if (collisionObject == this)
+        {
+            Debug.Log("Snake segment colision");
+        }        
     }
 
     public void MoveSnakeSegment(IGridTile tileToMoveTo)

@@ -1,40 +1,21 @@
 using UnityEngine;
 using System;
 
-public class Consumable : MonoBehaviour, ISpawnable
+public class Consumable : MonoBehaviour
 {
-    private IGridTile parent;
-    public static event Action OnAppleConsumed;
+    [HideInInspector] public IGridTile parent;
 
-    private void OnEnable()
+    public void OnEnable()
     {
         SnakeController.OnSnakeCollision += Collision;
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
-        
+        SnakeController.OnSnakeCollision -= Collision;
     }
 
-    public void SetupSpawnable(IGridTile parentTile)
+    public virtual void Collision(ISpawnable collisionObject)
     {
-        parent = parentTile;
-        parent.BecomeParent(this);
-        gameObject.transform.position = parentTile.gameObject.transform.position;   
-        gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
-    }
-
-    public void Collision(ISpawnable collisionObject)
-    {
-        if (collisionObject == this)
-        {
-            OnAppleConsumed?.Invoke();
-            Destroy(gameObject);
-        }
-    }
-
-    public void ParentToTile(GridTile snakeParentTile)
-    {
-        parent = snakeParentTile;
     }
 }

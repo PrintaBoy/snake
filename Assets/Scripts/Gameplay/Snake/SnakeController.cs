@@ -7,11 +7,13 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private List<SnakeSegment> snakeSegments;
     [SerializeField] private GameObject snakeSegmentPrefab;
 
+    private int startSnakeSegments = 3; // refactor to JSON
+
     private Directions lastCommandDirection = Directions.West;
 
     private float movementSpeed = 0.1f;
     private float doMoveTimer = 0f;
-    private float doMoveTimerMax = 1f; // refactor to JSON, load from gamedata
+    private float doMoveTimerMax;
 
     public static event Action OnSnakeSpawned;
     public static event Action<ISpawnable> OnSnakeCollision;
@@ -19,6 +21,7 @@ public class SnakeController : MonoBehaviour
     private void Start()
     {
         movementSpeed = GameData.gameData.snakeMovementSpeed;
+        doMoveTimerMax = GameData.gameData.moveTimer;
     }
 
     private void Update()
@@ -33,18 +36,23 @@ public class SnakeController : MonoBehaviour
     private void OnEnable()
     {
         GridController.OnGridGenerated += GridGenerated;
-        Consumable.OnAppleConsumed += GenerateSnakeSegment;
+        Apple.OnAppleConsumed += AppleConsumed;
     }
 
     private void OnDisable()
     {
         GridController.OnGridGenerated -= GridGenerated;
-        Consumable.OnAppleConsumed -= GenerateSnakeSegment;
+        Apple.OnAppleConsumed -= AppleConsumed;
+    }
+
+    private void AppleConsumed()
+    {
+        GenerateSnakeSegment(1);
     }
 
     private void GridGenerated() // reacts to event Grid.OnGridGenerated
     {
-        GenerateSnakeSegment(); // spawns the first segment of a snake
+        GenerateSnakeSegment(startSnakeSegments); // spawns the first segment of a snake
     }
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
@@ -91,30 +99,33 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    private void GenerateSnakeSegment()
+    private void GenerateSnakeSegment(int segmentAmount)
     {
-        IGridTile emptyTile;
-
-        if (snakeSegments.Count == 0) // gets tile for spawning head
+        for (int i = 0; i < segmentAmount; i++)
         {
-            emptyTile = GridController.instance.GetEmptyTile();
-            OnSnakeSpawned?.Invoke();
-        }
-        else // gets tile for spawning snake segment
-        {            
-            emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
-        }
-        
-        GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
-        
-        if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
-        {
-            spawnable.SetupSpawnable(emptyTile);            
-        }
+            IGridTile emptyTile;
 
-        if (generatedSnakeSegment.TryGetComponent<SnakeSegment>(out SnakeSegment snakeSegment)) // add generated SnakeSegment to list
-        {               
-            snakeSegments.Add(snakeSegment);            
+            if (snakeSegments.Count == 0) // gets tile for spawning head
+            {
+                emptyTile = GridController.instance.GetEmptyTile();
+                OnSnakeSpawned?.Invoke();
+            }
+            else // gets tile for spawning snake segment
+            {
+                emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
+            }
+
+            GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
+
+            if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
+            {
+                spawnable.SetupSpawnable(emptyTile);
+            }
+
+            if (generatedSnakeSegment.TryGetComponent<SnakeSegment>(out SnakeSegment snakeSegment)) // add generated SnakeSegment to list
+            {
+                snakeSegments.Add(snakeSegment);
+            }
         }
     }
 
