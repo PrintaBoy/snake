@@ -11,6 +11,6 @@ public class MoveCommand : ICommand
 
     public void Execute()
     {
-        _snake.ChangeDirection(_moveDirection);
+        _snake.ChangeSnakeDirection(_moveDirection);
     }
 }

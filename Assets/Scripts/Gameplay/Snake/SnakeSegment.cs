@@ -3,73 +3,54 @@ using UnityEngine;
 public class SnakeSegment : MonoBehaviour, ISpawnable
 {
     private IGridTile parent;
+    private IGridTile previousParent;
 
-    private float movementSpeed = 0.3f;
-    private float doMoveTimer = 0f;
-    private float doMoveTimerMax = 0.3f; // refactor to JSON, load from gamedata
-
-    private Directions nextMoveDirection = Directions.North;
-    private Directions currentMoveDirection = Directions.South;
-
-    private void Start()
+    private void OnEnable()
     {
-        movementSpeed = GameData.gameData.snakeMovementSpeed;
+        SnakeController.OnSnakeCollision += Collision;
+    }
+
+    private void OnDisable()
+    {
+        SnakeController.OnSnakeCollision -= Collision;
     }
 
     public void SetupSpawnable(IGridTile parentTile)
     {
-        parent = parentTile;
-        parent.BecomeParent(gameObject);
+        parent = parentTile;        
+        parent.BecomeParent(this);
+        gameObject.transform.position = parentTile.gameObject.transform.position;
+        gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
-    public void Collision()
+    public void Collision(ISpawnable collisionObject)
     {
-        Debug.Log("Snake segment colision");
-    }
-
-    private void Update()
-    {
-        doMoveTimer += Time.deltaTime * movementSpeed;
-        if (doMoveTimer >= doMoveTimerMax)
+        if (collisionObject == this)
         {
-            AttemptMovement();
-        }
-    }
-    private void AttemptMovement()
-    {
-        doMoveTimer = 0f;
-        IGridTile tileToMoveTo = parent.GetAdjecentTile(nextMoveDirection);
-        GameObject tileSpawnedObject = tileToMoveTo.GetSpawnedObject();
-
-        if (tileSpawnedObject == null) // checks of the next tile is empty. If it is, move there
-        {
-            parent.ClearChild();
-            tileToMoveTo.BecomeParent(gameObject);
-            DoMovement(tileToMoveTo.GetGridPosition());
-        }
-        else
-        {
-            if (tileSpawnedObject.TryGetComponent<ISpawnable>(out ISpawnable spawnedObject)) // checks of the next tile is empty. If not, collision happens
-            {
-                spawnedObject.Collision();
-            }
-        }
+            Debug.Log("Snake segment colision");
+        }        
     }
 
-    public void DoMovement(Transform gridToMoveTo)
-    {
-        gameObject.transform.position = gridToMoveTo.position;
-        currentMoveDirection = nextMoveDirection;        
-    }
+    public void MoveSnakeSegment(IGridTile tileToMoveTo)
+    {    
+        parent.ClearChild();
+        tileToMoveTo.BecomeParent(this);        
+        gameObject.transform.position = tileToMoveTo.gameObject.transform.position;
+    } 
 
-    public void NewMoveDirection(Directions newDirection)
+    public void ParentToTile(GridTile snakeParentTile)
     {
-        nextMoveDirection = newDirection;
-        AttemptMovement();
-    }
-
-    public void GetParent(GridTile snakeParentTile)
-    {
+        previousParent = parent;
         parent = snakeParentTile;
+    }
+
+    public IGridTile GetParent()
+    {
+        return parent;
+    }
+
+    public IGridTile GetPreviousParent()
+    {
+        return previousParent;
     }
 }

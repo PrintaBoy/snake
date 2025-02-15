@@ -13,7 +13,8 @@ public class GameData
     public int bestScore;
 
     public float snakeMovementSpeed;
-    public int snakeLength;
+    public int startSnakeLength;
+    public float moveTimer;
 
     private void Awake()
     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class GridTile : MonoBehaviour, IGridTile
 {       
     private Vector2Int gridAddress;
-    [HideInInspector] public GameObject spawnedObject = null;
+    public ISpawnable spawnedObject = null;
     private Dictionary<Directions, IGridTile> adjecentTiles = new Dictionary<Directions, IGridTile>();
 
     public void SetupGridTile(Vector2Int gridTileAddress)
@@ -36,11 +36,11 @@ public class GridTile : MonoBehaviour, IGridTile
         return adjecentTileInDirection;
     }
 
-    public void BecomeParent(GameObject child) // once something spawns it calls this method to let the GridTile know it's a parent
+    public void BecomeParent(ISpawnable child) // once something spawns it calls this method to let the GridTile know it's a parent
     {
         spawnedObject = child;
-        spawnedObject.GetComponent<SnakeSegment>().GetParent(this);
-        child.transform.parent = gameObject.transform;
+        spawnedObject.ParentToTile(this);
+        spawnedObject.gameObject.transform.parent = gameObject.transform;
     }
 
     public void ClearChild() // once something dissapears from this GridTile this clears it
@@ -61,12 +61,7 @@ public class GridTile : MonoBehaviour, IGridTile
         }
     }
 
-    public Transform GetGridPosition()
-    {
-        return transform;
-    }
-
-    public GameObject GetSpawnedObject()
+    public ISpawnable GetSpawnedObject()
     {
         return spawnedObject;
     }
@@ -90,10 +85,5 @@ public class GridTile : MonoBehaviour, IGridTile
 
         int westernTileDirection = gridAddress.x - 1 < 0 ? GameData.gameData.levelWidth - 1 : gridAddress.x - 1;        
         adjecentTiles.Add(Directions.West, GridController.instance.GetTile(new Vector2Int(westernTileDirection, gridAddress.y))); // get West adjecent tile        
-    }
-
-    public void GenerateObstacle(GameObject obstacleToGenerate) // refactor to ObstacleController once setup
-    {
-        spawnedObject = Instantiate(obstacleToGenerate, transform.position, transform.rotation, transform);
     }
 }
