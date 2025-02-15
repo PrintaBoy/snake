@@ -7,7 +7,7 @@ public class SnakeController : MonoBehaviour
     [SerializeField] private List<SnakeSegment> snakeSegments;
     [SerializeField] private GameObject snakeSegmentPrefab;
 
-    private int startSnakeSegments = 3; // refactor to JSON
+    private int startSnakeSegments;
 
     private Directions lastCommandDirection = Directions.West;
 
@@ -22,6 +22,7 @@ public class SnakeController : MonoBehaviour
     {
         movementSpeed = GameData.gameData.snakeMovementSpeed;
         doMoveTimerMax = GameData.gameData.moveTimer;
+        startSnakeSegments = GameData.gameData.startSnakeLength;
     }
 
     private void Update()

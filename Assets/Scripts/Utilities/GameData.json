@@ -5,6 +5,6 @@
   "snakeMovementSpeed":1,
   "currentScore":0,
   "bestScore":0,
-  "snakeLength":3, 
+  "startSnakeLength":3, 
   "moveTimer":0.3
 }
