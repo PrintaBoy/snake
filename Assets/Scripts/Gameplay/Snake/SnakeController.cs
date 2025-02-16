@@ -15,7 +15,7 @@ public class SnakeController : MonoBehaviour
     private float doMoveTimer = 0f;
     private float doMoveTimerMax;
 
-    public static event Action OnSnakeSpawned;
+    public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
 
     private void Start()
@@ -118,14 +118,15 @@ public class SnakeController : MonoBehaviour
 
             GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
 
-            if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
-            {
-                spawnable.SetupSpawnable(emptyTile);
-            }
-
             if (generatedSnakeSegment.TryGetComponent<SnakeSegment>(out SnakeSegment snakeSegment)) // add generated SnakeSegment to list
             {
                 snakeSegments.Add(snakeSegment);
+                snakeSegment.SetListIndex(snakeSegments.Count - 1);
+            }
+
+            if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
+            {
+                spawnable.SetupSpawnable(emptyTile);
             }
         }
     }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class GridTile : MonoBehaviour, IGridTile
 {       
-    private Vector2Int gridAddress;
+    public Vector2Int gridAddress;
     public ISpawnable spawnedObject = null;
-    private Dictionary<Directions, IGridTile> adjecentTiles = new Dictionary<Directions, IGridTile>();
+    private Dictionary<Directions, IGridTile> adjecentTiles = new Dictionary<Directions, IGridTile>();    
 
     public void SetupGridTile(Vector2Int gridTileAddress)
     {
