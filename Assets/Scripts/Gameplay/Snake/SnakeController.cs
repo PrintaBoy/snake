@@ -58,6 +58,11 @@ public class SnakeController : MonoBehaviour
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
+        if (GameStateController.gameState == GameStates.GameOver)
+        {
+            return;
+        }
+
         Directions oppositeDirection = Directions.East;
         switch (newDirection) // gets opposite direction of the new direction
         {
@@ -85,11 +90,17 @@ public class SnakeController : MonoBehaviour
     }
 
     public void MoveSnake(Directions moveDirection) // moves the snake regardless if it's player or timer input
-    {        
+    {    
+        if (GameStateController.gameState == GameStates.GameOver)
+        {
+            return;
+        }
+
         IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(moveDirection);
 
         lastCommandDirection = moveDirection;
         doMoveTimer = 0f;        
+
         CheckForCollision(adjecentTileInDirection);
         
         snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);
