@@ -1,9 +1,12 @@
 using UnityEngine;
+using System;
 
 public class SnakeSegment : MonoBehaviour, ISpawnable
 {
     private IGridTile parent;
     private IGridTile previousParent;
+    [HideInInspector] public int snakeSegmentListIndex { get; private set; } // index of this snake segment in list in SnakeController
+    public static event Action OnSnakeSegmentSetup;
 
     private void OnEnable()
     {
@@ -21,6 +24,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         parent.BecomeParent(this);
         gameObject.transform.position = parentTile.gameObject.transform.position;
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
+        OnSnakeSegmentSetup?.Invoke();
     }
 
     public void Collision(ISpawnable collisionObject)
@@ -29,6 +33,11 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         {
             Debug.Log("Snake segment colision");
         }        
+    }
+
+    public void SetListIndex(int listIndex)
+    {
+        snakeSegmentListIndex = listIndex;
     }
 
     public void MoveSnakeSegment(IGridTile tileToMoveTo)

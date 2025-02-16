@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3313807227951801853}
   - component: {fileID: -6732485889931622225}
+  - component: {fileID: 1492801855821786790}
   m_Layer: 0
   m_Name: SnakeSegment
   m_TagString: Untagged
@@ -45,6 +46,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2151b884d96724a41a25716d4a7138c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1492801855821786790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5235585412816339680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f919479c27cca4eb5b92a336586579, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakeSegmentMaterials:
+  - {fileID: 2100000, guid: 04dc5a4588218334fb8d9da89819318c, type: 2}
+  - {fileID: 2100000, guid: dfc395b208d320b41874910c66c62185, type: 2}
+  - {fileID: 2100000, guid: c52bef8ab78d06442a2f2ff0bf630c9c, type: 2}
+  meshRenderer: {fileID: 6513892208859614995}
+  snakeSegmentScript: {fileID: -6732485889931622225}
 --- !u!1 &6403449391246357298
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +108,7 @@ GameObject:
   - component: {fileID: 6242423064915559835}
   - component: {fileID: 6513892208859614995}
   m_Layer: 0
-  m_Name: Head
+  m_Name: SnakeSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
