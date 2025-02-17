@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
 
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference moveInput;
     [SerializeField] private SnakeController snakePrefab;
+    public static event Action OnMoveStarted;
 
 
     private void OnEnable()
@@ -24,24 +26,30 @@ public class InputManager : MonoBehaviour
         Vector2 right = new Vector2(1.00f, 0.00f);
         Vector2 left = new Vector2(-1.00f, 0.00f);
 
+        OnMoveStarted?.Invoke();
+
         if (ctx.ReadValue<Vector2>() == up)
         {
             OnUpInput();
+            return;
         }
 
         if (ctx.ReadValue<Vector2>() == down)
         {
             OnDownInput();
+            return;
         }
 
         if (ctx.ReadValue<Vector2>() == right)
         {
             OnRightInput();
+            return;
         }
 
         if (ctx.ReadValue<Vector2>() == left)
         {
             OnLeftInput();
+            return;
         }
     }
 
