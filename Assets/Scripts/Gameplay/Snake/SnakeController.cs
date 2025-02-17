@@ -91,7 +91,7 @@ public class SnakeController : MonoBehaviour
 
     public void MoveSnake(Directions moveDirection) // moves the snake regardless if it's player or timer input
     {    
-        if (GameStateController.gameState == GameStates.GameOver)
+        if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
         {
             return;
         }
