@@ -17,12 +17,13 @@ public class SnakeController : MonoBehaviour
 
     public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
+    public static event Action OnMoveStarted;
 
     private void Start()
     {
         movementSpeed = GameData.gameData.snakeMovementSpeed;
         doMoveTimerMax = GameData.gameData.moveTimer;
-        startSnakeSegments = GameData.gameData.startSnakeLength;
+        startSnakeSegments = GameData.gameData.startSnakeLength;        
     }
 
     private void Update()
@@ -58,18 +59,19 @@ public class SnakeController : MonoBehaviour
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
-        if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
-        {
-            return;
-        }        
-
         if (lastCommandDirection == newDirection || lastCommandDirection == Direction.GetOppositeDirection(newDirection)) // this check prevents the snake to reverse into itself or move faster in one direction by repeatedly sending command
         {
             return;
-        } else
-        {
-            MoveSnake(newDirection);    
         }
+
+        OnMoveStarted?.Invoke();
+
+        if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
+        {
+            return;
+        }         
+
+        MoveSnake(newDirection);
     }
 
     public void MoveSnake(Directions moveDirection) // moves the snake regardless if it's player or timer input
@@ -140,8 +142,8 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    public void CheckForCollision(IGridTile tileToCheck)
+    private void CheckForCollision(IGridTile tileToCheck)
     {
-        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());
+        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());        
     }
 }
