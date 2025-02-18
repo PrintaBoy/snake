@@ -17,12 +17,13 @@ public class SnakeController : MonoBehaviour
 
     public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
+    public static event Action OnMoveStarted;
 
     private void Start()
     {
         movementSpeed = GameData.gameData.snakeMovementSpeed;
         doMoveTimerMax = GameData.gameData.moveTimer;
-        startSnakeSegments = GameData.gameData.startSnakeLength;
+        startSnakeSegments = GameData.gameData.startSnakeLength;        
     }
 
     private void Update()
@@ -36,57 +37,41 @@ public class SnakeController : MonoBehaviour
 
     private void OnEnable()
     {
-        GridController.OnGridGenerated += GridGenerated;
+        GridController.OnGridMapGenerated += GridMapGenerated;
         Apple.OnAppleConsumed += AppleConsumed;
     }
 
     private void OnDisable()
     {
-        GridController.OnGridGenerated -= GridGenerated;
+        GridController.OnGridMapGenerated -= GridMapGenerated;
         Apple.OnAppleConsumed -= AppleConsumed;
     }
 
     private void AppleConsumed()
     {
-        GenerateSnakeSegment(1);
+        ModifySnakeSegmentAmount(1);
     }
 
-    private void GridGenerated() // reacts to event Grid.OnGridGenerated
+    private void GridMapGenerated()
     {
-        GenerateSnakeSegment(startSnakeSegments); // spawns the first segment of a snake
+        GenerateSnake(startSnakeSegments); // spawns new snake
     }
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
-        if (GameStateController.gameState == GameStates.GameOver)
+        if (lastCommandDirection == newDirection || lastCommandDirection == Direction.GetOppositeDirection(newDirection)) // this check prevents the snake to reverse into itself or move faster in one direction by repeatedly sending command
         {
             return;
         }
 
-        Directions oppositeDirection = Directions.East;
-        switch (newDirection) // gets opposite direction of the new direction
-        {
-            case Directions.North:
-                oppositeDirection = Directions.South;
-                break;
-            case Directions.South:
-                oppositeDirection = Directions.North;
-                break;
-            case Directions.East:
-                oppositeDirection = Directions.West;
-                break;
-            case Directions.West:
-                oppositeDirection = Directions.East;
-                break;
-        }
+        OnMoveStarted?.Invoke();
 
-        if (lastCommandDirection == newDirection || lastCommandDirection == oppositeDirection) // this check prevents the snake to reverse into itself or move faster in one direction by repeatedly sending command
+        if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
         {
             return;
-        } else
-        {
-            MoveSnake(newDirection);    
-        }
+        }         
+
+        MoveSnake(newDirection);
     }
 
     public void MoveSnake(Directions moveDirection) // moves the snake regardless if it's player or timer input
@@ -111,7 +96,23 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    private void GenerateSnakeSegment(int segmentAmount)
+    private void InstantiateSnakeSegment(IGridTile tileForSnakeSegment)
+    {
+        GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
+
+        if (generatedSnakeSegment.TryGetComponent<SnakeSegment>(out SnakeSegment snakeSegment)) // add generated SnakeSegment to list
+        {
+            snakeSegments.Add(snakeSegment);
+            snakeSegment.SetListIndex(snakeSegments.Count - 1);
+        }
+
+        if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
+        {
+            spawnable.SetupSpawnable(tileForSnakeSegment);
+        }
+    }
+
+    private void GenerateSnake(int segmentAmount) // called on start of the level, spawns new snake
     {
         for (int i = 0; i < segmentAmount; i++)
         {
@@ -124,26 +125,25 @@ public class SnakeController : MonoBehaviour
             }
             else // gets tile for spawning snake segment
             {
-                emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
+                emptyTile = snakeSegments[snakeSegments.Count - 1].GetParent();
+                emptyTile = emptyTile.GetAdjecentTile(lastCommandDirection);
             }
 
-            GameObject generatedSnakeSegment = Instantiate(snakeSegmentPrefab);
-
-            if (generatedSnakeSegment.TryGetComponent<SnakeSegment>(out SnakeSegment snakeSegment)) // add generated SnakeSegment to list
-            {
-                snakeSegments.Add(snakeSegment);
-                snakeSegment.SetListIndex(snakeSegments.Count - 1);
-            }
-
-            if (generatedSnakeSegment.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) //setup spawned snake segment
-            {
-                spawnable.SetupSpawnable(emptyTile);
-            }
+            InstantiateSnakeSegment(emptyTile);
         }
     }
 
-    public void CheckForCollision(IGridTile tileToCheck)
+    private void ModifySnakeSegmentAmount(int segmentAmount)
     {
-        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());
+        for (int i = 0; i < segmentAmount; i++)
+        {
+            IGridTile emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
+            InstantiateSnakeSegment(emptyTile);
+        }
+    }
+
+    private void CheckForCollision(IGridTile tileToCheck)
+    {
+        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());        
     }
 }

@@ -14,13 +14,13 @@ public class GameStateController : MonoBehaviour
     private void OnEnable()
     {
         SnakeSegment.OnObstacleCollision += ObstacleCollision;
-        InputManager.OnMoveStarted += MoveStarted;
+        SnakeController.OnMoveStarted += MoveStarted;
     }
 
     private void OnDisable()
     {
         SnakeSegment.OnObstacleCollision -= ObstacleCollision;
-        InputManager.OnMoveStarted -= MoveStarted;
+        SnakeController.OnMoveStarted -= MoveStarted;
     }
 
     private void ObstacleCollision()
@@ -31,7 +31,7 @@ public class GameStateController : MonoBehaviour
         }       
     }
 
-    private void MoveStarted() // when player hits movement input, the game will start playing
+    private void MoveStarted() // when player hits correct movement input, the game will start playing
     {
         if (gameState == GameStates.Start) // prevents the game starting from other states than Start
         {

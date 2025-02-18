@@ -27,7 +27,7 @@ public class GridTile : MonoBehaviour, IGridTile
 
     private void OnGridGenerated() // waits for OnGridGenerated event to get adjecent tiles
     {
-        GetAdjecentTiles();
+        MapAdjecentTiles();
     }
 
     public IGridTile GetAdjecentTile(Directions direction) // gets adjecent tile in given direction
@@ -72,7 +72,7 @@ public class GridTile : MonoBehaviour, IGridTile
         return hasObject;
     }
 
-    public void GetAdjecentTiles() 
+    public void MapAdjecentTiles() 
     {
         int northernTileDirection = gridAddress.y + 1 == GameData.gameData.levelHeight ? 0 : gridAddress.y + 1; // if there is no adjecent tile, loop around to the opposite border
         adjecentTiles.Add(Directions.North, GridController.instance.GetTile(new Vector2Int(gridAddress.x, northernTileDirection))); // get North adjecent tile        
@@ -85,5 +85,7 @@ public class GridTile : MonoBehaviour, IGridTile
 
         int westernTileDirection = gridAddress.x - 1 < 0 ? GameData.gameData.levelWidth - 1 : gridAddress.x - 1;        
         adjecentTiles.Add(Directions.West, GridController.instance.GetTile(new Vector2Int(westernTileDirection, gridAddress.y))); // get West adjecent tile        
+
+        GridController.instance.AdjecentTilesMapGenerated();
     }
 }

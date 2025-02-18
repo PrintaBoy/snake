@@ -52,7 +52,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     public void ParentToTile(GridTile snakeParentTile)
     {
         previousParent = parent;
-        parent = snakeParentTile;
+        parent = snakeParentTile;        
     }
 
     public IGridTile GetParent()
