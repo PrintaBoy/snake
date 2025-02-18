@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class GameData
 {
-    public static GameData gameData;
+    public static GameData gameData; // singleton
     public int levelWidth;
     public int levelHeight;
     public int gridSize;
@@ -12,9 +12,9 @@ public class GameData
     public int currentScore;
     public int bestScore;
 
-    public float snakeMovementSpeed;
+    public float gameSpeedMultiplier;
     public int startSnakeLength;
-    public float moveTimer;
+    public float tickLength;
 
     private void Awake()
     {
