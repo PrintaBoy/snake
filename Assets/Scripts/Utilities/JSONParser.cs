@@ -6,7 +6,7 @@ public class JSONParser : MonoBehaviour
     private string jsonGameData;
     private string jsonDataPath = Application.dataPath + "/Scripts/Utilities/GameData.json";
 
-    private void Start()
+    private void Awake()
     {
         LoadData();
     }

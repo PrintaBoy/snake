@@ -11,40 +11,27 @@ public class SnakeController : MonoBehaviour
 
     private Directions lastCommandDirection = Directions.West;
 
-    private float movementSpeed = 0.1f;
-    private float doMoveTimer = 0f;
-    private float doMoveTimerMax;
-
     public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
-    public static event Action OnMoveStarted;
+    public static event Action OnValidMove;
 
     private void Start()
     {
-        movementSpeed = GameData.gameData.snakeMovementSpeed;
-        doMoveTimerMax = GameData.gameData.moveTimer;
         startSnakeSegments = GameData.gameData.startSnakeLength;        
-    }
-
-    private void Update()
-    {
-        doMoveTimer += Time.deltaTime * movementSpeed;
-        if (doMoveTimer >= doMoveTimerMax)
-        {
-            MoveSnake(lastCommandDirection);
-        }
     }
 
     private void OnEnable()
     {
         GridController.OnGridMapGenerated += GridMapGenerated;
         Apple.OnAppleConsumed += AppleConsumed;
+        TickController.OnTick += Tick;
     }
 
     private void OnDisable()
     {
         GridController.OnGridMapGenerated -= GridMapGenerated;
         Apple.OnAppleConsumed -= AppleConsumed;
+        TickController.OnTick -= Tick;
     }
 
     private void AppleConsumed()
@@ -57,6 +44,11 @@ public class SnakeController : MonoBehaviour
         GenerateSnake(startSnakeSegments); // spawns new snake
     }
 
+    private void Tick()
+    {
+        MoveSnake(lastCommandDirection);
+    }
+
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
         if (lastCommandDirection == newDirection || lastCommandDirection == Direction.GetOppositeDirection(newDirection)) // this check prevents the snake to reverse into itself or move faster in one direction by repeatedly sending command
@@ -64,7 +56,7 @@ public class SnakeController : MonoBehaviour
             return;
         }
 
-        OnMoveStarted?.Invoke();
+        OnValidMove?.Invoke();
 
         if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
         {
@@ -83,8 +75,7 @@ public class SnakeController : MonoBehaviour
 
         IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(moveDirection);
 
-        lastCommandDirection = moveDirection;
-        doMoveTimer = 0f;        
+        lastCommandDirection = moveDirection;         
 
         CheckForCollision(adjecentTileInDirection);
         

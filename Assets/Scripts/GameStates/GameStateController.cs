@@ -5,6 +5,7 @@ public class GameStateController : MonoBehaviour
 {
     [HideInInspector] public static GameStates gameState {  get; private set; }
     public static event Action OnGameOver; // event is called when game is over 
+    public static event Action OnPlaying;
 
     private void Awake()
     {
@@ -14,13 +15,13 @@ public class GameStateController : MonoBehaviour
     private void OnEnable()
     {
         SnakeSegment.OnObstacleCollision += ObstacleCollision;
-        SnakeController.OnMoveStarted += MoveStarted;
+        SnakeController.OnValidMove += MoveStarted;
     }
 
     private void OnDisable()
     {
         SnakeSegment.OnObstacleCollision -= ObstacleCollision;
-        SnakeController.OnMoveStarted -= MoveStarted;
+        SnakeController.OnValidMove -= MoveStarted;
     }
 
     private void ObstacleCollision()
@@ -51,6 +52,7 @@ public class GameStateController : MonoBehaviour
                 break;
             case GameStates.Playing:
                 gameState = GameStates.Playing;
+                PlayingState();
                 break;
             case GameStates.GameOver:
                 gameState = GameStates.GameOver;
@@ -62,5 +64,10 @@ public class GameStateController : MonoBehaviour
     private void GameOverState()
     {
         OnGameOver?.Invoke();
+    }
+
+    private void PlayingState()
+    {
+        OnPlaying?.Invoke();    
     }
 }

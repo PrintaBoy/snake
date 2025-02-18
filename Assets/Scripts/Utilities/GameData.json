@@ -2,9 +2,9 @@
   "levelWidth":20,
   "levelHeight":12,
   "gridSize":1,
-  "snakeMovementSpeed":1,
+  "gameSpeedMultiplier":1,
   "currentScore":0,
   "bestScore":0,
   "startSnakeLength":3, 
-  "moveTimer":0.3
+  "tickLength":0.5
 }
