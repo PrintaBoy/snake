@@ -53,6 +53,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     {
         previousParent = parent;
         parent = snakeParentTile;
+        Debug.Log(parent + " --- " + previousParent);
     }
 
     public IGridTile GetParent()

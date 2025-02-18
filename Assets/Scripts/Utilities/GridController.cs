@@ -10,7 +10,10 @@ public class GridController : MonoBehaviour
     [SerializeField] private GameObject gridTilePrefab;    
     private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>();
 
-    public static event Action OnGridGenerated;    
+    public static event Action OnGridGenerated; // invokes when all grid tiles are generated
+    public static event Action OnGridMapGenerated; // invokes when all grid tiles have created map of adjecent grid tiles
+
+    private int gridTilesMapReady; // counts the amount of tiles which has map of adjecent tiles ready
 
     private void Awake()
     {
@@ -45,6 +48,15 @@ public class GridController : MonoBehaviour
         if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
         {            
             OnGridGenerated?.Invoke();            
+        }
+    }
+
+    public void AdjecentTilesMapGenerated()
+    {
+        gridTilesMapReady++;
+        if (gridTilesMapReady >= GameData.gameData.levelWidth * GameData.gameData.levelHeight)
+        {
+            OnGridMapGenerated?.Invoke();
         }
     }
 

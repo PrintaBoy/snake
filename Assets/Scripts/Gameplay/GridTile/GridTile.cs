@@ -85,5 +85,7 @@ public class GridTile : MonoBehaviour, IGridTile
 
         int westernTileDirection = gridAddress.x - 1 < 0 ? GameData.gameData.levelWidth - 1 : gridAddress.x - 1;        
         adjecentTiles.Add(Directions.West, GridController.instance.GetTile(new Vector2Int(westernTileDirection, gridAddress.y))); // get West adjecent tile        
+
+        GridController.instance.AdjecentTilesMapGenerated();
     }
 }
