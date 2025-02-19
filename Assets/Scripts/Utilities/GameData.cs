@@ -6,15 +6,18 @@ public class GameData
     public static GameData gameData; // singleton
     public int levelWidth;
     public int levelHeight;
-    public int gridSize;
+    public float gridSize;
     public Vector3 generateLevelStartPoint;
     
     public int currentScore;
     public int bestScore;
 
     public float gameSpeedMultiplier;
+    public float gameTickLength;
+
     public int startSnakeLength;
-    public float tickLength;
+    public float snakeSpeedMultiplier;
+    public float snakeTickLength;
 
     private void Awake()
     {

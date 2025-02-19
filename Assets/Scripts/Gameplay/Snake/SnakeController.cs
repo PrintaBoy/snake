@@ -24,14 +24,14 @@ public class SnakeController : MonoBehaviour
     {
         GridController.OnGridMapGenerated += GridMapGenerated;
         Apple.OnAppleConsumed += AppleConsumed;
-        TickController.OnTick += Tick;
+        TickController.OnSnakeTick += SnakeTick;
     }
 
     private void OnDisable()
     {
         GridController.OnGridMapGenerated -= GridMapGenerated;
         Apple.OnAppleConsumed -= AppleConsumed;
-        TickController.OnTick -= Tick;
+        TickController.OnSnakeTick -= SnakeTick;
     }
 
     private void AppleConsumed()
@@ -41,10 +41,10 @@ public class SnakeController : MonoBehaviour
 
     private void GridMapGenerated()
     {
-        GenerateSnake(startSnakeSegments); // spawns new snake
+        GenerateSnake(startSnakeSegments); // generates new snake
     }
 
-    private void Tick()
+    private void SnakeTick()
     {
         MoveSnake(lastCommandDirection);
     }

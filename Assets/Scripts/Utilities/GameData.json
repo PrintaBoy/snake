@@ -3,8 +3,10 @@
   "levelHeight":12,
   "gridSize":1,
   "gameSpeedMultiplier":1,
+  "gameTickLength":0.5,
   "currentScore":0,
   "bestScore":0,
   "startSnakeLength":3, 
-  "tickLength":0.5
+  "snakeTickLength":0.5,
+  "snakeSpeedMultiplier":1
 }
