@@ -4,17 +4,27 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference moveInput;
-    [SerializeField] private SnakeController snakePrefab;
-
+    [SerializeField] private InputActionReference pauseMenuInput;
+    [SerializeField] private SnakeController snakeController;
+    [SerializeField] private GameStateController gameStateController;
 
     private void OnEnable()
     {
         moveInput.action.started += MoveStarted;
+        pauseMenuInput.action.started += ChangePauseStarted;
+        ButtonEventInvoker.OnContinueButtonPressed += RunChangePauseCommand;
     }
 
     private void OnDisable()
     {
         moveInput.action.started -= MoveStarted;
+        pauseMenuInput.action.started -= ChangePauseStarted;
+        ButtonEventInvoker.OnContinueButtonPressed -= RunChangePauseCommand;
+    }
+
+    private void ChangePauseStarted(InputAction.CallbackContext ctx)
+    {
+        RunChangePauseCommand();
     }
 
     private void MoveStarted(InputAction.CallbackContext ctx) // here read move input from player and pass move directions
@@ -48,25 +58,24 @@ public class InputManager : MonoBehaviour
             return;
         }
     }
-
     private void OnUpInput()
     {
-        RunMoveCommand(snakePrefab, Directions.North);
+        RunMoveCommand(snakeController, Directions.North);
     }
 
     private void OnDownInput()
     {
-        RunMoveCommand(snakePrefab, Directions.South);
+        RunMoveCommand(snakeController, Directions.South);
     }
 
     private void OnRightInput()
     {
-        RunMoveCommand(snakePrefab, Directions.East);
+        RunMoveCommand(snakeController, Directions.East);
     }
 
     private void OnLeftInput()
     {
-        RunMoveCommand(snakePrefab, Directions.West);
+        RunMoveCommand(snakeController, Directions.West);
     }
 
     private void RunMoveCommand(SnakeController snake, Directions moveDirection) // this method creates new move ICommand
@@ -78,5 +87,11 @@ public class InputManager : MonoBehaviour
 
         ICommand command = new MoveCommand(snake, moveDirection);
         CommandInvoker.ExecuteCommand(command); // this command needs to be executed ASAP so it's called from here
+    }
+
+    private void RunChangePauseCommand()
+    {
+        ICommand command = new PauseCommand(gameStateController);
+        CommandInvoker.ExecuteCommand(command);
     }
 }
