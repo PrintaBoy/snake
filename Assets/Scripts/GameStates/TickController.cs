@@ -28,6 +28,7 @@ public class TickController : MonoBehaviour
         SnakeController.OnValidMove += ValidMove;
         GameStateController.OnPlaying += GamePlaying;
         GameStateController.OnGameOver += GameOver;
+        GameStateController.OnPause += GamePause;
     }
 
     private void OnDisable()
@@ -35,6 +36,7 @@ public class TickController : MonoBehaviour
         SnakeController.OnValidMove -= ValidMove;
         GameStateController.OnPlaying -= GamePlaying;
         GameStateController.OnGameOver -= GameOver;
+        GameStateController.OnPause -= GamePause;
     }
 
     private void Start()
@@ -87,6 +89,11 @@ public class TickController : MonoBehaviour
     private void ValidMove() // if snake makes valid move
     {
         ResetSnakeTickTimer();
+    }
+
+    private void GamePause()
+    {
+        ToggleTickTimer(false);
     }
 
     private void GamePlaying()
