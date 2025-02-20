@@ -5,26 +5,35 @@ public class GameStateController : MonoBehaviour
 {
     public static bool isGameOver = false;
     [HideInInspector] public static GameStates gameState {  get; private set; }
+    public static event Action OnSceneLoaded;
     public static event Action OnStart; // event is called when game started, fresh from loading
     public static event Action OnGameOver; // event is called when game is over 
     public static event Action OnPlaying;
     public static event Action OnPause;
+    public static event Action OnSceneRestart;
 
     private void Awake()
-    {
+    {        
         ChangeState(GameStates.Start);
+    }
+
+    private void Start()
+    {
+        OnSceneLoaded?.Invoke();
     }
 
     private void OnEnable()
     {
         SnakeSegment.OnObstacleCollision += ObstacleCollision;
         SnakeController.OnValidMove += MoveStarted;
+        ButtonEventInvoker.OnRestartButtonPressed += RestartButtonPressed;
     }
 
     private void OnDisable()
     {
         SnakeSegment.OnObstacleCollision -= ObstacleCollision;
         SnakeController.OnValidMove -= MoveStarted;
+        ButtonEventInvoker.OnRestartButtonPressed -= RestartButtonPressed;
     }
 
     private void ObstacleCollision()
@@ -101,5 +110,16 @@ public class GameStateController : MonoBehaviour
             ChangeState(GameStates.PauseMenu);
             return;
         }        
+    }
+
+    private void RestartLevel()
+    {
+        isGameOver = false;
+        OnSceneRestart?.Invoke();
+    }
+
+    private void RestartButtonPressed()
+    {
+        RestartLevel();
     }
 }
