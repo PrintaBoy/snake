@@ -5,6 +5,7 @@ public class ButtonEventInvoker : MonoBehaviour
 {
     public static event Action OnContinueButtonPressed;
     public static event Action OnRestartButtonPressed;
+    public static event Action OnQuitButtonPressed;
 
     public void ContinueButtonPressed()
     {
@@ -14,5 +15,10 @@ public class ButtonEventInvoker : MonoBehaviour
     public void RestartButtonPressed()
     {
         OnRestartButtonPressed?.Invoke();
+    }
+
+    public void QuitButtonPressed()
+    {
+        OnQuitButtonPressed?.Invoke();
     }
 }

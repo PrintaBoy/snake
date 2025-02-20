@@ -1198,6 +1198,7 @@ GameObject:
   - component: {fileID: 873283514}
   - component: {fileID: 873283513}
   - component: {fileID: 873283512}
+  - component: {fileID: 873283515}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -1264,11 +1265,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 873283513}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 873283515}
+        m_TargetAssemblyTypeName: ButtonEventInvoker, Assembly-CSharp
+        m_MethodName: QuitButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &873283513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1307,6 +1320,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873283510}
   m_CullTransparentMesh: 1
+--- !u!114 &873283515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873283510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e00808a833421db4188ca3427fb69156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &915375190
 GameObject:
   m_ObjectHideFlags: 0

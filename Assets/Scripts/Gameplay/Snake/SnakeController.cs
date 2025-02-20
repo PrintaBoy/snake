@@ -56,12 +56,13 @@ public class SnakeController : MonoBehaviour
             return;
         }
 
-        OnValidMove?.Invoke();
-
-        if (GameStateController.gameState == GameStates.GameOver || GameStateController.gameState == GameStates.Start)
+        if (GameStateController.gameState == GameStates.GameOver)
         {
             return;
-        }         
+        }
+
+        OnValidMove?.Invoke();
+     
 
         MoveSnake(newDirection);
     }
