@@ -46,7 +46,6 @@ public class TickController : MonoBehaviour
 
         snakeSpeedMultiplier = GameData.gameData.snakeSpeedMultiplier;
         snakeTickLength = GameData.gameData.snakeTickLength;
-
     }
 
     private void Update()
