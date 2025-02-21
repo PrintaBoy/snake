@@ -24,14 +24,14 @@ public class GameStateController : MonoBehaviour
 
     private void OnEnable()
     {
-        SnakeSegment.OnObstacleCollision += ObstacleCollision;
+        SnakeSegment.OnSnakeSegmentCollision += ObstacleCollision;
         SnakeController.OnValidMove += MoveStarted;
         ButtonEventInvoker.OnRestartButtonPressed += RestartButtonPressed;
     }
 
     private void OnDisable()
     {
-        SnakeSegment.OnObstacleCollision -= ObstacleCollision;
+        SnakeSegment.OnSnakeSegmentCollision -= ObstacleCollision;
         SnakeController.OnValidMove -= MoveStarted;
         ButtonEventInvoker.OnRestartButtonPressed -= RestartButtonPressed;
     }
