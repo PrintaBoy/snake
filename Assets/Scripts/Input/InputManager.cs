@@ -12,14 +12,14 @@ public class InputManager : MonoBehaviour
     {
         moveInput.action.started += MoveStarted;
         pauseMenuInput.action.started += ChangePauseStarted;
-        ButtonEventInvoker.OnContinueButtonPressed += RunChangePauseCommand;
+        ButtonEventInvoker.OnResumeButtonPressed += RunChangePauseCommand;
     }
 
     private void OnDisable()
     {
         moveInput.action.started -= MoveStarted;
         pauseMenuInput.action.started -= ChangePauseStarted;
-        ButtonEventInvoker.OnContinueButtonPressed -= RunChangePauseCommand;
+        ButtonEventInvoker.OnResumeButtonPressed -= RunChangePauseCommand;
     }
 
     private void ChangePauseStarted(InputAction.CallbackContext ctx)

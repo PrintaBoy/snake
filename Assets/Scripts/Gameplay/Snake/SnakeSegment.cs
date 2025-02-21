@@ -7,7 +7,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     private IGridTile previousParent;
     [HideInInspector] public int snakeSegmentListIndex { get; private set; } // index of this snake segment in list in SnakeController
     public static event Action OnSnakeSegmentSetup;
-    public static event Action OnObstacleCollision;
+    public static event Action OnSnakeSegmentCollision;
 
     private void OnEnable()
     {
@@ -32,7 +32,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     {
         if (collisionObject == this)
         {
-            OnObstacleCollision?.Invoke();
+            OnSnakeSegmentCollision?.Invoke();
             // disable snake segment the snake bit into
         }        
     }

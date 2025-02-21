@@ -3,13 +3,13 @@ using System;
 
 public class ButtonEventInvoker : MonoBehaviour
 {
-    public static event Action OnContinueButtonPressed;
+    public static event Action OnResumeButtonPressed;
     public static event Action OnRestartButtonPressed;
     public static event Action OnQuitButtonPressed;
 
-    public void ContinueButtonPressed()
+    public void ResumeButtonPressed()
     {
-        OnContinueButtonPressed?.Invoke();
+        OnResumeButtonPressed?.Invoke();
     }
 
     public void RestartButtonPressed()

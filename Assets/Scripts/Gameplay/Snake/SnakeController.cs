@@ -51,19 +51,24 @@ public class SnakeController : MonoBehaviour
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
     {
-        if (lastCommandDirection == newDirection || lastCommandDirection == Direction.GetOppositeDirection(newDirection)) // this check prevents the snake to reverse into itself or move faster in one direction by repeatedly sending command
+        if (lastCommandDirection == newDirection) // snake cannot reverse into itself
         {
             return;
         }
 
-        if (GameStateController.gameState == GameStates.GameOver)
+        // this check will happen only on start when game is waiting for player input to start moving the snake
+        // also this check prevents the snake to move faster in one direction by repeatedly sending command
+        if (GameStateController.gameState != GameStates.Start && lastCommandDirection == Direction.GetOppositeDirection(newDirection)) 
+        {
+            return;
+        }
+
+        if (GameStateController.gameState == GameStates.GameOver) // snake cannot move when game is over
         {
             return;
         }
 
         OnValidMove?.Invoke();
-     
-
         MoveSnake(newDirection);
     }
 
