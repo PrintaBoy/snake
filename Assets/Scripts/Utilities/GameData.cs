@@ -22,6 +22,7 @@ public class GameData
     // data for snake
     public int startSnakeLength;
     public float snakeSpeedMultiplier;
+    public float snakeSpeedMaxMultiplier;
     public float snakeTickLength;
 
     // data for Apple consumable

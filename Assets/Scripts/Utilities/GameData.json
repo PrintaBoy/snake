@@ -3,12 +3,13 @@
   "levelHeight":12,
   "gridSize":1,
   "gameSpeedMultiplier":1,
-  "gameTickLength":0.4,
+  "gameTickLength":0.35,
   "currentScore":0,
   "bestScore":0,
   "startSnakeLength":3, 
-  "snakeTickLength":0.4,
+  "snakeTickLength":0.35,
   "snakeSpeedMultiplier":1,
+  "snakeSpeedMaxMultiplier":3.5,
 
   "appleAddSnakeSegmentAmount":1,
   "appleSnakeSpeedChange":0.1
