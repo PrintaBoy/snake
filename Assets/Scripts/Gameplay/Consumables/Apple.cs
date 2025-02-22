@@ -3,7 +3,16 @@ using System;
 
 public class Apple : Consumable, ISpawnable
 {
-    public static event Action OnAppleConsumed;
+    public static event Action<Apple> OnAppleConsumed;
+
+    [HideInInspector] public int addSnakeSegmentAmount;
+    [HideInInspector] public float snakeSpeedChange;
+
+    private void Awake()
+    {
+        addSnakeSegmentAmount = GameData.gameData.appleAddSnakeSegmentAmount;
+        snakeSpeedChange = GameData.gameData.appleSnakeSpeedChange;
+    }
 
     public void SetupSpawnable(IGridTile parentTile)
     {
@@ -17,7 +26,7 @@ public class Apple : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {
-            OnAppleConsumed?.Invoke();
+            OnAppleConsumed?.Invoke(this);            
             Destroy(gameObject);
         }
     }
