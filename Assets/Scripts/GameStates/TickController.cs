@@ -18,25 +18,24 @@ public class TickController : MonoBehaviour
 
     private float snakeTickTimer = 0f; // current time of snake tick
     private float snakeTickLength = 0f; // how long it takes from end of previous tick to next tick for snake
-    private float snakeSpeedMultiplier = 1f; // this value multiplies Time.deltaTime based on player actions for snake
-
+   
     public static event Action OnTick;
     public static event Action OnSnakeTick;
 
     private void OnEnable()
     {
         SnakeController.OnValidMove += ValidMove;
-        GameStateController.OnPlaying += GamePlaying;
-        GameStateController.OnGameOver += GameOver;
-        GameStateController.OnPause += GamePause;
+        GameStateController.OnPlaying += EnableTickTimer;
+        GameStateController.OnGameOver += DisableTickTimer;
+        GameStateController.OnPause += DisableTickTimer;
     }
 
     private void OnDisable()
     {
         SnakeController.OnValidMove -= ValidMove;
-        GameStateController.OnPlaying -= GamePlaying;
-        GameStateController.OnGameOver -= GameOver;
-        GameStateController.OnPause -= GamePause;
+        GameStateController.OnPlaying -= EnableTickTimer;
+        GameStateController.OnGameOver -= DisableTickTimer;
+        GameStateController.OnPause -= DisableTickTimer;
     }
 
     private void Start()
@@ -44,7 +43,6 @@ public class TickController : MonoBehaviour
         gameSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
         gameTickLength = GameData.gameData.gameTickLength;
 
-        snakeSpeedMultiplier = GameData.gameData.snakeSpeedMultiplier;
         snakeTickLength = GameData.gameData.snakeTickLength;
     }
 
@@ -62,7 +60,7 @@ public class TickController : MonoBehaviour
             ResetGameTickTimer();
         }
 
-        snakeTickTimer += Time.deltaTime * snakeSpeedMultiplier;
+        snakeTickTimer += Time.deltaTime * SnakeController.snakeSpeedMultiplier;
         if (snakeTickTimer >= snakeTickLength)
         {
             OnSnakeTick?.Invoke();
@@ -90,18 +88,13 @@ public class TickController : MonoBehaviour
         ResetSnakeTickTimer();
     }
 
-    private void GamePause()
+    private void DisableTickTimer()
     {
         ToggleTickTimer(false);
     }
 
-    private void GamePlaying()
+    private void EnableTickTimer()
     {
         ToggleTickTimer(true);
-    }
-
-    private void GameOver()
-    {
-        ToggleTickTimer(false); 
     }
 }

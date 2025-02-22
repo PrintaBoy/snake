@@ -15,9 +15,12 @@ public class SnakeController : MonoBehaviour
     public static event Action<ISpawnable> OnSnakeCollision;
     public static event Action OnValidMove;
 
+    public static float snakeSpeedMultiplier { get; private set; } // this value multiplies Time.deltaTime based on player actions for snake
+
     private void Start()
     {
-        startSnakeSegments = GameData.gameData.startSnakeLength;        
+        startSnakeSegments = GameData.gameData.startSnakeLength;
+        snakeSpeedMultiplier = GameData.gameData.snakeSpeedMultiplier;
     }
 
     private void OnEnable()
@@ -34,9 +37,11 @@ public class SnakeController : MonoBehaviour
         TickController.OnSnakeTick -= SnakeTick;
     }
 
-    private void AppleConsumed()
+    private void AppleConsumed(Apple apple)
     {
-        ModifySnakeSegmentAmount(1);
+        Debug.Log(apple.addSnakeSegmentAmount);
+        ModifySnakeSegmentAmount(apple.addSnakeSegmentAmount);
+        ModifySnakeSpeedMultiplier(apple.snakeSpeedChange);
     }
 
     private void GridMapGenerated()
@@ -142,5 +147,10 @@ public class SnakeController : MonoBehaviour
     private void CheckForCollision(IGridTile tileToCheck)
     {
         OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());        
+    }
+
+    private void ModifySnakeSpeedMultiplier(float amount)
+    {
+        snakeSpeedMultiplier += amount;
     }
 }

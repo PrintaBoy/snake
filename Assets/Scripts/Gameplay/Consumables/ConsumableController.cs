@@ -18,6 +18,12 @@ public class ConsumableController : MonoBehaviour
     }
 
     private void GenerateApple()
+    {
+        GameObject generatedConsumable = Instantiate(applePrefab);
+        SetupConsumable(generatedConsumable);
+    }
+
+    private void GenerateApple(Apple apple)
     {        
         GameObject generatedConsumable = Instantiate(applePrefab);
         SetupConsumable(generatedConsumable);
