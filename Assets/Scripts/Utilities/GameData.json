@@ -12,5 +12,6 @@
   "snakeSpeedMaxMultiplier":3.5,
 
   "appleAddSnakeSegmentAmount":1,
-  "appleSnakeSpeedChange":0.1
+  "appleSnakeSpeedChange":0.1,
+  "appleScoreValue":100
 }

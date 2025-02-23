@@ -28,6 +28,7 @@ public class GameData
     // data for Apple consumable
     public int appleAddSnakeSegmentAmount;
     public float appleSnakeSpeedChange;
+    public int appleScoreValue;
 
     private void Awake()
     {
