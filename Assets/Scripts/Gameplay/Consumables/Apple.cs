@@ -7,11 +7,13 @@ public class Apple : Consumable, ISpawnable
 
     [HideInInspector] public int addSnakeSegmentAmount;
     [HideInInspector] public float snakeSpeedChange;
+    [HideInInspector] public int scoreValue;
 
     private void Awake()
     {
         addSnakeSegmentAmount = GameData.gameData.appleAddSnakeSegmentAmount;
         snakeSpeedChange = GameData.gameData.appleSnakeSpeedChange;
+        scoreValue = GameData.gameData.appleScoreValue;
     }
 
     public void SetupSpawnable(IGridTile parentTile)
