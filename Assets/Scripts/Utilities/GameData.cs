@@ -15,7 +15,7 @@ public class GameData
     public int currentScore;
     public int bestScore;
 
-    // data for primary game tick
+    // data for Game Tick
     public float gameSpeedMultiplier;
     public float gameTickLength;
 
@@ -29,6 +29,11 @@ public class GameData
     public int appleAddSnakeSegmentAmount;
     public float appleSnakeSpeedChange;
     public int appleScoreValue;
+
+    // data for Obstacle
+    public int obstacleSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
+    public int obstacleSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks
+    public int obstacleMaxSpawnCount; // how many obstacles can be on grid at the same time
 
     private void Awake()
     {

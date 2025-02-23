@@ -13,5 +13,9 @@
 
   "appleAddSnakeSegmentAmount":1,
   "appleSnakeSpeedChange":0.1,
-  "appleScoreValue":100
+  "appleScoreValue":100,
+
+  "obstacleSpawnRate":10,
+  "obstacleSpawnDuration":5,
+  "obstacleMaxSpawnCount":3
 }

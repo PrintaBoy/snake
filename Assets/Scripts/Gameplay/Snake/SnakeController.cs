@@ -148,7 +148,8 @@ public class SnakeController : MonoBehaviour
 
     private void CheckForCollision(IGridTile tileToCheck)
     {
-        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());        
+        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());
+        Debug.Log(tileToCheck.GetSpawnedObject());
     }
 
     private void ModifySnakeSpeedMultiplier(float amount)

@@ -3,24 +3,52 @@ using System.Collections.Generic;
 
 public class ObstacleController : MonoBehaviour
 {
+    private int gameTickCounter;
+
     [SerializeField] private List<Obstacle> obstacles;
     [SerializeField] private GameObject obstaclePrefab;
 
-    private void GenerateObstacle()
+    private void OnEnable()
     {
-        // upon receiving an event from game manager, here will be generated obstacle in a grid
-        // refactor 
+        TickController.OnGameTick += GameTick;
+    }
 
-        /*gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForObstacleSpawn);
+    private void OnDisable()
+    {
+        TickController.OnGameTick -= GameTick;
+    }
 
-        if (gridTileForObstacleSpawn.HasObject())
+    private void GameTick()
+    {
+        gameTickCounter++;
+        CheckObstacleSpawnCondition();
+    }
+
+    private void CheckObstacleSpawnCondition()
+    {
+        if (gameTickCounter >= GameData.gameData.obstacleSpawnRate)
         {
-            Debug.Log(gridTileForObstacleSpawn + "has object");
+            SpawnObstacle();
+            gameTickCounter = 0;
         }
-        else
+    }
+
+    private void SpawnObstacle()
+    {
+        GameObject spawnedObstacle = Instantiate(obstaclePrefab);
+        SetupObstacle(spawnedObstacle);
+    }
+
+    private void SetupObstacle(GameObject spawnedObstacle)
+    {
+        if (spawnedObstacle.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
-            Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
-            gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
-        }*/
+            spawnable.SetupSpawnable(GridController.instance.GetEmptyTile());
+        }
+
+        if (spawnedObstacle.TryGetComponent<Obstacle>(out Obstacle obstacle)) // add generated Obstacle to list
+        {
+            obstacles.Add(obstacle);
+        }
     }
 }
