@@ -16,6 +16,6 @@
   "appleScoreValue":100,
 
   "obstacleSpawnRate":10,
-  "obstacleSpawnDuration":5,
+  "obstacleSpawnDuration":15,
   "obstacleMaxSpawnCount":3
 }

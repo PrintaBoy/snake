@@ -11,11 +11,18 @@ public class ObstacleController : MonoBehaviour
     private void OnEnable()
     {
         TickController.OnGameTick += GameTick;
+        Obstacle.OnObstacleDespawn += ObstacleDespawn;
     }
 
     private void OnDisable()
     {
         TickController.OnGameTick -= GameTick;
+        Obstacle.OnObstacleDespawn -= ObstacleDespawn;
+    }
+
+    private void ObstacleDespawn(Obstacle obstacle)
+    {
+        obstacles.Remove(obstacle);
     }
 
     private void GameTick()
@@ -26,7 +33,7 @@ public class ObstacleController : MonoBehaviour
 
     private void CheckObstacleSpawnCondition()
     {
-        if (gameTickCounter >= GameData.gameData.obstacleSpawnRate)
+        if (gameTickCounter >= GameData.gameData.obstacleSpawnRate && obstacles.Count < GameData.gameData.obstacleMaxSpawnCount)
         {
             SpawnObstacle();
             gameTickCounter = 0;
