@@ -88,4 +88,9 @@ public class GridTile : MonoBehaviour, IGridTile
 
         GridController.instance.AdjecentTilesMapGenerated();
     }
+
+    public Vector2Int GetGridTileAddress()
+    {
+        return gridAddress;
+    }
 }

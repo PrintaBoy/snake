@@ -50,7 +50,7 @@ public class ObstacleController : MonoBehaviour
     {
         if (spawnedObstacle.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
-            spawnable.SetupSpawnable(GridController.instance.GetEmptyTile());
+            spawnable.SetupSpawnable(GridController.instance.GetEmptyTileOutsideSafeZone(3));
         }
 
         if (spawnedObstacle.TryGetComponent<Obstacle>(out Obstacle obstacle)) // add generated Obstacle to list
