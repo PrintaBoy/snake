@@ -38,7 +38,7 @@ public class Rock : MonoBehaviour, ISpawnable
 
         if (gameTicksSinceSpawn >= GameData.gameData.rockSpawnDuration)
         {
-            DestroyRock();
+            DespawnRock();
         }
     }
 
@@ -74,7 +74,7 @@ public class Rock : MonoBehaviour, ISpawnable
                 OnObstacleCollision?.Invoke();
             } else
             {
-                DestroyRock();
+                DespawnRock();
             }
             
         }
@@ -85,9 +85,15 @@ public class Rock : MonoBehaviour, ISpawnable
         parent = obstacleParentTile;
     }
 
-    private void DestroyRock()
-    {
+    private void DespawnRock()
+    {   
+        // resets rock to previous state and let's parent gridTile to delete reference to this rock
+        gameTicksSinceSpawn = 0;
+        isRaised = false;
+        parent.ClearChild();
+        parent = null;
+
         OnObstacleDespawn?.Invoke(this);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

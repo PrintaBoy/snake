@@ -50,8 +50,7 @@ public class SnakeController : MonoBehaviour
     }
 
     private void AppleConsumed(Apple apple)
-    {
-        Debug.Log(apple.addSnakeSegmentAmount);
+    {        
         ModifySnakeSegmentAmount(apple.addSnakeSegmentAmount);
         ModifySnakeSpeedMultiplier(apple.snakeSpeedChange);
     }
@@ -158,7 +157,10 @@ public class SnakeController : MonoBehaviour
 
     private void CheckForCollision(IGridTile tileToCheck)
     {
-        OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());        
+        if (tileToCheck.GetSpawnedObject() != null) // this prevents calling collision event even if snake doesn't collide with anything
+        {
+            OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());            
+        }
     }
 
     private void ModifySnakeSpeedMultiplier(float amount)
