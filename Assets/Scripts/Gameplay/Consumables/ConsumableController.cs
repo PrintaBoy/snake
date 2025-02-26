@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections.Generic;
 public class ConsumableController : MonoBehaviour
 {
-    [SerializeField] private List<Consumable> consumables;
-    [SerializeField] private GameObject applePrefab;
-
+    [SerializeField] private List<Consumable> consumables;    
+    [SerializeField] private ObjectPool appleObjectPool;
+ 
     private void OnEnable()
     {
         SnakeController.OnSnakeSpawned += GenerateApple;
@@ -19,14 +19,14 @@ public class ConsumableController : MonoBehaviour
 
     private void AppleConsumed(Apple apple)
     {
-        consumables.Remove(apple);  
-        GameObject generatedConsumable = Instantiate(applePrefab);
-        SetupConsumable(generatedConsumable);
+        consumables.Remove(apple);
+        GenerateApple();
     }
 
     private void GenerateApple()
     {
-        GameObject generatedConsumable = Instantiate(applePrefab);
+        GameObject generatedConsumable = appleObjectPool.GetPooledObject();
+        generatedConsumable.SetActive(true);
         SetupConsumable(generatedConsumable);
     }
 

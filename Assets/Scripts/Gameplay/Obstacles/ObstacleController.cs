@@ -5,8 +5,8 @@ public class ObstacleController : MonoBehaviour
 {
     private int gameTickCounter;
 
-    [SerializeField] private List<Rock> obstacles;
-    [SerializeField] private GameObject obstaclePrefab;
+    [SerializeField] private List<Rock> obstacles;    
+    [SerializeField] private ObjectPool rockObjectPool;
 
     private void OnEnable()
     {
@@ -41,8 +41,9 @@ public class ObstacleController : MonoBehaviour
     }
 
     private void SpawnObstacle()
-    {
-        GameObject spawnedObstacle = Instantiate(obstaclePrefab);
+    {        
+        GameObject spawnedObstacle = rockObjectPool.GetPooledObject();
+        spawnedObstacle.SetActive(true);
         SetupObstacle(spawnedObstacle);
     }
 

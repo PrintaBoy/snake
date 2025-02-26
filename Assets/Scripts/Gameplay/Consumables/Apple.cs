@@ -27,14 +27,21 @@ public class Apple : Consumable, ISpawnable
     public override void Collision(ISpawnable collisionObject)
     {
         if (collisionObject == this)
-        {
-            OnAppleConsumed?.Invoke(this);            
-            Destroy(gameObject);
+        {            
+            DespawnApple();
         }
     }
 
     public void ParentToTile(GridTile appleParentTile)
     {
         parent = appleParentTile;
+    }
+
+    private void DespawnApple()
+    {        
+        parent = null;
+        
+        OnAppleConsumed?.Invoke(this);
+        gameObject.SetActive(false);
     }
 }
