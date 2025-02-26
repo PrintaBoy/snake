@@ -22,6 +22,7 @@ public class ScoreController : MonoBehaviour
     {
         scoreCurrent = 0;
         applesCollected = 0;
+        OnScoreUpdated?.Invoke();
     }
 
     private void AppleConsumed(Apple apple)
