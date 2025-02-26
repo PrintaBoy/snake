@@ -13,5 +13,7 @@ public interface IGridTile
     void BecomeParent(ISpawnable child);
     void ClearChild();
 
+    Vector2Int GetGridTileAddress();
+
     ISpawnable GetSpawnedObject();
 }

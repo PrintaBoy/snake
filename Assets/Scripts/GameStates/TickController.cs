@@ -19,7 +19,7 @@ public class TickController : MonoBehaviour
     private float snakeTickTimer = 0f; // current time of snake tick
     private float snakeTickLength = 0f; // how long it takes from end of previous tick to next tick for snake
    
-    public static event Action OnTick;
+    public static event Action OnGameTick;
     public static event Action OnSnakeTick;
 
     private void OnEnable()
@@ -56,7 +56,7 @@ public class TickController : MonoBehaviour
         gameTickTimer += Time.deltaTime * gameSpeedMultiplier;
         if (gameTickTimer >= gameTickLength)
         {
-            OnTick?.Invoke();
+            OnGameTick?.Invoke();
             ResetGameTickTimer();
         }
 

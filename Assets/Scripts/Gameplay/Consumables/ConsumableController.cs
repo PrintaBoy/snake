@@ -8,23 +8,24 @@ public class ConsumableController : MonoBehaviour
     private void OnEnable()
     {
         SnakeController.OnSnakeSpawned += GenerateApple;
-        Apple.OnAppleConsumed += GenerateApple;
+        Apple.OnAppleConsumed += AppleConsumed;
     }
 
     private void OnDisable()
     {
         SnakeController.OnSnakeSpawned -= GenerateApple;
-        Apple.OnAppleConsumed -= GenerateApple;
+        Apple.OnAppleConsumed -= AppleConsumed;
     }
 
-    private void GenerateApple()
+    private void AppleConsumed(Apple apple)
     {
+        consumables.Remove(apple);  
         GameObject generatedConsumable = Instantiate(applePrefab);
         SetupConsumable(generatedConsumable);
     }
 
-    private void GenerateApple(Apple apple)
-    {        
+    private void GenerateApple()
+    {
         GameObject generatedConsumable = Instantiate(applePrefab);
         SetupConsumable(generatedConsumable);
     }

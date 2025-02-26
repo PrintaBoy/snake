@@ -4,6 +4,8 @@ using System;
 
 public class SnakeController : MonoBehaviour
 {
+    public static SnakeController instance; // Singleton
+
     [SerializeField] private List<SnakeSegment> snakeSegments;
     [SerializeField] private GameObject snakeSegmentPrefab;
 
@@ -17,6 +19,14 @@ public class SnakeController : MonoBehaviour
 
     public static float snakeSpeedMultiplier { get; private set; }  // this value multiplies Time.deltaTime based on player actions for snake
     private float snakeSpeedMaxMultiplier;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -158,5 +168,11 @@ public class SnakeController : MonoBehaviour
 
         float snakeSpeedMinMultiplier = 0.1f; // snake cannot go slower than this value
         snakeSpeedMultiplier = Mathf.Max(snakeSpeedMultiplier, snakeSpeedMinMultiplier);
+    }
+
+    public IGridTile GetSnakeHeadTile()
+    {
+        IGridTile snakeHeadTile = snakeSegments[0].GetParent();
+        return snakeHeadTile;
     }
 }

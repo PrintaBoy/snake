@@ -3,24 +3,59 @@ using System.Collections.Generic;
 
 public class ObstacleController : MonoBehaviour
 {
-    [SerializeField] private List<Obstacle> obstacles;
+    private int gameTickCounter;
+
+    [SerializeField] private List<Rock> obstacles;
     [SerializeField] private GameObject obstaclePrefab;
 
-    private void GenerateObstacle()
+    private void OnEnable()
     {
-        // upon receiving an event from game manager, here will be generated obstacle in a grid
-        // refactor 
+        TickController.OnGameTick += GameTick;
+        Rock.OnObstacleDespawn += ObstacleDespawn;
+    }
 
-        /*gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile gridTileForObstacleSpawn);
+    private void OnDisable()
+    {
+        TickController.OnGameTick -= GameTick;
+        Rock.OnObstacleDespawn -= ObstacleDespawn;
+    }
 
-        if (gridTileForObstacleSpawn.HasObject())
+    private void ObstacleDespawn(Rock obstacle)
+    {
+        obstacles.Remove(obstacle);
+    }
+
+    private void GameTick()
+    {
+        gameTickCounter++;
+        CheckObstacleSpawnCondition();
+    }
+
+    private void CheckObstacleSpawnCondition()
+    {
+        if (gameTickCounter >= GameData.gameData.rockSpawnRate && obstacles.Count < GameData.gameData.rockMaxSpawnCount)
         {
-            Debug.Log(gridTileForObstacleSpawn + "has object");
+            SpawnObstacle();
+            gameTickCounter = 0;
         }
-        else
+    }
+
+    private void SpawnObstacle()
+    {
+        GameObject spawnedObstacle = Instantiate(obstaclePrefab);
+        SetupObstacle(spawnedObstacle);
+    }
+
+    private void SetupObstacle(GameObject spawnedObstacle)
+    {
+        if (spawnedObstacle.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
-            Debug.Log(gridTileForObstacleSpawn + "doesn't have object");
-            gridTileForObstacleSpawn.GenerateObstacle(obstaclePrefabs[0]);
-        }*/
+            spawnable.SetupSpawnable(GridController.instance.GetEmptyTileOutsideSafeZone(3));
+        }
+
+        if (spawnedObstacle.TryGetComponent<Rock>(out Rock obstacle)) // add generated Obstacle to list
+        {
+            obstacles.Add(obstacle);
+        }
     }
 }
