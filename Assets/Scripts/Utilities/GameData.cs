@@ -31,9 +31,10 @@ public class GameData
     public int appleScoreValue;
 
     // data for Obstacle
-    public int obstacleSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
-    public int obstacleSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks
-    public int obstacleMaxSpawnCount; // how many obstacles can be on grid at the same time
+    public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
+    public int rockSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks
+    public int rockMaxSpawnCount; // how many obstacles can be on grid at the same time
+    public int rockGroundStateDuration; // how long before rock is raised from the ground and becomes deadly on collision
 
     private void Awake()
     {

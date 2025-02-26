@@ -5,22 +5,22 @@ public class ObstacleController : MonoBehaviour
 {
     private int gameTickCounter;
 
-    [SerializeField] private List<Obstacle> obstacles;
+    [SerializeField] private List<Rock> obstacles;
     [SerializeField] private GameObject obstaclePrefab;
 
     private void OnEnable()
     {
         TickController.OnGameTick += GameTick;
-        Obstacle.OnObstacleDespawn += ObstacleDespawn;
+        Rock.OnObstacleDespawn += ObstacleDespawn;
     }
 
     private void OnDisable()
     {
         TickController.OnGameTick -= GameTick;
-        Obstacle.OnObstacleDespawn -= ObstacleDespawn;
+        Rock.OnObstacleDespawn -= ObstacleDespawn;
     }
 
-    private void ObstacleDespawn(Obstacle obstacle)
+    private void ObstacleDespawn(Rock obstacle)
     {
         obstacles.Remove(obstacle);
     }
@@ -33,7 +33,7 @@ public class ObstacleController : MonoBehaviour
 
     private void CheckObstacleSpawnCondition()
     {
-        if (gameTickCounter >= GameData.gameData.obstacleSpawnRate && obstacles.Count < GameData.gameData.obstacleMaxSpawnCount)
+        if (gameTickCounter >= GameData.gameData.rockSpawnRate && obstacles.Count < GameData.gameData.rockMaxSpawnCount)
         {
             SpawnObstacle();
             gameTickCounter = 0;
@@ -53,7 +53,7 @@ public class ObstacleController : MonoBehaviour
             spawnable.SetupSpawnable(GridController.instance.GetEmptyTileOutsideSafeZone(3));
         }
 
-        if (spawnedObstacle.TryGetComponent<Obstacle>(out Obstacle obstacle)) // add generated Obstacle to list
+        if (spawnedObstacle.TryGetComponent<Rock>(out Rock obstacle)) // add generated Obstacle to list
         {
             obstacles.Add(obstacle);
         }

@@ -15,7 +15,8 @@
   "appleSnakeSpeedChange":0.1,
   "appleScoreValue":100,
 
-  "obstacleSpawnRate":10,
-  "obstacleSpawnDuration":15,
-  "obstacleMaxSpawnCount":3
+  "rockSpawnRate":7,
+  "rockSpawnDuration":15,
+  "rockMaxSpawnCount":3,
+  "rockGroundStateDuration":4
 }
