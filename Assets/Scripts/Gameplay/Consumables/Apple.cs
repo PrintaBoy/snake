@@ -5,10 +5,8 @@ public class Apple : Consumable, ISpawnable
 {
     public static event Action<Apple> OnAppleConsumed;
 
-    [SerializeField] private GameObject consumeParticle;
     [HideInInspector] public int addSnakeSegmentAmount;
     [HideInInspector] public float snakeSpeedChange;
-    [HideInInspector] public int scoreValue;
 
     private void Awake()
     {
@@ -29,7 +27,7 @@ public class Apple : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {            
-            DespawnApple();
+            DespawnConsumable();
         }
     }
 
@@ -38,12 +36,9 @@ public class Apple : Consumable, ISpawnable
         parent = appleParentTile;
     }
 
-    private void DespawnApple()
+    public override void DespawnConsumable()
     {
-        Instantiate(consumeParticle, gameObject.transform.position, gameObject.transform.rotation); // spawn consume particle
-        parent = null;        
-        
         OnAppleConsumed?.Invoke(this);
-        gameObject.SetActive(false);
+        base.DespawnConsumable();    
     }
 }
