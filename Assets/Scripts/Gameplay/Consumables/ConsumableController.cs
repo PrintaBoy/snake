@@ -4,16 +4,20 @@ public class ConsumableController : MonoBehaviour
 {
     [SerializeField] private List<Consumable> consumables;    
     [SerializeField] private ObjectPool appleObjectPool;
- 
+    [SerializeField] private ObjectPool pumpkinObjectPool;
+
     private void OnEnable()
     {
         SnakeController.OnSnakeSpawned += GenerateApple;
+        SnakeController.OnSnakeSpawned += GeneratePumpkin;
         Apple.OnAppleConsumed += AppleConsumed;
+        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
     }
 
     private void OnDisable()
     {
         SnakeController.OnSnakeSpawned -= GenerateApple;
+        SnakeController.OnSnakeSpawned -= GeneratePumpkin;
         Apple.OnAppleConsumed -= AppleConsumed;
     }
 
@@ -21,6 +25,19 @@ public class ConsumableController : MonoBehaviour
     {
         consumables.Remove(apple);
         GenerateApple();
+    }
+
+    private void PumpkinConsumed(Pumpkin pumpkin)
+    {
+        consumables.Remove(pumpkin);
+        GeneratePumpkin();
+    }
+
+    private void GeneratePumpkin()
+    {
+        GameObject generatedConsumable = pumpkinObjectPool.GetPooledObject();
+        generatedConsumable.SetActive(true);
+        SetupConsumable(generatedConsumable);
     }
 
     private void GenerateApple()

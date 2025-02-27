@@ -4,36 +4,46 @@ using System;
 public class ScoreController : MonoBehaviour
 {
     public static int scoreCurrent {  get; private set; }
-    public static int applesCollected { get; private set; }
+    public static int applesConsumed { get; private set; }
+    public static int pumpkinsConsumed { get; private set; }
 
     public static event Action OnScoreUpdated;
 
     private void OnEnable()
     {
         Apple.OnAppleConsumed += AppleConsumed;
+        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
     }
 
     private void OnDisable()
     {
         Apple.OnAppleConsumed -= AppleConsumed;
+        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
     }
 
     private void Awake()
     {
         scoreCurrent = 0;
-        applesCollected = 0;
+        applesConsumed = 0;
+        pumpkinsConsumed = 0;
         OnScoreUpdated?.Invoke();
+    }
+
+    private void PumpkinConsumed(Pumpkin pumpkin)
+    {
+        pumpkinsConsumed++;
+        ModifyScoreValue(pumpkin.scoreValue);        
     }
 
     private void AppleConsumed(Apple apple)
     {
-        ModifyScoreValue(apple.scoreValue);
+        applesConsumed++;
+        ModifyScoreValue(apple.scoreValue);        
     }
 
     public void ModifyScoreValue(int amount)
     {
         scoreCurrent += amount;
-        applesCollected++;
         OnScoreUpdated?.Invoke();
     }
 }

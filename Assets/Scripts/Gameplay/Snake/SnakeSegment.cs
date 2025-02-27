@@ -8,6 +8,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     [HideInInspector] public int snakeSegmentListIndex { get; private set; } // index of this snake segment in list in SnakeController
     public static event Action OnSnakeSegmentSetup;
     public static event Action OnSnakeSegmentCollision;
+    public static event Action OnSnakeSegmentDestroy;
 
     private void OnEnable()
     {
@@ -63,5 +64,12 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     public IGridTile GetPreviousParent()
     {
         return previousParent;
+    }
+
+    public void DeleteSnakeSegment()
+    {
+        parent.ClearChild();
+        Destroy(gameObject);
+        OnSnakeSegmentDestroy?.Invoke();    
     }
 }
