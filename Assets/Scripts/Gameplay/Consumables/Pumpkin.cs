@@ -8,13 +8,38 @@ public class Pumpkin : Consumable, ISpawnable
     /// </summary>
 
     public static event Action<Pumpkin> OnPumpkinConsumed;
+    public static event Action<Pumpkin> OnPumpkinDespawn;
+    private int gameTicksSinceSpawn = 0;
 
     [HideInInspector] public int removeSnakeSegmentAmount;
 
     private void Awake()
     {
         removeSnakeSegmentAmount = -GameData.gameData.pumpkinRemoveSnakeSegmentAmount;
-        scoreValue = GameData.gameData.pumpkinScoreValue;
+        scoreValue = GameData.gameData.pumpkinScoreValue;        
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        TickController.OnGameTick += GameTick;
+    }
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        TickController.OnGameTick -= GameTick;
+    }
+
+    private void GameTick()
+    {
+        gameTicksSinceSpawn++;
+
+        if (gameTicksSinceSpawn >= GameData.gameData.pumpkinSpawnDuration)
+        {
+            OnPumpkinDespawn?.Invoke(this);
+            parent.ClearChild(); // when pumpkin is not consumed by apple the parent tile needs to clear it's child
+            DespawnConsumable();
+        }
     }
 
     public void SetupSpawnable(IGridTile parentTile)
@@ -29,6 +54,7 @@ public class Pumpkin : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {
+            OnPumpkinConsumed?.Invoke(this);
             DespawnConsumable();
         }
     }
@@ -40,7 +66,7 @@ public class Pumpkin : Consumable, ISpawnable
 
     public override void DespawnConsumable()
     {
-        OnPumpkinConsumed?.Invoke(this);
         base.DespawnConsumable();
+        gameTicksSinceSpawn = 0;        
     }
 }

@@ -17,6 +17,8 @@
 
   "pumpkinRemoveSnakeSegmentAmount":1,
   "pumpkinScoreValue":200,
+  "pumpkinSpawnRate":20,
+  "pumpkinSpawnDuration":6,
 
   "rockSpawnRate":7,
   "rockSpawnDuration":15,

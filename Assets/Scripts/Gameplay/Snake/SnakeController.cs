@@ -165,9 +165,12 @@ public class SnakeController : MonoBehaviour
         }
         else // removes snake segments
         {
-            // do multiple deletions
-            snakeSegments[snakeSegments.Count - 1].DeleteSnakeSegment();
-            snakeSegments.RemoveAt(snakeSegments.Count - 1);
+            if (snakeSegments.Count > 3)
+            {
+                // do multiple deletions
+                snakeSegments[snakeSegments.Count - 1].DeleteSnakeSegment();
+                snakeSegments.RemoveAt(snakeSegments.Count - 1);
+            }            
         }
     }
 

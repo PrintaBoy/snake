@@ -5,44 +5,60 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private List<Consumable> consumables;    
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
+    private int pumpkinTickCounter = 0;
 
     private void OnEnable()
     {
-        SnakeController.OnSnakeSpawned += GenerateApple;
-        SnakeController.OnSnakeSpawned += GeneratePumpkin;
+        SnakeController.OnSnakeSpawned += SnakeSpawned;        
         Apple.OnAppleConsumed += AppleConsumed;
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
+        Pumpkin.OnPumpkinDespawn += PumpkinConsumed;
+        TickController.OnGameTick += GameTick;
     }
 
     private void OnDisable()
     {
-        SnakeController.OnSnakeSpawned -= GenerateApple;
-        SnakeController.OnSnakeSpawned -= GeneratePumpkin;
+        SnakeController.OnSnakeSpawned -= SnakeSpawned;        
         Apple.OnAppleConsumed -= AppleConsumed;
+        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
+        Pumpkin.OnPumpkinDespawn -= PumpkinConsumed;
+        TickController.OnGameTick -= GameTick;
+    }
+
+    private void GameTick()
+    {
+        pumpkinTickCounter++;
+        CheckConsumableSpawnConditions();
+    }
+
+    private void CheckConsumableSpawnConditions()
+    {
+        if (pumpkinTickCounter >= GameData.gameData.pumpkinSpawnRate)
+        {
+            GenerateConsumable(pumpkinObjectPool);
+            pumpkinTickCounter = 0;
+        }
     }
 
     private void AppleConsumed(Apple apple)
     {
         consumables.Remove(apple);
-        GenerateApple();
+        GenerateConsumable(appleObjectPool);
     }
 
     private void PumpkinConsumed(Pumpkin pumpkin)
     {
-        consumables.Remove(pumpkin);
-        GeneratePumpkin();
+        consumables.Remove(pumpkin);        
     }
 
-    private void GeneratePumpkin()
+    private void SnakeSpawned()
     {
-        GameObject generatedConsumable = pumpkinObjectPool.GetPooledObject();
-        generatedConsumable.SetActive(true);
-        SetupConsumable(generatedConsumable);
+        GenerateConsumable(appleObjectPool);
     }
 
-    private void GenerateApple()
+    private void GenerateConsumable(ObjectPool objectPool)
     {
-        GameObject generatedConsumable = appleObjectPool.GetPooledObject();
+        GameObject generatedConsumable = objectPool.GetPooledObject();
         generatedConsumable.SetActive(true);
         SetupConsumable(generatedConsumable);
     }

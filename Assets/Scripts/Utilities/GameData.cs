@@ -34,6 +34,8 @@ public class GameData
 
     public int pumpkinRemoveSnakeSegmentAmount;
     public int pumpkinScoreValue;
+    public int pumpkinSpawnRate;
+    public int pumpkinSpawnDuration;
 
     // data for Obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks

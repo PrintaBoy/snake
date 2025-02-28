@@ -7,12 +7,12 @@ public class Consumable : MonoBehaviour
     [SerializeField] private GameObject consumeParticle;
     [HideInInspector] public int scoreValue;
 
-    public void OnEnable()
+    public virtual void OnEnable()
     {
         SnakeController.OnSnakeCollision += Collision;
     }
 
-    public void OnDisable()
+    public virtual void OnDisable()
     {
         SnakeController.OnSnakeCollision -= Collision;
     }
