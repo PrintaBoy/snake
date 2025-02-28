@@ -30,6 +30,13 @@ public class GameData
     public float appleSnakeSpeedChange;
     public int appleScoreValue;
 
+    // data for Pumpkin consumable
+
+    public int pumpkinRemoveSnakeSegmentAmount;
+    public int pumpkinScoreValue;
+    public int pumpkinSpawnRate;
+    public int pumpkinSpawnDuration;
+
     // data for Obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
     public int rockSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks

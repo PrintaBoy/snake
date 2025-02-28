@@ -15,6 +15,11 @@
   "appleSnakeSpeedChange":0.1,
   "appleScoreValue":100,
 
+  "pumpkinRemoveSnakeSegmentAmount":1,
+  "pumpkinScoreValue":200,
+  "pumpkinSpawnRate":20,
+  "pumpkinSpawnDuration":6,
+
   "rockSpawnRate":7,
   "rockSpawnDuration":15,
   "rockMaxSpawnCount":3,

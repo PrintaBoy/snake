@@ -39,6 +39,7 @@ public class SnakeController : MonoBehaviour
     {
         GridController.OnGridMapGenerated += GridMapGenerated;
         Apple.OnAppleConsumed += AppleConsumed;
+        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
         TickController.OnSnakeTick += SnakeTick;
     }
 
@@ -46,6 +47,7 @@ public class SnakeController : MonoBehaviour
     {
         GridController.OnGridMapGenerated -= GridMapGenerated;
         Apple.OnAppleConsumed -= AppleConsumed;
+        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
         TickController.OnSnakeTick -= SnakeTick;
     }
 
@@ -53,6 +55,11 @@ public class SnakeController : MonoBehaviour
     {        
         ModifySnakeSegmentAmount(apple.addSnakeSegmentAmount);
         ModifySnakeSpeedMultiplier(apple.snakeSpeedChange);
+    }
+
+    private void PumpkinConsumed (Pumpkin pumpkin)
+    {
+        ModifySnakeSegmentAmount(pumpkin.removeSnakeSegmentAmount);
     }
 
     private void GridMapGenerated()
@@ -148,10 +155,22 @@ public class SnakeController : MonoBehaviour
 
     private void ModifySnakeSegmentAmount(int segmentAmount)
     {
-        for (int i = 0; i < segmentAmount; i++)
+        if (segmentAmount > 0) // adds snake segment
         {
-            IGridTile emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
-            InstantiateSnakeSegment(emptyTile);
+            for (int i = 0; i < segmentAmount; i++)
+            {
+                IGridTile emptyTile = snakeSegments[snakeSegments.Count - 1].GetPreviousParent();
+                InstantiateSnakeSegment(emptyTile);
+            }
+        }
+        else // removes snake segments
+        {
+            if (snakeSegments.Count > 3)
+            {
+                // do multiple deletions
+                snakeSegments[snakeSegments.Count - 1].DeleteSnakeSegment();
+                snakeSegments.RemoveAt(snakeSegments.Count - 1);
+            }            
         }
     }
 
