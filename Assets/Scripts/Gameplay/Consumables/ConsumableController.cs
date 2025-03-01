@@ -5,6 +5,7 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private List<Consumable> consumables;    
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
+    [SerializeField] private ObjectPool mushroomObjectPool;
     private int pumpkinTickCounter = 0;
 
     private void OnEnable()
@@ -54,6 +55,7 @@ public class ConsumableController : MonoBehaviour
     private void SnakeSpawned()
     {
         GenerateConsumable(appleObjectPool);
+        GenerateConsumable(mushroomObjectPool);
     }
 
     private void GenerateConsumable(ObjectPool objectPool)

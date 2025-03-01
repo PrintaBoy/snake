@@ -40,6 +40,7 @@ public class SnakeController : MonoBehaviour
         GridController.OnGridMapGenerated += GridMapGenerated;
         Apple.OnAppleConsumed += AppleConsumed;
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
+        Mushroom.OnMushroomConsumed += MushroomConsumed;
         TickController.OnSnakeTick += SnakeTick;
     }
 
@@ -48,7 +49,13 @@ public class SnakeController : MonoBehaviour
         GridController.OnGridMapGenerated -= GridMapGenerated;
         Apple.OnAppleConsumed -= AppleConsumed;
         Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
+        Mushroom.OnMushroomConsumed -= MushroomConsumed;
         TickController.OnSnakeTick -= SnakeTick;
+    }
+
+    private void MushroomConsumed(Mushroom mushroom)
+    {
+        ReverseSnake();
     }
 
     private void AppleConsumed(Apple apple)
@@ -195,5 +202,16 @@ public class SnakeController : MonoBehaviour
     {
         IGridTile snakeHeadTile = snakeSegments[0].GetParent();
         return snakeHeadTile;
+    }
+
+    private void ReverseSnake()
+    {        
+        snakeSegments.Reverse();
+        for (int i = 0; i < snakeSegments.Count; i++)
+        {
+            snakeSegments[i].SetListIndex(i);
+        }
+
+        //MoveSnake(Direction.GetOppositeDirection(lastCommandDirection));
     }
 }

@@ -20,6 +20,8 @@
   "pumpkinSpawnRate":20,
   "pumpkinSpawnDuration":6,
 
+  "mushroomScoreValue":1000,
+
   "rockSpawnRate":7,
   "rockSpawnDuration":15,
   "rockMaxSpawnCount":3,
