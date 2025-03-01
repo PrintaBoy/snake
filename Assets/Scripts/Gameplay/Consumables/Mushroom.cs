@@ -8,10 +8,24 @@ public class Mushroom : Consumable, ISpawnable
     /// </summary>
 
     public static event Action<Mushroom> OnMushroomConsumed;
+    public static event Action<Mushroom> OnMushroomDespawn;
+    private int gameTicksSinceSpawn = 0;
 
     private void Awake()
     {
         scoreValue = GameData.gameData.mushroomScoreValue;
+    }
+
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        TickController.OnGameTick += GameTick;
+    }
+
+    public override void OnDisable()
+    {
+        base.OnDisable();
+        TickController.OnGameTick -= GameTick;        
     }
 
     public void SetupSpawnable(IGridTile parentTile)
@@ -22,10 +36,23 @@ public class Mushroom : Consumable, ISpawnable
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
+    private void GameTick()
+    {
+        gameTicksSinceSpawn++;
+
+        if (gameTicksSinceSpawn >= GameData.gameData.mushroomSpawnDuration) // checks if it's time to despawn a mushroom
+        {
+            OnMushroomDespawn?.Invoke(this);
+            parent.ClearChild();
+            DespawnConsumable();
+        }
+    }
+
     public override void Collision(ISpawnable collisionObject)
     {
         if (collisionObject == this)
         {
+            OnMushroomConsumed?.Invoke(this);
             DespawnConsumable();
         }
     }
@@ -36,8 +63,8 @@ public class Mushroom : Consumable, ISpawnable
     }
 
     public override void DespawnConsumable()
-    {
-        OnMushroomConsumed?.Invoke(this);
+    {        
         base.DespawnConsumable();
+        gameTicksSinceSpawn = 0;
     }
 }

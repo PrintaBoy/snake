@@ -40,6 +40,8 @@ public class GameData
     // data for Mushroom consumable
 
     public int mushroomScoreValue;
+    public int mushroomSpawnRate;
+    public int mushroomSpawnDuration;
 
     // data for Rock obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks

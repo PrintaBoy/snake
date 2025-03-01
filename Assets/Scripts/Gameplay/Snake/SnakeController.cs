@@ -54,7 +54,7 @@ public class SnakeController : MonoBehaviour
     }
 
     private void MushroomConsumed(Mushroom mushroom)
-    {
+    {        
         ReverseSnake();
     }
 
@@ -109,17 +109,20 @@ public class SnakeController : MonoBehaviour
             return;
         }
 
-        IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(moveDirection);
+        IGridTile adjecentTileInDirection = snakeSegments[0].GetParent().GetAdjecentTile(moveDirection); // gets next tile a snake is moving into
+        ISpawnable collisionObject = adjecentTileInDirection.GetSpawnedObject(); // returns collision object on next tile snake is moving into
 
-        lastCommandDirection = moveDirection;         
-
-        CheckForCollision(adjecentTileInDirection);
-        
-        snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);
+        lastCommandDirection = moveDirection;
+        snakeSegments[0].MoveSnakeSegment(adjecentTileInDirection);        
 
         for (int i = 1; i < snakeSegments.Count; i++)
         {            
             snakeSegments[i].MoveSnakeSegment(snakeSegments[i - 1].GetPreviousParent());            
+        }
+
+        if (collisionObject != null)
+        {
+            OnSnakeCollision?.Invoke(collisionObject);
         }
     }
 
@@ -181,14 +184,6 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    private void CheckForCollision(IGridTile tileToCheck)
-    {
-        if (tileToCheck.GetSpawnedObject() != null) // this prevents calling collision event even if snake doesn't collide with anything
-        {
-            OnSnakeCollision?.Invoke(tileToCheck.GetSpawnedObject());            
-        }
-    }
-
     private void ModifySnakeSpeedMultiplier(float amount)
     {
         snakeSpeedMultiplier += amount;
@@ -207,11 +202,12 @@ public class SnakeController : MonoBehaviour
     private void ReverseSnake()
     {        
         snakeSegments.Reverse();
+
         for (int i = 0; i < snakeSegments.Count; i++)
         {
             snakeSegments[i].SetListIndex(i);
         }
 
-        //MoveSnake(Direction.GetOppositeDirection(lastCommandDirection));
+        lastCommandDirection = Direction.GetOppositeDirection(lastCommandDirection);
     }
 }

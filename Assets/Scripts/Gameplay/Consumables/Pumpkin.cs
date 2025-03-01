@@ -34,7 +34,7 @@ public class Pumpkin : Consumable, ISpawnable
     {
         gameTicksSinceSpawn++;
 
-        if (gameTicksSinceSpawn >= GameData.gameData.pumpkinSpawnDuration)
+        if (gameTicksSinceSpawn >= GameData.gameData.pumpkinSpawnDuration) // checks if it's time to despawn a pumpkin
         {
             OnPumpkinDespawn?.Invoke(this);
             parent.ClearChild(); // when pumpkin is not consumed by apple the parent tile needs to clear it's child

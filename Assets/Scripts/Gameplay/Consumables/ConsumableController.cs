@@ -6,7 +6,10 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
-    private int pumpkinTickCounter = 0;
+
+    // keeps track of how many ticks have passed to spawn consumables
+    private int pumpkinTickCounter = 0; 
+    private int mushroomTickCounter = 0;
 
     private void OnEnable()
     {
@@ -14,6 +17,8 @@ public class ConsumableController : MonoBehaviour
         Apple.OnAppleConsumed += AppleConsumed;
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
         Pumpkin.OnPumpkinDespawn += PumpkinConsumed;
+        Mushroom.OnMushroomConsumed += MushrooomConsumed;
+        Mushroom.OnMushroomDespawn += MushrooomConsumed;
         TickController.OnGameTick += GameTick;
     }
 
@@ -23,12 +28,15 @@ public class ConsumableController : MonoBehaviour
         Apple.OnAppleConsumed -= AppleConsumed;
         Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
         Pumpkin.OnPumpkinDespawn -= PumpkinConsumed;
+        Mushroom.OnMushroomConsumed -= MushrooomConsumed;
+        Mushroom.OnMushroomDespawn -= MushrooomConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
     private void GameTick()
     {
         pumpkinTickCounter++;
+        mushroomTickCounter++;
         CheckConsumableSpawnConditions();
     }
 
@@ -38,6 +46,12 @@ public class ConsumableController : MonoBehaviour
         {
             GenerateConsumable(pumpkinObjectPool);
             pumpkinTickCounter = 0;
+        }
+
+        if (mushroomTickCounter >= GameData.gameData.mushroomSpawnRate)
+        {
+            GenerateConsumable(mushroomObjectPool);
+            mushroomTickCounter = 0;
         }
     }
 
@@ -52,10 +66,14 @@ public class ConsumableController : MonoBehaviour
         consumables.Remove(pumpkin);        
     }
 
+    private void MushrooomConsumed(Mushroom mushroom)
+    {
+        consumables.Remove(mushroom);        
+    }
+
     private void SnakeSpawned()
     {
-        GenerateConsumable(appleObjectPool);
-        GenerateConsumable(mushroomObjectPool);
+        GenerateConsumable(appleObjectPool);        
     }
 
     private void GenerateConsumable(ObjectPool objectPool)

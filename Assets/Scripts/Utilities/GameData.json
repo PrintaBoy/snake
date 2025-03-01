@@ -17,10 +17,12 @@
 
   "pumpkinRemoveSnakeSegmentAmount":1,
   "pumpkinScoreValue":200,
-  "pumpkinSpawnRate":20,
+  "pumpkinSpawnRate":30,
   "pumpkinSpawnDuration":6,
 
   "mushroomScoreValue":1000,
+  "mushroomSpawnRate": 45,
+  "mushroomSpawnDuration":10,
 
   "rockSpawnRate":7,
   "rockSpawnDuration":15,
