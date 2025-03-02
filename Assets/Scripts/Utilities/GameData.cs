@@ -37,7 +37,13 @@ public class GameData
     public int pumpkinSpawnRate;
     public int pumpkinSpawnDuration;
 
-    // data for Obstacle
+    // data for Mushroom consumable
+
+    public int mushroomScoreValue;
+    public int mushroomSpawnRate;
+    public int mushroomSpawnDuration;
+
+    // data for Rock obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
     public int rockSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks
     public int rockMaxSpawnCount; // how many obstacles can be on grid at the same time

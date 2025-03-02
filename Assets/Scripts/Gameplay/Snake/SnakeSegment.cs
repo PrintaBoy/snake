@@ -41,6 +41,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
     public void SetListIndex(int listIndex)
     {
         snakeSegmentListIndex = listIndex;
+        OnSnakeSegmentSetup?.Invoke();
     }
 
     public void MoveSnakeSegment(IGridTile tileToMoveTo)

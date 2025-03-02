@@ -6,6 +6,7 @@ public class ScoreController : MonoBehaviour
     public static int scoreCurrent {  get; private set; }
     public static int applesConsumed { get; private set; }
     public static int pumpkinsConsumed { get; private set; }
+    public static int mushroomConsumed { get; private set; }
 
     public static event Action OnScoreUpdated;
 
@@ -13,12 +14,14 @@ public class ScoreController : MonoBehaviour
     {
         Apple.OnAppleConsumed += AppleConsumed;
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
+        Mushroom.OnMushroomConsumed += MushroomConsumed;
     }
 
     private void OnDisable()
     {
         Apple.OnAppleConsumed -= AppleConsumed;
         Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
+        Mushroom.OnMushroomConsumed -= MushroomConsumed;
     }
 
     private void Awake()
@@ -26,6 +29,7 @@ public class ScoreController : MonoBehaviour
         scoreCurrent = 0;
         applesConsumed = 0;
         pumpkinsConsumed = 0;
+        mushroomConsumed = 0;
         OnScoreUpdated?.Invoke();
     }
 
@@ -39,6 +43,12 @@ public class ScoreController : MonoBehaviour
     {
         applesConsumed++;
         ModifyScoreValue(apple.scoreValue);        
+    }
+
+    private void MushroomConsumed(Mushroom mushroom)
+    {
+        mushroomConsumed++;
+        ModifyScoreValue(mushroom.scoreValue);  
     }
 
     public void ModifyScoreValue(int amount)
