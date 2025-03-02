@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.EventSystems;
 
 public class SnakeController : MonoBehaviour
 {
@@ -208,7 +209,9 @@ public class SnakeController : MonoBehaviour
     }
 
     private void ReverseSnake()
-    {        
+    {       
+        Directions lastSnakeSegmentLastMoveDirection = snakeSegments[snakeSegments.Count - 1].GetLastMoveDirection();
+
         snakeSegments.Reverse();
 
         for (int i = 0; i < snakeSegments.Count; i++)
@@ -216,6 +219,6 @@ public class SnakeController : MonoBehaviour
             snakeSegments[i].SetListIndex(i);
         }
 
-        lastCommandDirection = Direction.GetOppositeDirection(lastCommandDirection);
+        lastCommandDirection = lastSnakeSegmentLastMoveDirection;
     }
 }

@@ -67,6 +67,36 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         return previousParent;
     }
 
+    public Directions GetLastMoveDirection()
+    {
+        Directions lastMoveDirection = Directions.West;
+        // compare parent and previous parent to get direction this segment moved in 
+        if (parent.GetGridTileAddress().x != previousParent.GetGridTileAddress().x) // if the X coordinate is not the same it means the snake segment arrived from west or east
+        {
+            if (parent.GetGridTileAddress().x > previousParent.GetGridTileAddress().x)
+            {
+                // snake arrived from east
+                lastMoveDirection = Directions.West;
+            } else
+            {
+                // snake arrived from west
+                lastMoveDirection = Directions.East;
+            }
+        }
+        else // if the X coordinate is the same it means the snake segment arrived from north or south
+        if (parent.GetGridTileAddress().y > previousParent.GetGridTileAddress().y)
+        {
+            // snake arrived from north
+            lastMoveDirection = Directions.South;
+        } else
+        {
+            // snake arrived from south
+            lastMoveDirection = Directions.North;
+        }       
+
+        return lastMoveDirection;
+    }
+
     public void DeleteSnakeSegment()
     {
         parent.ClearChild();
