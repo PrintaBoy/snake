@@ -6,6 +6,7 @@ public class ScoreGUIController : MonoBehaviour
     [SerializeField] private TMP_Text scoreValueText;
     [SerializeField] private TMP_Text applesValueText;
     [SerializeField] private TMP_Text pumpkinsValueText;
+    [SerializeField] private TMP_Text mushroomValueText;
 
     private void Awake()
     {
@@ -27,5 +28,6 @@ public class ScoreGUIController : MonoBehaviour
         scoreValueText.text = ScoreController.scoreCurrent.ToString();
         applesValueText.text = ScoreController.applesConsumed.ToString();
         pumpkinsValueText.text = ScoreController.pumpkinsConsumed.ToString();
+        mushroomValueText.text = ScoreController.mushroomConsumed.ToString();
     }
 }
