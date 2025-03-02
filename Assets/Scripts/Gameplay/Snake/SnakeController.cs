@@ -19,6 +19,7 @@ public class SnakeController : MonoBehaviour
 
     public static float snakeSpeedMultiplier { get; private set; }  // this value multiplies Time.deltaTime based on player actions for snake
     private float snakeSpeedMaxMultiplier;
+    private float snakeSpeedMinMultiplier;  
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class SnakeController : MonoBehaviour
         startSnakeSegments = GameData.gameData.startSnakeLength;
         snakeSpeedMultiplier = GameData.gameData.snakeSpeedMultiplier;
         snakeSpeedMaxMultiplier = GameData.gameData.snakeSpeedMaxMultiplier;
+        snakeSpeedMinMultiplier = GameData.gameData.snakeSpeedMinMultiplier;
     }
 
     private void OnEnable()
@@ -41,6 +43,7 @@ public class SnakeController : MonoBehaviour
         Apple.OnAppleConsumed += AppleConsumed;
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
         Mushroom.OnMushroomConsumed += MushroomConsumed;
+        Acorn.OnAcornConsumed += AcornConsumed;
         TickController.OnSnakeTick += SnakeTick;
     }
 
@@ -50,6 +53,7 @@ public class SnakeController : MonoBehaviour
         Apple.OnAppleConsumed -= AppleConsumed;
         Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
         Mushroom.OnMushroomConsumed -= MushroomConsumed;
+        Acorn.OnAcornConsumed -= AcornConsumed;
         TickController.OnSnakeTick -= SnakeTick;
     }
 
@@ -67,6 +71,11 @@ public class SnakeController : MonoBehaviour
     private void PumpkinConsumed (Pumpkin pumpkin)
     {
         ModifySnakeSegmentAmount(pumpkin.removeSnakeSegmentAmount);
+    }
+
+    private void AcornConsumed (Acorn acorn)
+    {
+        ModifySnakeSpeedMultiplier(-acorn.snakeSpeedChange);
     }
 
     private void GridMapGenerated()
@@ -188,9 +197,8 @@ public class SnakeController : MonoBehaviour
     {
         snakeSpeedMultiplier += amount;
         snakeSpeedMultiplier = Mathf.Min(snakeSpeedMultiplier, snakeSpeedMaxMultiplier); // snake cannot go faster than snakeSpeedMaxMultiplier
-
-        float snakeSpeedMinMultiplier = 0.1f; // snake cannot go slower than this value
-        snakeSpeedMultiplier = Mathf.Max(snakeSpeedMultiplier, snakeSpeedMinMultiplier);
+        
+        snakeSpeedMultiplier = Mathf.Max(snakeSpeedMultiplier, snakeSpeedMinMultiplier); // snake cannot go slower than snakeSpeedMinMultiplier
     }
 
     public IGridTile GetSnakeHeadTile()

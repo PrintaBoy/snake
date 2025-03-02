@@ -23,6 +23,7 @@ public class GameData
     public int startSnakeLength;
     public float snakeSpeedMultiplier;
     public float snakeSpeedMaxMultiplier;
+    public float snakeSpeedMinMultiplier;
     public float snakeTickLength;
 
     // data for Apple consumable
@@ -42,6 +43,13 @@ public class GameData
     public int mushroomScoreValue;
     public int mushroomSpawnRate;
     public int mushroomSpawnDuration;
+
+    // data for Acorn consumable
+
+    public float acornSnakeSpeedChange;
+    public int acornScoreValue;
+    public int acornSpawnRate;
+    public int acornSpawnDuration;
 
     // data for Rock obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks

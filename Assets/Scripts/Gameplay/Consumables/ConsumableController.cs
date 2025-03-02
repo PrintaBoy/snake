@@ -6,10 +6,12 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
+    [SerializeField] private ObjectPool acornObjectPool;
 
     // keeps track of how many ticks have passed to spawn consumables
     private int pumpkinTickCounter = 0; 
     private int mushroomTickCounter = 0;
+    private int acornTickCounter = 0;
 
     private void OnEnable()
     {
@@ -19,6 +21,8 @@ public class ConsumableController : MonoBehaviour
         Pumpkin.OnPumpkinDespawn += PumpkinConsumed;
         Mushroom.OnMushroomConsumed += MushrooomConsumed;
         Mushroom.OnMushroomDespawn += MushrooomConsumed;
+        Acorn.OnAcornDespawn += AcornConsumed;
+        Acorn.OnAcornConsumed += AcornConsumed;
         TickController.OnGameTick += GameTick;
     }
 
@@ -30,6 +34,8 @@ public class ConsumableController : MonoBehaviour
         Pumpkin.OnPumpkinDespawn -= PumpkinConsumed;
         Mushroom.OnMushroomConsumed -= MushrooomConsumed;
         Mushroom.OnMushroomDespawn -= MushrooomConsumed;
+        Acorn.OnAcornDespawn -= AcornConsumed;
+        Acorn.OnAcornConsumed -= AcornConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -37,6 +43,7 @@ public class ConsumableController : MonoBehaviour
     {
         pumpkinTickCounter++;
         mushroomTickCounter++;
+        acornTickCounter++;
         CheckConsumableSpawnConditions();
     }
 
@@ -52,6 +59,12 @@ public class ConsumableController : MonoBehaviour
         {
             GenerateConsumable(mushroomObjectPool);
             mushroomTickCounter = 0;
+        }
+
+        if (acornTickCounter >= GameData.gameData.acornSpawnRate)
+        {
+            GenerateConsumable(acornObjectPool);
+            acornTickCounter = 0;   
         }
     }
 
@@ -69,6 +82,11 @@ public class ConsumableController : MonoBehaviour
     private void MushrooomConsumed(Mushroom mushroom)
     {
         consumables.Remove(mushroom);        
+    }
+
+    private void AcornConsumed(Acorn acorn)
+    {
+        consumables.Remove(acorn);
     }
 
     private void SnakeSpawned()

@@ -10,6 +10,7 @@
   "snakeTickLength":0.35,
   "snakeSpeedMultiplier":1,
   "snakeSpeedMaxMultiplier":3.5,
+  "snakeSpeedMinMultiplier":0.7,
 
   "appleAddSnakeSegmentAmount":1,
   "appleSnakeSpeedChange":0.1,
@@ -21,8 +22,13 @@
   "pumpkinSpawnDuration":6,
 
   "mushroomScoreValue":1000,
-  "mushroomSpawnRate": 45,
+  "mushroomSpawnRate": 13,
   "mushroomSpawnDuration":10,
+
+  "acornSnakeSpeedChange":0.7,
+  "acornScoreValue":500,
+  "acornSpawnRate":25,
+  "acornSpawnDuration":8,
 
   "rockSpawnRate":7,
   "rockSpawnDuration":15,
