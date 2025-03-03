@@ -50,6 +50,7 @@ public class ConsumableController : MonoBehaviour
         pumpkinTickCounter++;
         mushroomTickCounter++;
         acornTickCounter++;
+        grapeTickCounter++;
         CheckConsumableSpawnConditions();
     }
 

@@ -325,14 +325,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1515529557536814964, guid: 710246622da91ae45ade229535ac8ffa, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4686490429467837840}
+      addedObject: {fileID: -5335468366570976516}
   m_SourcePrefab: {fileID: 100100000, guid: 710246622da91ae45ade229535ac8ffa, type: 3}
 --- !u!1 &4149085016860717517 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1515529557536814964, guid: 710246622da91ae45ade229535ac8ffa, type: 3}
   m_PrefabInstance: {fileID: 3214651824157411001}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4686490429467837840
+--- !u!114 &-5335468366570976516
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -341,12 +341,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4149085016860717517}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f88f1a74c8858b4e9055e953b2bd59e, type: 3}
+  m_Script: {fileID: 11500000, guid: 718328d3e5ad32e458f96754c51bc54d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   consumeParticle: {fileID: 7653273487642695203, guid: e086a032b59bc404ea6e388284eea0df, type: 3}
   scoreValue: 0
-  removeSnakeSegmentAmount: 0
 --- !u!4 &5011226620745907458 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7572742037451881403, guid: 710246622da91ae45ade229535ac8ffa, type: 3}

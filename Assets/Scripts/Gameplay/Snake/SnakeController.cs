@@ -132,7 +132,7 @@ public class SnakeController : MonoBehaviour
 
         if (collisionObject != null)
         {
-            OnSnakeCollision?.Invoke(collisionObject);
+            OnSnakeCollision?.Invoke(collisionObject);            
         }
     }
 
