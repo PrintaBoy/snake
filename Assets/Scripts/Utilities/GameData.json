@@ -30,6 +30,11 @@
   "acornSpawnRate":25,
   "acornSpawnDuration":8,
 
+  "grapeGameSpeedChange":0.3,
+  "grapeScoreValue":300,
+  "grapeSpawnRate":15,
+  "grapeSpawnDuration":8,
+
   "rockSpawnRate":7,
   "rockSpawnDuration":15,
   "rockMaxSpawnCount":3,

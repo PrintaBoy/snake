@@ -7,11 +7,13 @@ public class ConsumableController : MonoBehaviour
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
     [SerializeField] private ObjectPool acornObjectPool;
+    [SerializeField] private ObjectPool grapeObjectPool;
 
     // keeps track of how many ticks have passed to spawn consumables
     private int pumpkinTickCounter = 0; 
     private int mushroomTickCounter = 0;
     private int acornTickCounter = 0;
+    private int grapeTickCounter = 0;
 
     private void OnEnable()
     {
@@ -23,6 +25,8 @@ public class ConsumableController : MonoBehaviour
         Mushroom.OnMushroomDespawn += MushrooomConsumed;
         Acorn.OnAcornDespawn += AcornConsumed;
         Acorn.OnAcornConsumed += AcornConsumed;
+        Grape.OnGrapeConsumed += GrapeConsumed;
+        Grape.OnGrapeDespawn += GrapeConsumed;
         TickController.OnGameTick += GameTick;
     }
 
@@ -36,6 +40,8 @@ public class ConsumableController : MonoBehaviour
         Mushroom.OnMushroomDespawn -= MushrooomConsumed;
         Acorn.OnAcornDespawn -= AcornConsumed;
         Acorn.OnAcornConsumed -= AcornConsumed;
+        Grape.OnGrapeConsumed += GrapeConsumed;
+        Grape.OnGrapeDespawn += GrapeConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -66,6 +72,12 @@ public class ConsumableController : MonoBehaviour
             GenerateConsumable(acornObjectPool);
             acornTickCounter = 0;   
         }
+
+        if (grapeTickCounter >= GameData.gameData.grapeSpawnRate)
+        {
+            GenerateConsumable(grapeObjectPool);
+            grapeTickCounter = 0;
+        }
     }
 
     private void AppleConsumed(Apple apple)
@@ -87,6 +99,11 @@ public class ConsumableController : MonoBehaviour
     private void AcornConsumed(Acorn acorn)
     {
         consumables.Remove(acorn);
+    }
+
+    private void GrapeConsumed(Grape grape)
+    {
+        consumables.Remove(grape);
     }
 
     private void SnakeSpawned()
