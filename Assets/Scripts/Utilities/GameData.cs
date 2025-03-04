@@ -54,6 +54,7 @@ public class GameData
     // data for Grape consumable
 
     public float grapeGameSpeedChange;
+    public int grapeGameSpeedChangeDuration; // how long the speed change will last, in ticks
     public int grapeScoreValue;
     public int grapeSpawnRate;
     public int grapeSpawnDuration;

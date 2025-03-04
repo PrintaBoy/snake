@@ -12,6 +12,7 @@ public class Grape : Consumable, ISpawnable
     private int gameTicksSinceSpawn = 0;
 
     [HideInInspector] public float gameSpeedChange { get; private set; }
+    [HideInInspector] public int gameSpeedChangeDuration { get; private set; }
 
     public override void OnEnable()
     {
@@ -28,6 +29,7 @@ public class Grape : Consumable, ISpawnable
     private void Awake()
     {
         gameSpeedChange = GameData.gameData.grapeGameSpeedChange;
+        gameSpeedChangeDuration = GameData.gameData.grapeGameSpeedChangeDuration;
         scoreValue = GameData.gameData.grapeScoreValue;
     }
 
@@ -70,5 +72,4 @@ public class Grape : Consumable, ISpawnable
         base.DespawnConsumable();
         gameTicksSinceSpawn = 0;
     }
-
 }
