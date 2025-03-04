@@ -51,6 +51,14 @@ public class GameData
     public int acornSpawnRate;
     public int acornSpawnDuration;
 
+    // data for Grape consumable
+
+    public float grapeGameSpeedChange;
+    public int grapeGameSpeedChangeDuration; // how long the speed change will last, in ticks
+    public int grapeScoreValue;
+    public int grapeSpawnRate;
+    public int grapeSpawnDuration;
+
     // data for Rock obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
     public int rockSpawnDuration; // how long obstacle will stay on grid before it dissapears, measured in Game Ticks

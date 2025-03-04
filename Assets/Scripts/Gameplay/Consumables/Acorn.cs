@@ -1,14 +1,17 @@
 using UnityEngine;
 using System;
-using TMPro;
 
 public class Acorn : Consumable, ISpawnable
 {
+    /// <summary>
+    /// Acorn slowns down snake considerably
+    /// </summary>
+
     public static event Action<Acorn> OnAcornConsumed;
     public static event Action<Acorn> OnAcornDespawn;
     private int gameTicksSinceSpawn = 0;
         
-    [HideInInspector] public float snakeSpeedChange;
+    [HideInInspector] public float snakeSpeedChange { get; private set; }
 
     public override void OnEnable()
     {
@@ -57,9 +60,9 @@ public class Acorn : Consumable, ISpawnable
         }
     }
 
-    public void ParentToTile(GridTile appleParentTile)
+    public void ParentToTile(GridTile acornParentTile)
     {
-        parent = appleParentTile;
+        parent = acornParentTile;
     }
 
     public override void DespawnConsumable()

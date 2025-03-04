@@ -12,12 +12,17 @@ public class TickController : MonoBehaviour
 
 
     private bool tickTimerRunning = false;
+    private bool isGameTickSpeedModified = false;
+
+    private int gameTickModifiedDuration = 0; // how long should the game tick speed modification last, in ticks
+    private int gameTickModifiedTickCounter = 0;
+
     private float gameTickTimer = 0f; // current time of tick
     private float gameTickLength = 0f; // how long it takes from end of previous tick to next tick
-    private float gameSpeedMultiplier = 1f; // this value multiplies Time.deltaTime based on player actions
+    private float gameTickSpeedMultiplier = 1f; // this value multiplies Time.deltaTime based on player actions    
 
     private float snakeTickTimer = 0f; // current time of snake tick
-    private float snakeTickLength = 0f; // how long it takes from end of previous tick to next tick for snake
+    private float snakeTickLength = 0f; // how long it takes from end of previous tick to next tick for snake    
    
     public static event Action OnGameTick;
     public static event Action OnSnakeTick;
@@ -28,6 +33,7 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying += EnableTickTimer;
         GameStateController.OnGameOver += DisableTickTimer;
         GameStateController.OnPause += DisableTickTimer;
+        Grape.OnGrapeConsumed += GrapeConsumed;
     }
 
     private void OnDisable()
@@ -36,11 +42,12 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying -= EnableTickTimer;
         GameStateController.OnGameOver -= DisableTickTimer;
         GameStateController.OnPause -= DisableTickTimer;
+        Grape.OnGrapeConsumed -= GrapeConsumed;
     }
 
     private void Start()
     {        
-        gameSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
+        gameTickSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
         gameTickLength = GameData.gameData.gameTickLength;
 
         snakeTickLength = GameData.gameData.snakeTickLength;
@@ -53,11 +60,16 @@ public class TickController : MonoBehaviour
             return;
         }
 
-        gameTickTimer += Time.deltaTime * gameSpeedMultiplier;
+        gameTickTimer += Time.deltaTime * gameTickSpeedMultiplier;
         if (gameTickTimer >= gameTickLength)
         {
             OnGameTick?.Invoke();
             ResetGameTickTimer();
+
+            if (isGameTickSpeedModified)
+            {
+                ModifyGameSpeedCounter();
+            }
         }
 
         snakeTickTimer += Time.deltaTime * SnakeController.snakeSpeedMultiplier;
@@ -71,6 +83,31 @@ public class TickController : MonoBehaviour
     private void ToggleTickTimer(bool toggle) // switches tick timer on and off
     {
         tickTimerRunning = toggle;
+    }
+
+    private void ModifyGameTickSpeedMultiplier(float modifyAmount, int gameTickSpeedChangeDuration)
+    {
+        gameTickSpeedMultiplier += modifyAmount;
+        gameTickModifiedDuration = gameTickSpeedChangeDuration;
+        isGameTickSpeedModified = true;
+        Debug.Log(gameTickSpeedMultiplier);
+    }
+    
+    private void ModifyGameSpeedCounter() // this method counts how long the game speed should remain modified. Resets the game speed back once it expires
+    {
+        gameTickModifiedTickCounter++;
+        if (gameTickModifiedTickCounter >= gameTickModifiedDuration)
+        {
+            gameTickSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
+            isGameTickSpeedModified = false;
+            gameTickModifiedTickCounter = 0;
+            Debug.Log(gameTickSpeedMultiplier);
+        }
+    }
+
+    private void GrapeConsumed(Grape grape)
+    {
+        ModifyGameTickSpeedMultiplier(-grape.gameSpeedChange, grape.gameSpeedChangeDuration);
     }
 
     private void ResetGameTickTimer()
