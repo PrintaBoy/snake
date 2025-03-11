@@ -9,12 +9,23 @@ public class JSONParser : MonoBehaviour
     private void Awake()
     {
         LoadData();
+        GameData.gameData.OnAwake(); // might be more suited to refactor somewhere else. But for now it works from here
+    }
+
+    private void OnEnable()
+    {
+        GameData.OnSaveData += SaveData;
+    }
+
+    private void OnDisable()
+    {
+        GameData.OnSaveData -= SaveData;
     }
 
     public void SaveData()
     {
-        jsonGameData = JsonUtility.ToJson(GameData.gameData);
-        File.WriteAllText(jsonDataPath, jsonGameData);
+        jsonGameData = JsonUtility.ToJson(GameData.gameData, true);
+        File.WriteAllText(jsonDataPath, jsonGameData);        
     }
 
     private void LoadData()

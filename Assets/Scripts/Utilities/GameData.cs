@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 [System.Serializable]
 public class GameData
@@ -13,7 +14,7 @@ public class GameData
     
     // data for score
     public int currentScore;
-    public int bestScore;
+    public int highestScore;
 
     // data for Game Tick
     public float gameSpeedMultiplier;
@@ -65,9 +66,24 @@ public class GameData
     public int rockMaxSpawnCount; // how many obstacles can be on grid at the same time
     public int rockGroundStateDuration; // how long before rock is raised from the ground and becomes deadly on collision
 
-    private void Awake()
+    public static event Action OnSaveData;
+
+    public void OnAwake() // called from other function because this class is non-MonoBehavior
     {
-        gameData = this;        
+        gameData = this;
+        ScoreController.OnNewHighScore += SaveNewHighScore;
+    }
+
+    private void SaveNewHighScore()
+    {
+        highestScore = ScoreController.scoreHighest;
+        OnSaveData?.Invoke();
+    }
+
+    private void ClearSavedData() // clears all saved data
+    {
+        highestScore = 0;
+        OnSaveData?.Invoke();
     }
 
     public void CalculateGenerateStartPoint()
