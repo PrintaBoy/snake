@@ -8,8 +8,11 @@ public class ScoreController : MonoBehaviour
     public static int pumpkinsConsumed { get; private set; }
     public static int mushroomsConsumed { get; private set; }
     public static int acornsConsumed { get; private set; }
+    public static int grapesConsumed { get; private set; }
+    public static int scoreHighest { get; private set; }
 
     public static event Action OnScoreUpdated;
+    public static event Action OnNewHighScore;
 
     private void OnEnable()
     {
@@ -17,6 +20,7 @@ public class ScoreController : MonoBehaviour
         Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
         Mushroom.OnMushroomConsumed += MushroomConsumed;
         Acorn.OnAcornConsumed += AcornConsumed;
+        Grape.OnGrapeConsumed += GrapeConsumed;
     }
 
     private void OnDisable()
@@ -25,6 +29,7 @@ public class ScoreController : MonoBehaviour
         Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
         Mushroom.OnMushroomConsumed -= MushroomConsumed;
         Acorn.OnAcornConsumed -= AcornConsumed;
+        Grape.OnGrapeConsumed -= GrapeConsumed;
     }
 
     private void Awake()
@@ -34,6 +39,8 @@ public class ScoreController : MonoBehaviour
         pumpkinsConsumed = 0;
         mushroomsConsumed = 0;
         acornsConsumed = 0;
+        grapesConsumed = 0;
+        scoreHighest = GameData.gameData.highestScore;
         OnScoreUpdated?.Invoke();
     }
 
@@ -61,9 +68,22 @@ public class ScoreController : MonoBehaviour
         ModifyScoreValue(acorn.scoreValue);
     }
 
+    private void GrapeConsumed(Grape grape)
+    {
+        grapesConsumed++;
+        ModifyScoreValue(grape.scoreValue);
+    }
+
     public void ModifyScoreValue(int amount)
     {
         scoreCurrent += amount;
+
+        if (scoreCurrent > scoreHighest)
+        {            
+            scoreHighest = scoreCurrent;
+            OnNewHighScore?.Invoke();
+        }       
+
         OnScoreUpdated?.Invoke();
     }
 }
