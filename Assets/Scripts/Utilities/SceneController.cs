@@ -4,13 +4,22 @@ using UnityEditor;
 
 public class SceneController : MonoBehaviour
 {
-    private int loadSceneIndex = 1; // this variable is changed based on which scene to load, default is SnakeLevel for now (change later for MainMenu)
+    /// <summary>
+    /// Scene indexes
+    /// 0 = Bootstrapper
+    /// 1 = MainMenu
+    /// 2 = SnakeLevel
+    /// </summary>
+    private int loadSceneIndex = 1; // this variable is changed based on which scene to load, default is MainMenu
+    public static bool isNewGame; // if true, player started new game. If false, player continues previous saved game
 
     private void OnEnable()
     {
         GameStateController.OnSceneLoaded += SceneLoaded;
         GameStateController.OnSceneRestart += SceneRestart;
         ButtonEventInvoker.OnQuitButtonPressed += QuitGame;
+        ButtonEventInvoker.OnNewGameButtonPressed += NewGame;
+        ButtonEventInvoker.OnContinueButtonPressed += Continue;
     }
 
     private void OnDisable()
@@ -18,6 +27,8 @@ public class SceneController : MonoBehaviour
         GameStateController.OnSceneLoaded -= SceneLoaded;
         GameStateController.OnSceneRestart -= SceneRestart;
         ButtonEventInvoker.OnQuitButtonPressed -= QuitGame;
+        ButtonEventInvoker.OnNewGameButtonPressed -= NewGame;
+        ButtonEventInvoker.OnContinueButtonPressed -= Continue;
     }
 
     private void Awake()
@@ -53,8 +64,25 @@ public class SceneController : MonoBehaviour
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(loadSceneIndex));
     }
 
+    private void NewGame() // starts SnakeLevel scene as new game
+    {
+        isNewGame = true;
+        UnloadScene(loadSceneIndex);
+        ChangeLoadSceneIndex(2);
+        LoadScene(loadSceneIndex);        
+    }
+
+    private void Continue() // starts SnakeLevel scene and continues game from last save
+    {
+        isNewGame = false;
+        UnloadScene(loadSceneIndex);
+        ChangeLoadSceneIndex(2);
+        LoadScene(loadSceneIndex);
+    }
+
     private void QuitGame()
     {
+
         # if UNITY_EDITOR
         EditorApplication.isPlaying = false;
         #endif

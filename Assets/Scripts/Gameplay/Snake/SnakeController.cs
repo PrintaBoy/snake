@@ -7,7 +7,7 @@ public class SnakeController : MonoBehaviour
 {
     public static SnakeController instance; // Singleton
 
-    [SerializeField] private List<SnakeSegment> snakeSegments;
+    public List<SnakeSegment> snakeSegments;
     [SerializeField] private GameObject snakeSegmentPrefab;
 
     private int startSnakeSegments;
@@ -81,7 +81,15 @@ public class SnakeController : MonoBehaviour
 
     private void GridMapGenerated()
     {
-        GenerateSnake(startSnakeSegments); // generates new snake
+        if (SceneController.isNewGame)
+        {
+            GenerateNewSnake(startSnakeSegments); // generates new snake
+        }
+        else
+        {
+            LoadSavedSnake(); // load snake from save
+        }
+        
     }
 
     private void SnakeTick()
@@ -152,7 +160,7 @@ public class SnakeController : MonoBehaviour
         }
     }
 
-    private void GenerateSnake(int segmentAmount) // called on start of the level, spawns new snake
+    private void GenerateNewSnake(int segmentAmount) // called on start of the level, spawns new snake
     {
         for (int i = 0; i < segmentAmount; i++)
         {
@@ -160,8 +168,7 @@ public class SnakeController : MonoBehaviour
 
             if (snakeSegments.Count == 0) // gets tile for spawning head
             {
-                emptyTile = GridController.instance.GetEmptyTile();
-                OnSnakeSpawned?.Invoke();
+                emptyTile = GridController.instance.GetEmptyTile();                
             }
             else // gets tile for spawning snake segment
             {
@@ -171,6 +178,21 @@ public class SnakeController : MonoBehaviour
 
             InstantiateSnakeSegment(emptyTile);
         }
+
+        OnSnakeSpawned?.Invoke();
+    }
+
+    private void LoadSavedSnake()
+    {
+        // loads saved snake from JSON
+        InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeHeadAddress]); // loads head
+
+        for (int i = 1; i < GameData.gameData.snakeSegmentsAmount; i++)
+        {
+            InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]); // load snake tail segments
+        }
+
+        OnSnakeSpawned?.Invoke();
     }
 
     private void ModifySnakeSegmentAmount(int segmentAmount)

@@ -62,6 +62,11 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         return parent;
     }
 
+    public Vector2Int GetSnakeSegmentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
     public IGridTile GetPreviousParent()
     {
         return previousParent;

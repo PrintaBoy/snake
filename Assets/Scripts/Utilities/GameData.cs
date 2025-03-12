@@ -58,7 +58,7 @@ public class GameData
     public int grapeGameSpeedChangeDuration; // how long the speed change will last, in ticks
     public int grapeScoreValue;
     public int grapeSpawnRate;
-    public int grapeSpawnDuration;
+    public int grapeSpawnDuration;    
 
     // data for Rock obstacle
     public int rockSpawnRate; // how long before next obstacle is spawned, measured in Game Ticks
@@ -66,17 +66,47 @@ public class GameData
     public int rockMaxSpawnCount; // how many obstacles can be on grid at the same time
     public int rockGroundStateDuration; // how long before rock is raised from the ground and becomes deadly on collision
 
+    // saved game data
+    public bool isGameSaved; // determines if there is actually a saved game to load from
+    public int snakeSegmentsAmount;
+    public Vector2Int snakeHeadAddress;
+    public Vector2Int[] snakeSegmentsAddresses;
+
     public static event Action OnSaveData;
 
     public void OnAwake() // called from other function because this class is non-MonoBehavior
     {
         gameData = this;
         ScoreController.OnNewHighScore += SaveNewHighScore;
+        ButtonEventInvoker.OnQuitButtonPressed += SaveGame;
     }
 
     private void SaveNewHighScore()
     {
         highestScore = ScoreController.scoreHighest;
+        OnSaveData?.Invoke();
+    }
+
+    private void SaveSnake()
+    {
+        snakeSegmentsAmount = SnakeController.instance.snakeSegments.Count; // length of snake
+        snakeSegmentsAddresses = new Vector2Int[snakeSegmentsAmount]; // initialize array
+
+        snakeHeadAddress = SnakeController.instance.snakeSegments[0].GetSnakeSegmentGridAddress(); // save head
+
+        for (int i = 1; i < SnakeController.instance.snakeSegments.Count; i++)
+        {
+            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetSnakeSegmentGridAddress(); // save tail
+        }
+
+        // TODO - also save direction of snake movement
+    }
+
+    private void SaveGame()
+    {
+        isGameSaved = true;
+        SaveSnake();
+
         OnSaveData?.Invoke();
     }
 
