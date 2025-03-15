@@ -71,6 +71,8 @@ public class GameData
     public int snakeSegmentsAmount;
     public Vector2Int snakeHeadAddress;
     public Vector2Int[] snakeSegmentsAddresses;
+    public int rockObstaclesAmount;
+    public Vector2Int[] rockObstaclesAddresses;
 
     public static event Action OnSaveData;
 
@@ -79,6 +81,7 @@ public class GameData
         gameData = this;
         ScoreController.OnNewHighScore += SaveNewHighScore;
         ButtonEventInvoker.OnQuitButtonPressed += SaveGame;
+        ButtonEventInvoker.OnRestartButtonPressed += ClearSavedGame; // deletes saved data when player hits restart
     }
 
     private void SaveNewHighScore()
@@ -92,27 +95,44 @@ public class GameData
         snakeSegmentsAmount = SnakeController.instance.snakeSegments.Count; // length of snake
         snakeSegmentsAddresses = new Vector2Int[snakeSegmentsAmount]; // initialize array
 
-        snakeHeadAddress = SnakeController.instance.snakeSegments[0].GetSnakeSegmentGridAddress(); // save head
+        snakeHeadAddress = SnakeController.instance.snakeSegments[0].GetParentGridAddress(); // save head
 
-        for (int i = 1; i < SnakeController.instance.snakeSegments.Count; i++)
+        for (int i = 1; i < snakeSegmentsAmount; i++)
         {
-            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetSnakeSegmentGridAddress(); // save tail
+            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save tail
         }
 
         // TODO - also save direction of snake movement
+    }
+
+    private void SaveObstacles()
+    {
+        rockObstaclesAmount = ObstacleController.instance.obstacles.Count;
+        rockObstaclesAddresses = new Vector2Int[rockObstaclesAmount];
+        for (int i = 0; i < rockObstaclesAmount; i++)
+        {
+            rockObstaclesAddresses[i] = ObstacleController.instance.obstacles[i].GetParentGridAddress();
+        }
     }
 
     private void SaveGame()
     {
         isGameSaved = true;
         SaveSnake();
+        SaveObstacles();
 
         OnSaveData?.Invoke();
     }
 
-    private void ClearSavedData() // clears all saved data
+    private void ClearSavedGame() // clears all saved data
     {
-        highestScore = 0;
+        isGameSaved = false;
+
+        Array.Clear(rockObstaclesAddresses, 0, rockObstaclesAddresses.Length);
+        Array.Clear(snakeSegmentsAddresses, 0, snakeSegmentsAddresses.Length);
+        rockObstaclesAmount = 0;
+        snakeSegmentsAmount = 0;
+
         OnSaveData?.Invoke();
     }
 

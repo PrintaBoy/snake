@@ -17,7 +17,7 @@ public class SceneController : MonoBehaviour
     {
         GameStateController.OnSceneLoaded += SceneLoaded;
         GameStateController.OnSceneRestart += SceneRestart;
-        ButtonEventInvoker.OnQuitButtonPressed += QuitGame;
+        ButtonEventInvoker.OnQuitButtonPressed += QuitGame;        
         ButtonEventInvoker.OnNewGameButtonPressed += NewGame;
         ButtonEventInvoker.OnContinueButtonPressed += Continue;
     }
@@ -96,6 +96,7 @@ public class SceneController : MonoBehaviour
 
     private void SceneRestart() // method call when OnSceneRestart event is catched
     {
-        RestartActiveScene();
+        isNewGame = true;
+        RestartActiveScene();        
     }
 }
