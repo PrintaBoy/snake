@@ -7,8 +7,6 @@
         "y": 0.0,
         "z": -5.5
     },
-    "currentScore": 400,
-    "highestScore": 1700,
     "gameSpeedMultiplier": 1.0,
     "gameTickLength": 0.3499999940395355,
     "startSnakeLength": 3,
@@ -19,6 +17,9 @@
     "appleAddSnakeSegmentAmount": 1,
     "appleSnakeSpeedChange": 0.10000000149011612,
     "appleScoreValue": 100,
+    "appleSpawnRate": 1,
+    "appleSpawnDuration": 30,
+    "appleMaxAmount": 1,
     "pumpkinRemoveSnakeSegmentAmount": 1,
     "pumpkinScoreValue": 200,
     "pumpkinSpawnRate": 30,
@@ -40,46 +41,62 @@
     "rockMaxSpawnCount": 3,
     "rockGroundStateDuration": 4,
     "isGameSaved": true,
-    "snakeSegmentsAmount": 7,
+    "currentScore": 4100,
+    "highestScore": 4100,
+    "snakeSegmentsAmount": 8,
     "snakeSegmentsAddresses": [
         {
             "x": 10,
-            "y": 7
+            "y": 5
         },
         {
-            "x": 11,
-            "y": 7
+            "x": 10,
+            "y": 6
         },
         {
-            "x": 12,
-            "y": 7
+            "x": 9,
+            "y": 6
         },
         {
-            "x": 13,
-            "y": 7
+            "x": 8,
+            "y": 6
         },
         {
-            "x": 13,
-            "y": 8
+            "x": 7,
+            "y": 6
         },
         {
-            "x": 13,
-            "y": 9
+            "x": 7,
+            "y": 5
         },
         {
-            "x": 13,
-            "y": 10
+            "x": 8,
+            "y": 5
+        },
+        {
+            "x": 9,
+            "y": 5
         }
     ],
     "rockObstaclesAmount": 2,
     "rockObstaclesAddresses": [
         {
-            "x": 1,
-            "y": 2
+            "x": 19,
+            "y": 4
         },
         {
-            "x": 14,
-            "y": 6
+            "x": 18,
+            "y": 1
         }
-    ]
+    ],
+    "consumableListTypes": [
+        1
+    ],
+    "consumableListAddresses": [
+        {
+            "x": 10,
+            "y": 9
+        }
+    ],
+    "consumableListAmount": 1
 }

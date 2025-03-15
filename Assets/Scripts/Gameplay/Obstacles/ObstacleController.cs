@@ -39,9 +39,8 @@ public class ObstacleController : MonoBehaviour
         {
             for (int i = 0; i < GameData.gameData.rockObstaclesAmount; i++)
             {
-                SpawnObstacle(GridController.instance.gridDictionary[GameData.gameData.rockObstaclesAddresses[i]]);
+                SpawnObstacle(GridController.instance.gridDictionary[GameData.gameData.rockObstaclesAddresses[i]]); // load saved obstacles
             }
-            // load saved obstacles
         }
     }
 

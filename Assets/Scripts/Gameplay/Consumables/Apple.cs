@@ -40,7 +40,7 @@ public class Apple : Consumable, ISpawnable
         parent = appleParentTile;
     }
 
-    public Vector2Int GetParentGridAddress()
+    public override Vector2Int GetParentGridAddress()
     {
         return parent.GetGridTileAddress();
     }

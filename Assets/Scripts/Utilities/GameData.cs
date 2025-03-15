@@ -27,6 +27,9 @@ public class GameData
     public int appleAddSnakeSegmentAmount;
     public float appleSnakeSpeedChange;
     public int appleScoreValue;
+    public int appleSpawnRate;
+    public int appleSpawnDuration;
+    public int appleMaxAmount;
 
     // data for Pumpkin consumable
 
@@ -70,6 +73,10 @@ public class GameData
     public Vector2Int[] snakeSegmentsAddresses;
     public int rockObstaclesAmount;
     public Vector2Int[] rockObstaclesAddresses;
+    public ConsumableTypes[] consumableListTypes;
+    public Vector2Int[] consumableListAddresses;
+    public int consumableListAmount;
+
 
     public static event Action OnSaveData;
 
@@ -117,7 +124,15 @@ public class GameData
 
     private void SaveConsumables()
     {
+        consumableListAmount = ConsumableController.instance.consumables.Count;
+        consumableListAddresses = new Vector2Int[consumableListAmount];
+        consumableListTypes = new ConsumableTypes[consumableListAmount];
 
+        for (int i = 0; i < consumableListAmount; i++)
+        {
+            consumableListAddresses[i] = ConsumableController.instance.consumables[i].GetParentGridAddress();
+            consumableListTypes[i] = ConsumableController.instance.consumables[i].GetConsumableType();
+        }
     }
 
     private void SaveGame()
@@ -137,6 +152,9 @@ public class GameData
 
         Array.Clear(rockObstaclesAddresses, 0, rockObstaclesAddresses.Length);
         Array.Clear(snakeSegmentsAddresses, 0, snakeSegmentsAddresses.Length);
+        Array.Clear(consumableListAddresses, 0, consumableListAddresses.Length);
+        Array.Clear(consumableListTypes, 0, consumableListTypes.Length);
+        consumableListAmount = 0;
         rockObstaclesAmount = 0;
         snakeSegmentsAmount = 0;
 

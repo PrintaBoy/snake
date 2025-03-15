@@ -20,7 +20,17 @@ public class Consumable : MonoBehaviour
 
     public virtual void Collision(ISpawnable collisionObject)
     {
-    }    
+    }
+
+    public virtual Vector2Int GetParentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
+    public ConsumableTypes GetConsumableType()
+    {
+        return consumableType;
+    }
 
     public virtual void DespawnConsumable()
     {

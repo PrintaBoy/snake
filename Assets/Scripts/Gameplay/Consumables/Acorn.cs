@@ -31,7 +31,7 @@ public class Acorn : Consumable, ISpawnable
         scoreValue = GameData.gameData.acornScoreValue;
     }
 
-    public Vector2Int GetParentGridAddress()
+    public override Vector2Int GetParentGridAddress()
     {
         return parent.GetGridTileAddress();
     }
