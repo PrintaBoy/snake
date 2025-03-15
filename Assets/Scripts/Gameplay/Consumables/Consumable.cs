@@ -5,6 +5,7 @@ public class Consumable : MonoBehaviour
 {
     [HideInInspector] public IGridTile parent;
     [SerializeField] private GameObject consumeParticle;
+    [SerializeField] private ConsumableTypes consumableType;
     [HideInInspector] public int scoreValue;
 
     public virtual void OnEnable()

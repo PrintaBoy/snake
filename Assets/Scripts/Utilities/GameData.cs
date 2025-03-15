@@ -11,10 +11,6 @@ public class GameData
     public int levelHeight;
     public float gridSize;
     public Vector3 generateLevelStartPoint;
-    
-    // data for score
-    public int currentScore;
-    public int highestScore;
 
     // data for Game Tick
     public float gameSpeedMultiplier;
@@ -68,6 +64,8 @@ public class GameData
 
     // saved game data
     public bool isGameSaved; // determines if there is actually a saved game to load from
+    public int currentScore;
+    public int highestScore;
     public int snakeSegmentsAmount;    
     public Vector2Int[] snakeSegmentsAddresses;
     public int rockObstaclesAmount;

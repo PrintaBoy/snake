@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class ConsumableController : MonoBehaviour
 {
-    [SerializeField] private List<Consumable> consumables;    
+    private List<Consumable> consumables;
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
