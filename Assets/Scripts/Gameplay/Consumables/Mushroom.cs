@@ -36,6 +36,11 @@ public class Mushroom : Consumable, ISpawnable
         gameObject.transform.rotation = parentTile.gameObject.transform.rotation;
     }
 
+    public Vector2Int GetParentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
     private void GameTick()
     {
         gameTicksSinceSpawn++;

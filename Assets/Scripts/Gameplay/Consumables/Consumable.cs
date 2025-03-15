@@ -19,7 +19,7 @@ public class Consumable : MonoBehaviour
 
     public virtual void Collision(ISpawnable collisionObject)
     {
-    }
+    }    
 
     public virtual void DespawnConsumable()
     {

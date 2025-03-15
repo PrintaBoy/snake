@@ -85,6 +85,11 @@ public class Rock : MonoBehaviour, ISpawnable
         parent = obstacleParentTile;
     }
 
+    public Vector2Int GetParentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
     private void DespawnRock()
     {   
         // resets rock to previous state and let's parent gridTile to delete reference to this rock

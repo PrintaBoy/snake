@@ -8,7 +8,7 @@ public class GridController : MonoBehaviour
 
     public GameObject gridParent;    
     [SerializeField] private GameObject gridTilePrefab;    
-    private Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>(); // first value is address
+    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>(); // first value is address
 
     public static event Action OnGridGenerated; // invokes when all grid tiles are generated
     public static event Action OnGridMapGenerated; // invokes when all grid tiles have created map of adjecent grid tiles
@@ -81,11 +81,12 @@ public class GridController : MonoBehaviour
         return emptyTile;
     }
 
-    // returns empty grid tile that is outside of snake head safe zone
-    // this is to prevent spawning obstacles and consumables right in front of snake head making collision unavoidable and unfair
 
     public IGridTile GetEmptyTileOutsideSafeZone(int safeZoneRadius) 
     {
+        // returns empty grid tile that is outside of snake head safe zone
+        // this is to prevent spawning obstacles and consumables right in front of snake head making collision unavoidable and unfair
+
         IGridTile emptyTileOutsideSafeZone = null;
         bool emptyTileOutsideSafeZoneFound = false;
         IGridTile possiblyEmptyTile;
