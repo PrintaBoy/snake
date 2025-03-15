@@ -7,8 +7,8 @@
         "y": 0.0,
         "z": -5.5
     },
-    "currentScore": 0,
-    "highestScore": 300,
+    "currentScore": 400,
+    "highestScore": 1700,
     "gameSpeedMultiplier": 1.0,
     "gameTickLength": 0.3499999940395355,
     "startSnakeLength": 3,
@@ -40,46 +40,46 @@
     "rockMaxSpawnCount": 3,
     "rockGroundStateDuration": 4,
     "isGameSaved": true,
-    "snakeSegmentsAmount": 6,
-    "snakeHeadAddress": {
-        "x": 1,
-        "y": 6
-    },
+    "snakeSegmentsAmount": 7,
     "snakeSegmentsAddresses": [
         {
-            "x": 0,
-            "y": 0
+            "x": 10,
+            "y": 7
         },
         {
-            "x": 2,
-            "y": 6
+            "x": 11,
+            "y": 7
         },
         {
-            "x": 3,
-            "y": 6
+            "x": 12,
+            "y": 7
         },
         {
-            "x": 4,
-            "y": 6
+            "x": 13,
+            "y": 7
         },
         {
-            "x": 5,
-            "y": 6
+            "x": 13,
+            "y": 8
         },
         {
-            "x": 6,
-            "y": 6
+            "x": 13,
+            "y": 9
+        },
+        {
+            "x": 13,
+            "y": 10
         }
     ],
     "rockObstaclesAmount": 2,
     "rockObstaclesAddresses": [
         {
-            "x": 5,
-            "y": 4
+            "x": 1,
+            "y": 2
         },
         {
-            "x": 8,
-            "y": 9
+            "x": 14,
+            "y": 6
         }
     ]
 }

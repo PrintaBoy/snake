@@ -68,8 +68,7 @@ public class GameData
 
     // saved game data
     public bool isGameSaved; // determines if there is actually a saved game to load from
-    public int snakeSegmentsAmount;
-    public Vector2Int snakeHeadAddress;
+    public int snakeSegmentsAmount;    
     public Vector2Int[] snakeSegmentsAddresses;
     public int rockObstaclesAmount;
     public Vector2Int[] rockObstaclesAddresses;
@@ -95,11 +94,9 @@ public class GameData
         snakeSegmentsAmount = SnakeController.instance.snakeSegments.Count; // length of snake
         snakeSegmentsAddresses = new Vector2Int[snakeSegmentsAmount]; // initialize array
 
-        snakeHeadAddress = SnakeController.instance.snakeSegments[0].GetParentGridAddress(); // save head
-
-        for (int i = 1; i < snakeSegmentsAmount; i++)
+        for (int i = 0; i < snakeSegmentsAmount; i++)
         {
-            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save tail
+            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save snake segments
         }
 
         // TODO - also save direction of snake movement
@@ -115,11 +112,23 @@ public class GameData
         }
     }
 
+    private void SaveScore()
+    {
+        currentScore = ScoreController.scoreCurrent;
+    }
+
+    private void SaveConsumables()
+    {
+
+    }
+
     private void SaveGame()
     {
         isGameSaved = true;
         SaveSnake();
         SaveObstacles();
+        SaveScore();
+        SaveConsumables();
 
         OnSaveData?.Invoke();
     }

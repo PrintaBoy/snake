@@ -33,14 +33,15 @@ public class ScoreController : MonoBehaviour
     }
 
     private void Awake()
-    {
-        scoreCurrent = 0;
+    {        
         applesConsumed = 0;
         pumpkinsConsumed = 0;
         mushroomsConsumed = 0;
         acornsConsumed = 0;
         grapesConsumed = 0;
         scoreHighest = GameData.gameData.highestScore;
+        scoreCurrent = SceneController.isNewGame ? 0 : GameData.gameData.currentScore; // either sets score to zero or loads score from JSON       
+
         OnScoreUpdated?.Invoke();
     }
 

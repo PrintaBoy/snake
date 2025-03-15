@@ -88,8 +88,7 @@ public class SnakeController : MonoBehaviour
         else
         {
             LoadSavedSnake(); // load snake from save
-        }
-        
+        }        
     }
 
     private void SnakeTick()
@@ -182,14 +181,11 @@ public class SnakeController : MonoBehaviour
         OnSnakeSpawned?.Invoke();
     }
 
-    private void LoadSavedSnake()
+    private void LoadSavedSnake() // loads saved snake from JSON     
     {
-        // loads saved snake from JSON
-        InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeHeadAddress]); // loads head
-
-        for (int i = 1; i < GameData.gameData.snakeSegmentsAmount; i++)
+        for (int i = 0; i < GameData.gameData.snakeSegmentsAmount; i++)
         {
-            InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]); // load snake tail segments
+            InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]);
         }
 
         OnSnakeSpawned?.Invoke();
