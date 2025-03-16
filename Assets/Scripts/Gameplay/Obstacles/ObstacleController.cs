@@ -33,7 +33,7 @@ public class ObstacleController : MonoBehaviour
         obstacles.Remove(obstacle);
     }
 
-    private void SnakeSpawned()
+    private void SnakeSpawned() // if loaded from save, spawn obstacles from save
     {        
         if (!SceneController.isNewGame)
         {

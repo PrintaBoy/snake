@@ -48,8 +48,8 @@ public class ConsumableController : MonoBehaviour
         Mushroom.OnMushroomDespawn -= MushrooomConsumed;
         Acorn.OnAcornDespawn -= AcornConsumed;
         Acorn.OnAcornConsumed -= AcornConsumed;
-        Grape.OnGrapeConsumed += GrapeConsumed;
-        Grape.OnGrapeDespawn += GrapeConsumed;
+        Grape.OnGrapeConsumed -= GrapeConsumed;
+        Grape.OnGrapeDespawn -= GrapeConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -67,31 +67,31 @@ public class ConsumableController : MonoBehaviour
     {
         if (appleTickCounter >= GameData.gameData.appleSpawnRate && CanSpawnConsumable(ConsumableTypes.Apple))
         {
-            GenerateConsumable(appleObjectPool, GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile());
             appleTickCounter = 0;
         }
 
         if (pumpkinTickCounter >= GameData.gameData.pumpkinSpawnRate)
-        {
-            GenerateConsumable(pumpkinObjectPool, GridController.instance.GetEmptyTile());
+        {         
+            SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.GetEmptyTile());
             pumpkinTickCounter = 0;
         }
 
         if (mushroomTickCounter >= GameData.gameData.mushroomSpawnRate)
-        {
-            GenerateConsumable(mushroomObjectPool, GridController.instance.GetEmptyTile());
+        {         
+            SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.GetEmptyTile());
             mushroomTickCounter = 0;
         }
 
         if (acornTickCounter >= GameData.gameData.acornSpawnRate)
-        {
-            GenerateConsumable(acornObjectPool, GridController.instance.GetEmptyTile());
+        {         
+            SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.GetEmptyTile());
             acornTickCounter = 0;   
         }
 
         if (grapeTickCounter >= GameData.gameData.grapeSpawnRate)
-        {
-            GenerateConsumable(grapeObjectPool, GridController.instance.GetEmptyTile());
+        {            
+            SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.GetEmptyTile());
             grapeTickCounter = 0;
         }
     }
@@ -121,7 +121,7 @@ public class ConsumableController : MonoBehaviour
         consumables.Remove(grape);
     }
 
-    private void SnakeSpawned()
+    private void SnakeSpawned() // either loads consumables from save or starts as new game
     {
         if (!SceneController.isNewGame)
         {
@@ -130,34 +130,33 @@ public class ConsumableController : MonoBehaviour
                 switch (GameData.gameData.consumableListTypes[i])
                 {
                     case ConsumableTypes.Acorn:
-                        GenerateConsumable(acornObjectPool, GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
+                        SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
                         break;
-                    case ConsumableTypes.Apple:
-                        GenerateConsumable(appleObjectPool, GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
+                    case ConsumableTypes.Apple:                        
+                        SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
                         break;
-                    case ConsumableTypes.Grape:
-                        GenerateConsumable(grapeObjectPool, GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
+                    case ConsumableTypes.Grape:                        
+                        SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
                         break;
-                    case ConsumableTypes.Mushroom:
-                        GenerateConsumable(mushroomObjectPool, GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
+                    case ConsumableTypes.Mushroom:                        
+                        SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
                         break;
-                    case ConsumableTypes.Pumpkin:
-                        GenerateConsumable(pumpkinObjectPool, GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
+                    case ConsumableTypes.Pumpkin:                        
+                        SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.gridDictionary[GameData.gameData.consumableListAddresses[i]]);
                         break;
                 }
-            }
-            // spawn saved consumables
+            }            
         } else
         {
-            GenerateConsumable(appleObjectPool, GridController.instance.GetEmptyTile()); // here to spawn apple right at the beginning of the level
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile()); // here to spawn apple right at the beginning of the level
         }        
     }
 
-    private void GenerateConsumable(ObjectPool objectPool, IGridTile spawnTile)
+    private GameObject GenerateConsumable(ObjectPool objectPool)
     {
         GameObject generatedConsumable = objectPool.GetPooledObject();
         generatedConsumable.SetActive(true);
-        SetupConsumable(generatedConsumable, spawnTile);
+        return generatedConsumable;        
     }
 
     private void SetupConsumable(GameObject spawnedConsumable, IGridTile generatedConsumableTile)
@@ -184,6 +183,22 @@ public class ConsumableController : MonoBehaviour
             }
         }
 
-        return consumableCount < GameData.gameData.appleMaxAmount;
+        int spawnMaximum = 0;
+        switch (consumableType)
+        {
+            case ConsumableTypes.Apple:
+                spawnMaximum = GameData.gameData.appleMaxAmount;
+                break;
+            case ConsumableTypes.Acorn:
+                break;
+            case ConsumableTypes.Mushroom:
+                break;
+            case ConsumableTypes.Pumpkin:
+                break;
+            case ConsumableTypes.Grape:
+                break;
+        }
+
+        return consumableCount < spawnMaximum;
     }
 }

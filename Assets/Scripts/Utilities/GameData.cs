@@ -78,7 +78,6 @@ public class GameData
     public Vector2Int[] consumableListAddresses;
     public int consumableListAmount;
 
-
     public static event Action OnSaveData;
 
     public void OnAwake() // called from other function because this class is non-MonoBehavior
@@ -99,15 +98,12 @@ public class GameData
     {
         snakeSegmentsAmount = SnakeController.instance.snakeSegments.Count; // length of snake
         snakeSegmentsAddresses = new Vector2Int[snakeSegmentsAmount]; // initialize array
+        lastMoveDirection = SnakeController.instance.lastCommandDirection;
 
         for (int i = 0; i < snakeSegmentsAmount; i++)
         {
             snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save snake segments
-        }
-
-        lastMoveDirection = SnakeController.instance.lastCommandDirection;
-
-        // TODO - also save direction of snake movement
+        }                
     }
 
     private void SaveObstacles()
