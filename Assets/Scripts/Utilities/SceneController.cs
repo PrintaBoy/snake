@@ -17,7 +17,8 @@ public class SceneController : MonoBehaviour
     {
         GameStateController.OnSceneLoaded += SceneLoaded;
         GameStateController.OnSceneRestart += SceneRestart;
-        ButtonEventInvoker.OnQuitGameButtonPressed += QuitGame;        
+        ButtonEventInvoker.OnQuitGameButtonPressed += QuitGame;
+        ButtonEventInvoker.OnExitToMenuButtonPressed += ExitToMenu;
         ButtonEventInvoker.OnNewGameButtonPressed += NewGame;
         ButtonEventInvoker.OnContinueButtonPressed += Continue;
     }
@@ -27,6 +28,7 @@ public class SceneController : MonoBehaviour
         GameStateController.OnSceneLoaded -= SceneLoaded;
         GameStateController.OnSceneRestart -= SceneRestart;
         ButtonEventInvoker.OnQuitGameButtonPressed -= QuitGame;
+        ButtonEventInvoker.OnExitToMenuButtonPressed -= ExitToMenu;
         ButtonEventInvoker.OnNewGameButtonPressed -= NewGame;
         ButtonEventInvoker.OnContinueButtonPressed -= Continue;
     }
@@ -59,7 +61,7 @@ public class SceneController : MonoBehaviour
         LoadScene(loadSceneIndex);
     }
 
-    private void SetActiveScene()
+    private void SetActiveScene() // is set up automatically when scene is switched
     {
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(loadSceneIndex));
     }
@@ -82,11 +84,17 @@ public class SceneController : MonoBehaviour
 
     private void QuitGame()
     {
-
         # if UNITY_EDITOR
         EditorApplication.isPlaying = false;
         #endif
         Application.Quit();        
+    }
+
+    private void ExitToMenu()
+    {
+        UnloadScene(loadSceneIndex);
+        ChangeLoadSceneIndex(1);
+        LoadScene(loadSceneIndex);
     }
 
     private void SceneLoaded() // method call when OnSceneLoaded event is catched

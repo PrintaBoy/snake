@@ -84,6 +84,7 @@ public class GameData
     {
         gameData = this;
         ScoreController.OnNewHighScore += SaveNewHighScore;
+        ButtonEventInvoker.OnExitToMenuButtonPressed += SaveGame;
         ButtonEventInvoker.OnQuitGameButtonPressed += SaveGame;
         ButtonEventInvoker.OnRestartButtonPressed += ClearSavedGame; // deletes saved data when player hits restart
     }
