@@ -5,6 +5,7 @@ public class Consumable : MonoBehaviour
 {
     [HideInInspector] public IGridTile parent;
     [SerializeField] private GameObject consumeParticle;
+    [SerializeField] private ConsumableTypes consumableType;
     [HideInInspector] public int scoreValue;
 
     public virtual void OnEnable()
@@ -19,7 +20,17 @@ public class Consumable : MonoBehaviour
 
     public virtual void Collision(ISpawnable collisionObject)
     {
-    }    
+    }
+
+    public virtual Vector2Int GetParentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
+    public ConsumableTypes GetConsumableType()
+    {
+        return consumableType;
+    }
 
     public virtual void DespawnConsumable()
     {

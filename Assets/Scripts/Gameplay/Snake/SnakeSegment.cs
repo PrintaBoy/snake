@@ -34,7 +34,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         if (collisionObject == this)
         {
             OnSnakeSegmentCollision?.Invoke();
-            // disable snake segment the snake bit into
+            // TODO disable snake segment the snake bit into
         }        
     }
 

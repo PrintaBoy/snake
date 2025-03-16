@@ -33,15 +33,14 @@ public class ObstacleController : MonoBehaviour
         obstacles.Remove(obstacle);
     }
 
-    private void SnakeSpawned()
+    private void SnakeSpawned() // if loaded from save, spawn obstacles from save
     {        
         if (!SceneController.isNewGame)
         {
             for (int i = 0; i < GameData.gameData.rockObstaclesAmount; i++)
             {
-                SpawnObstacle(GridController.instance.gridDictionary[GameData.gameData.rockObstaclesAddresses[i]]);
+                SpawnObstacle(GridController.instance.gridDictionary[GameData.gameData.rockObstaclesAddresses[i]]); // load saved obstacles
             }
-            // load saved obstacles
         }
     }
 

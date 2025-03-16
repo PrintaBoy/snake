@@ -11,10 +11,6 @@ public class GameData
     public int levelHeight;
     public float gridSize;
     public Vector3 generateLevelStartPoint;
-    
-    // data for score
-    public int currentScore;
-    public int highestScore;
 
     // data for Game Tick
     public float gameSpeedMultiplier;
@@ -31,6 +27,9 @@ public class GameData
     public int appleAddSnakeSegmentAmount;
     public float appleSnakeSpeedChange;
     public int appleScoreValue;
+    public int appleSpawnRate;
+    public int appleSpawnDuration;
+    public int appleMaxAmount;
 
     // data for Pumpkin consumable
 
@@ -68,11 +67,16 @@ public class GameData
 
     // saved game data
     public bool isGameSaved; // determines if there is actually a saved game to load from
+    public int currentScore;
+    public int highestScore;
     public int snakeSegmentsAmount;
-    public Vector2Int snakeHeadAddress;
+    public Directions lastMoveDirection;
     public Vector2Int[] snakeSegmentsAddresses;
     public int rockObstaclesAmount;
     public Vector2Int[] rockObstaclesAddresses;
+    public ConsumableTypes[] consumableListTypes;
+    public Vector2Int[] consumableListAddresses;
+    public int consumableListAmount;
 
     public static event Action OnSaveData;
 
@@ -94,15 +98,12 @@ public class GameData
     {
         snakeSegmentsAmount = SnakeController.instance.snakeSegments.Count; // length of snake
         snakeSegmentsAddresses = new Vector2Int[snakeSegmentsAmount]; // initialize array
+        lastMoveDirection = SnakeController.instance.lastCommandDirection;
 
-        snakeHeadAddress = SnakeController.instance.snakeSegments[0].GetParentGridAddress(); // save head
-
-        for (int i = 1; i < snakeSegmentsAmount; i++)
+        for (int i = 0; i < snakeSegmentsAmount; i++)
         {
-            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save tail
-        }
-
-        // TODO - also save direction of snake movement
+            snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save snake segments
+        }                
     }
 
     private void SaveObstacles()
@@ -115,11 +116,31 @@ public class GameData
         }
     }
 
+    private void SaveScore()
+    {
+        currentScore = ScoreController.scoreCurrent;
+    }
+
+    private void SaveConsumables()
+    {
+        consumableListAmount = ConsumableController.instance.consumables.Count;
+        consumableListAddresses = new Vector2Int[consumableListAmount];
+        consumableListTypes = new ConsumableTypes[consumableListAmount];
+
+        for (int i = 0; i < consumableListAmount; i++)
+        {
+            consumableListAddresses[i] = ConsumableController.instance.consumables[i].GetParentGridAddress();
+            consumableListTypes[i] = ConsumableController.instance.consumables[i].GetConsumableType();
+        }
+    }
+
     private void SaveGame()
     {
         isGameSaved = true;
         SaveSnake();
         SaveObstacles();
+        SaveScore();
+        SaveConsumables();
 
         OnSaveData?.Invoke();
     }
@@ -130,8 +151,12 @@ public class GameData
 
         Array.Clear(rockObstaclesAddresses, 0, rockObstaclesAddresses.Length);
         Array.Clear(snakeSegmentsAddresses, 0, snakeSegmentsAddresses.Length);
+        Array.Clear(consumableListAddresses, 0, consumableListAddresses.Length);
+        Array.Clear(consumableListTypes, 0, consumableListTypes.Length);
+        consumableListAmount = 0;
         rockObstaclesAmount = 0;
         snakeSegmentsAmount = 0;
+        lastMoveDirection = Directions.West;
 
         OnSaveData?.Invoke();
     }

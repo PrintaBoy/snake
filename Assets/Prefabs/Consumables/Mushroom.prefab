@@ -523,6 +523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   consumeParticle: {fileID: 7653273487642695203, guid: 42936eb2679f0314b9666fcbc60552d9, type: 3}
+  consumableType: 3
   scoreValue: 0
 --- !u!4 &5011226620745907458 stripped
 Transform:

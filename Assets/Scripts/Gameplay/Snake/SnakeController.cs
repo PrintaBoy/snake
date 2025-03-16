@@ -12,7 +12,7 @@ public class SnakeController : MonoBehaviour
 
     private int startSnakeSegments;
 
-    private Directions lastCommandDirection = Directions.West;
+    [HideInInspector] public Directions lastCommandDirection = Directions.West;
 
     public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
@@ -88,8 +88,7 @@ public class SnakeController : MonoBehaviour
         else
         {
             LoadSavedSnake(); // load snake from save
-        }
-        
+        }        
     }
 
     private void SnakeTick()
@@ -98,7 +97,7 @@ public class SnakeController : MonoBehaviour
     }
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
-    {
+    {        
         if (lastCommandDirection == newDirection) // snake cannot reverse into itself
         {
             return;
@@ -182,15 +181,14 @@ public class SnakeController : MonoBehaviour
         OnSnakeSpawned?.Invoke();
     }
 
-    private void LoadSavedSnake()
+    private void LoadSavedSnake() // loads saved snake from JSON     
     {
-        // loads saved snake from JSON
-        InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeHeadAddress]); // loads head
-
-        for (int i = 1; i < GameData.gameData.snakeSegmentsAmount; i++)
+        for (int i = 0; i < GameData.gameData.snakeSegmentsAmount; i++)
         {
-            InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]); // load snake tail segments
+            InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]);
         }
+        
+        lastCommandDirection = Direction.GetOppositeDirection(GameData.gameData.lastMoveDirection); // needs to be reverted to prervent loaded snake into reversing into itself        
 
         OnSnakeSpawned?.Invoke();
     }

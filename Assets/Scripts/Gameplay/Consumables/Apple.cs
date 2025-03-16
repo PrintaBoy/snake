@@ -7,7 +7,7 @@ public class Apple : Consumable, ISpawnable
     /// Apple adds snake segments, adds score and increases snake movement speed
     /// </summary>
     
-    public static event Action<Apple> OnAppleConsumed;
+    public static event Action<Apple> OnAppleConsumed;    
 
     [HideInInspector] public int addSnakeSegmentAmount;
     [HideInInspector] public float snakeSpeedChange;
@@ -40,7 +40,7 @@ public class Apple : Consumable, ISpawnable
         parent = appleParentTile;
     }
 
-    public Vector2Int GetParentGridAddress()
+    public override Vector2Int GetParentGridAddress()
     {
         return parent.GetGridTileAddress();
     }
