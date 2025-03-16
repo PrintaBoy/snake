@@ -12,7 +12,7 @@ public class SnakeController : MonoBehaviour
 
     private int startSnakeSegments;
 
-    private Directions lastCommandDirection = Directions.West;
+    [HideInInspector] public Directions lastCommandDirection = Directions.West;
 
     public static event Action OnSnakeSpawned;    
     public static event Action<ISpawnable> OnSnakeCollision;
@@ -97,7 +97,7 @@ public class SnakeController : MonoBehaviour
     }
 
     public void ChangeSnakeDirection(Directions newDirection) // receives from MoveCommand command to change direction of snake
-    {
+    {        
         if (lastCommandDirection == newDirection) // snake cannot reverse into itself
         {
             return;
@@ -187,6 +187,8 @@ public class SnakeController : MonoBehaviour
         {
             InstantiateSnakeSegment(GridController.instance.gridDictionary[GameData.gameData.snakeSegmentsAddresses[i]]);
         }
+        
+        lastCommandDirection = Direction.GetOppositeDirection(GameData.gameData.lastMoveDirection); // needs to be reverted to prervent loaded snake into reversing into itself        
 
         OnSnakeSpawned?.Invoke();
     }

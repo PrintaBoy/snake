@@ -69,7 +69,8 @@ public class GameData
     public bool isGameSaved; // determines if there is actually a saved game to load from
     public int currentScore;
     public int highestScore;
-    public int snakeSegmentsAmount;    
+    public int snakeSegmentsAmount;
+    public Directions lastMoveDirection;
     public Vector2Int[] snakeSegmentsAddresses;
     public int rockObstaclesAmount;
     public Vector2Int[] rockObstaclesAddresses;
@@ -103,6 +104,8 @@ public class GameData
         {
             snakeSegmentsAddresses[i] = SnakeController.instance.snakeSegments[i].GetParentGridAddress(); // save snake segments
         }
+
+        lastMoveDirection = SnakeController.instance.lastCommandDirection;
 
         // TODO - also save direction of snake movement
     }
@@ -157,6 +160,7 @@ public class GameData
         consumableListAmount = 0;
         rockObstaclesAmount = 0;
         snakeSegmentsAmount = 0;
+        lastMoveDirection = Directions.West;
 
         OnSaveData?.Invoke();
     }
