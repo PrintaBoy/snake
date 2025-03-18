@@ -17,8 +17,8 @@ public class SceneController : MonoBehaviour
     {
         GameStateController.OnSceneLoaded += SceneLoaded;
         GameStateController.OnSceneRestart += SceneRestart;
-        ButtonEventInvoker.OnQuitGameButtonPressed += QuitGame;
-        ButtonEventInvoker.OnExitToMenuButtonPressed += ExitToMenu;
+        ButtonEventInvoker.OnQuitGameQuitButtonPressed += QuitGame;
+        ButtonEventInvoker.OnExitToMenuYesButtonPressed += ExitToMenu;
         ButtonEventInvoker.OnNewGameButtonPressed += NewGame;
         ButtonEventInvoker.OnContinueButtonPressed += Continue;
     }
@@ -27,8 +27,8 @@ public class SceneController : MonoBehaviour
     {
         GameStateController.OnSceneLoaded -= SceneLoaded;
         GameStateController.OnSceneRestart -= SceneRestart;
-        ButtonEventInvoker.OnQuitGameButtonPressed -= QuitGame;
-        ButtonEventInvoker.OnExitToMenuButtonPressed -= ExitToMenu;
+        ButtonEventInvoker.OnQuitGameQuitButtonPressed -= QuitGame;
+        ButtonEventInvoker.OnExitToMenuYesButtonPressed -= ExitToMenu;
         ButtonEventInvoker.OnNewGameButtonPressed -= NewGame;
         ButtonEventInvoker.OnContinueButtonPressed -= Continue;
     }
