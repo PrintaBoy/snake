@@ -40,35 +40,39 @@
     "rockSpawnDuration": 15,
     "rockMaxSpawnCount": 3,
     "rockGroundStateDuration": 4,
-    "isGameSaved": true,
-    "currentScore": 0,
-    "highestScore": 4100,
-    "snakeSegmentsAmount": 3,
-    "lastMoveDirection": 2,
+    "isGameSaved": false,
+    "currentScore": 100,
+    "highestScore": 11200,
+    "snakeSegmentsAmount": 0,
+    "lastMoveDirection": 3,
     "snakeSegmentsAddresses": [
         {
-            "x": 4,
-            "y": 4
+            "x": 0,
+            "y": 0
         },
         {
-            "x": 3,
-            "y": 4
+            "x": 0,
+            "y": 0
         },
         {
-            "x": 2,
-            "y": 4
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
         }
     ],
     "rockObstaclesAmount": 0,
     "rockObstaclesAddresses": [],
     "consumableListTypes": [
-        1
+        0
     ],
     "consumableListAddresses": [
         {
-            "x": 12,
-            "y": 2
+            "x": 0,
+            "y": 0
         }
     ],
-    "consumableListAmount": 1
+    "consumableListAmount": 0
 }

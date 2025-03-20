@@ -84,6 +84,7 @@ public class GameData
     {
         gameData = this;
         ScoreController.OnNewHighScore += SaveNewHighScore;
+        GameStateController.OnGameOver += ClearSavedGame; // automatically cleares saved data when game over happens
         ButtonEventInvoker.OnExitToMenuButtonPressed += SaveGame;
         ButtonEventInvoker.OnQuitGameButtonPressed += SaveGame;
         ButtonEventInvoker.OnRestartButtonPressed += ClearSavedGame; // deletes saved data when player hits restart
@@ -137,6 +138,11 @@ public class GameData
 
     private void SaveGame()
     {
+        if (GameStateController.isGameOver) // game will not be saved when game state is GameOver
+        { 
+            return;
+        }
+
         isGameSaved = true;
         SaveSnake();
         SaveObstacles();
@@ -164,6 +170,10 @@ public class GameData
 
     public void CalculateGenerateStartPoint()
     {
+        /// <summary>
+        /// this method calculates a point in scene from which grid is generated later on
+        /// </summary>
+        
         generateLevelStartPoint = new Vector3(-((levelWidth - gridSize) / 2f), 0, -((levelHeight - gridSize) / 2f));        
     }
 }
