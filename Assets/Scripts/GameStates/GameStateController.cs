@@ -3,17 +3,25 @@ using System;
 
 public class GameStateController : MonoBehaviour
 {
+    /// <summary>
+    /// This class handles game states (if the game is paused, started, game over...)
+    /// It keeps track of current state and also invoke events when state is changed
+    /// </summary>
+    
     public static bool isGameOver = false;
+    public static bool isSnakeMoving = false; // determines if player started the level by moving snake
     [HideInInspector] public static GameStates gameState {  get; private set; }
     public static event Action OnSceneLoaded;
     public static event Action OnStart; // event is called when game started, fresh from loading
     public static event Action OnGameOver; // event is called when game is over 
-    public static event Action OnPlaying;
+    public static event Action OnPlaying; // event is called when player started playing the level (snake is moving)
     public static event Action OnPause;
     public static event Action OnSceneRestart;
 
     private void Awake()
-    {        
+    {
+        isSnakeMoving = false; 
+        isGameOver = false;
         ChangeState(GameStates.Start);
     }
 
@@ -51,6 +59,7 @@ public class GameStateController : MonoBehaviour
         if (gameState == GameStates.Start) // prevents the game starting from other states than Start
         {
             ChangeState(GameStates.Playing);
+            isSnakeMoving = true;
         }        
     }
 
@@ -98,16 +107,27 @@ public class GameStateController : MonoBehaviour
     {
         OnPlaying?.Invoke();    
     }
-
-    public void ChangePauseState() // can be called by command or by button interaction, opens or closes pause menu
+    
+    public void ChangePauseState()
     {
+        /// <summary>
+        /// can be called by command or by button interaction, serves to pause the game
+        /// </summary>
+
         if (gameState == GameStates.PauseMenu && !isGameOver)
         {
-            ChangeState(GameStates.Playing);
+            if (isSnakeMoving)
+            {
+                ChangeState(GameStates.Playing);
+            }
+            else
+            {
+                ChangeState(GameStates.Start);
+            }
             return;
         }
 
-        if (gameState == GameStates.Playing)
+        if (gameState == GameStates.Playing || gameState == GameStates.Start)
         {
             ChangeState(GameStates.PauseMenu);
             return;
