@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class Grape : Consumable, ISpawnable
 {
@@ -7,8 +6,6 @@ public class Grape : Consumable, ISpawnable
     /// Grape slows down game tick for limited amount of time
     /// </summary>
 
-    public static event Action<Grape> OnGrapeConsumed;
-    public static event Action<Grape> OnGrapeDespawn;
     private int gameTicksSinceSpawn = 0;
 
     [HideInInspector] public float gameSpeedChange { get; private set; }
@@ -51,8 +48,7 @@ public class Grape : Consumable, ISpawnable
         gameTicksSinceSpawn++;
 
         if (gameTicksSinceSpawn >= GameData.gameData.grapeSpawnDuration)
-        {
-            OnGrapeDespawn?.Invoke(this);
+        {            
             parent.ClearChild();
             DespawnConsumable();
         }
@@ -61,8 +57,8 @@ public class Grape : Consumable, ISpawnable
     public override void Collision(ISpawnable collisionObject)
     {
         if (collisionObject == this)
-        {
-            OnGrapeConsumed?.Invoke(this);
+        {            
+            base.InvokeConsumableConsumedEvent();
             DespawnConsumable();
         }
     }

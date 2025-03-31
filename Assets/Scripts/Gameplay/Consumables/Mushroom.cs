@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class Mushroom : Consumable, ISpawnable
 {
@@ -7,8 +6,6 @@ public class Mushroom : Consumable, ISpawnable
     /// Mushroom reverts the movement of a snake
     /// </summary>
 
-    public static event Action<Mushroom> OnMushroomConsumed;
-    public static event Action<Mushroom> OnMushroomDespawn;
     private int gameTicksSinceSpawn = 0;
 
     private void Awake()
@@ -47,7 +44,6 @@ public class Mushroom : Consumable, ISpawnable
 
         if (gameTicksSinceSpawn >= GameData.gameData.mushroomSpawnDuration) // checks if it's time to despawn a mushroom
         {
-            OnMushroomDespawn?.Invoke(this);
             parent.ClearChild();
             DespawnConsumable();
         }
@@ -57,7 +53,7 @@ public class Mushroom : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {
-            OnMushroomConsumed?.Invoke(this);
+            base.InvokeConsumableConsumedEvent();
             DespawnConsumable();
         }
     }
@@ -68,7 +64,7 @@ public class Mushroom : Consumable, ISpawnable
     }
 
     public override void DespawnConsumable()
-    {        
+    {
         base.DespawnConsumable();
         gameTicksSinceSpawn = 0;
     }

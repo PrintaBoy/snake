@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class Acorn : Consumable, ISpawnable
 {
@@ -7,8 +6,6 @@ public class Acorn : Consumable, ISpawnable
     /// Acorn slowns down snake considerably
     /// </summary>
 
-    public static event Action<Acorn> OnAcornConsumed;
-    public static event Action<Acorn> OnAcornDespawn;
     private int gameTicksSinceSpawn = 0;
         
     [HideInInspector] public float snakeSpeedChange { get; private set; }
@@ -42,7 +39,6 @@ public class Acorn : Consumable, ISpawnable
 
         if (gameTicksSinceSpawn >= GameData.gameData.acornSpawnDuration)
         {
-            OnAcornDespawn?.Invoke(this);
             parent.ClearChild();
             DespawnConsumable();
         }
@@ -60,7 +56,7 @@ public class Acorn : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {
-            OnAcornConsumed?.Invoke(this);
+            base.InvokeConsumableConsumedEvent();
             DespawnConsumable();
         }
     }

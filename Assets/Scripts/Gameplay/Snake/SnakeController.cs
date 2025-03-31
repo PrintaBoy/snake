@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SnakeController : MonoBehaviour
 {
@@ -41,43 +42,36 @@ public class SnakeController : MonoBehaviour
     private void OnEnable()
     {
         GridController.OnGridMapGenerated += GridMapGenerated;
-        Apple.OnAppleConsumed += AppleConsumed;
-        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
-        Mushroom.OnMushroomConsumed += MushroomConsumed;
-        Acorn.OnAcornConsumed += AcornConsumed;
+        Consumable.OnConsumableConsumed += ConsummableConsumed;        
         TickController.OnSnakeTick += SnakeTick;
     }
 
     private void OnDisable()
     {
         GridController.OnGridMapGenerated -= GridMapGenerated;
-        Apple.OnAppleConsumed -= AppleConsumed;
-        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
-        Mushroom.OnMushroomConsumed -= MushroomConsumed;
-        Acorn.OnAcornConsumed -= AcornConsumed;
+        Consumable.OnConsumableConsumed -= ConsummableConsumed;        
         TickController.OnSnakeTick -= SnakeTick;
     }
 
-    private void MushroomConsumed(Mushroom mushroom)
-    {        
-        ReverseSnake();
-    }
-
-    private void AppleConsumed(Apple apple)
-    {        
-        ModifySnakeSegmentAmount(apple.addSnakeSegmentAmount);
-        ModifySnakeSpeedMultiplier(apple.snakeSpeedChange);
-    }
-
-    private void PumpkinConsumed (Pumpkin pumpkin)
+    private void ConsummableConsumed(ConsumableTypes consumableType)
     {
-        ModifySnakeSegmentAmount(pumpkin.removeSnakeSegmentAmount);
-    }
-
-    private void AcornConsumed (Acorn acorn)
-    {
-        ModifySnakeSpeedMultiplier(-acorn.snakeSpeedChange);
-    }
+        switch (consumableType)
+        {
+            case ConsumableTypes.Apple:
+                ModifySnakeSegmentAmount(GameData.gameData.appleAddSnakeSegmentAmount);
+                ModifySnakeSpeedMultiplier(GameData.gameData.appleSnakeSpeedChange);
+                break;
+            case ConsumableTypes.Acorn:
+                ModifySnakeSpeedMultiplier(-GameData.gameData.acornSnakeSpeedChange);
+                break;
+            case ConsumableTypes.Pumpkin:
+                ModifySnakeSegmentAmount(GameData.gameData.pumpkinRemoveSnakeSegmentAmount);
+                break;
+            case ConsumableTypes.Mushroom:
+                ReverseSnake();
+                break;
+        }
+    }   
 
     private void GridMapGenerated()
     {

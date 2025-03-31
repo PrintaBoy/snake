@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class ConsumableController : MonoBehaviour
+class ConsumableController : MonoBehaviour
 {
+    /// <summary>
+    /// This class spawns and keeps track of consumables    
+    /// </summary>
+    
     public static ConsumableController instance;
 
-    [HideInInspector] public List<Consumable> consumables;
+    public List<IConsumable> consumables {  get; private set; }
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
@@ -20,36 +24,21 @@ public class ConsumableController : MonoBehaviour
 
     private void Awake()
     {
+        consumables = new List<IConsumable>();
         instance = this;
     }
 
     private void OnEnable()
     {
-        SnakeController.OnSnakeSpawned += SnakeSpawned;        
-        Apple.OnAppleConsumed += AppleConsumed;
-        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
-        Pumpkin.OnPumpkinDespawn += PumpkinConsumed;
-        Mushroom.OnMushroomConsumed += MushrooomConsumed;
-        Mushroom.OnMushroomDespawn += MushrooomConsumed;
-        Acorn.OnAcornDespawn += AcornConsumed;
-        Acorn.OnAcornConsumed += AcornConsumed;
-        Grape.OnGrapeConsumed += GrapeConsumed;
-        Grape.OnGrapeDespawn += GrapeConsumed;
+        SnakeController.OnSnakeSpawned += SnakeSpawned;   
+        Consumable.OnConsumableConsumed += ConsumableConsumed;        
         TickController.OnGameTick += GameTick;
     }
 
     private void OnDisable()
     {
-        SnakeController.OnSnakeSpawned -= SnakeSpawned;        
-        Apple.OnAppleConsumed -= AppleConsumed;
-        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
-        Pumpkin.OnPumpkinDespawn -= PumpkinConsumed;
-        Mushroom.OnMushroomConsumed -= MushrooomConsumed;
-        Mushroom.OnMushroomDespawn -= MushrooomConsumed;
-        Acorn.OnAcornDespawn -= AcornConsumed;
-        Acorn.OnAcornConsumed -= AcornConsumed;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
-        Grape.OnGrapeDespawn -= GrapeConsumed;
+        SnakeController.OnSnakeSpawned -= SnakeSpawned;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -96,29 +85,16 @@ public class ConsumableController : MonoBehaviour
         }
     }
 
-    private void AppleConsumed(Apple apple)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        consumables.Remove(apple);        
-    }
-
-    private void PumpkinConsumed(Pumpkin pumpkin)
-    {
-        consumables.Remove(pumpkin);        
-    }
-
-    private void MushrooomConsumed(Mushroom mushroom)
-    {
-        consumables.Remove(mushroom);        
-    }
-
-    private void AcornConsumed(Acorn acorn)
-    {
-        consumables.Remove(acorn);
-    }
-
-    private void GrapeConsumed(Grape grape)
-    {
-        consumables.Remove(grape);
+        foreach (IConsumable consumableInList in consumables)
+        {
+            if (consumableInList.GetConsumableType() == consumableType)
+            {
+                consumables.Remove(consumableInList);
+                return;
+            }
+        }
     }
 
     private void SnakeSpawned() // either loads consumables from save or starts as new game
@@ -163,10 +139,10 @@ public class ConsumableController : MonoBehaviour
     {
         if (spawnedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
         {
-            spawnable.SetupSpawnable(generatedConsumableTile);
+            spawnable.SetupSpawnable(generatedConsumableTile);            
         }
 
-        if (spawnedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated Consumable to list
+        if (spawnedConsumable.TryGetComponent<IConsumable>(out IConsumable consumable)) // add generated Consumable to list
         {
             consumables.Add(consumable);
         }

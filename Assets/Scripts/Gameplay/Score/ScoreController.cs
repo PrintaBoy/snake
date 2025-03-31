@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreController : MonoBehaviour
 {
@@ -16,20 +17,12 @@ public class ScoreController : MonoBehaviour
 
     private void OnEnable()
     {
-        Apple.OnAppleConsumed += AppleConsumed;
-        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
-        Mushroom.OnMushroomConsumed += MushroomConsumed;
-        Acorn.OnAcornConsumed += AcornConsumed;
-        Grape.OnGrapeConsumed += GrapeConsumed;
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
     }
 
     private void OnDisable()
     {
-        Apple.OnAppleConsumed -= AppleConsumed;
-        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
-        Mushroom.OnMushroomConsumed -= MushroomConsumed;
-        Acorn.OnAcornConsumed -= AcornConsumed;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
     }
 
     private void Awake()
@@ -45,35 +38,32 @@ public class ScoreController : MonoBehaviour
         OnScoreUpdated?.Invoke();
     }
 
-    private void PumpkinConsumed(Pumpkin pumpkin)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        pumpkinsConsumed++;
-        ModifyScoreValue(pumpkin.scoreValue);        
-    }
-
-    private void AppleConsumed(Apple apple)
-    {
-        applesConsumed++;
-        ModifyScoreValue(apple.scoreValue);        
-    }
-
-    private void MushroomConsumed(Mushroom mushroom)
-    {
-        mushroomsConsumed++;
-        ModifyScoreValue(mushroom.scoreValue);  
-    }
-
-    private void AcornConsumed(Acorn acorn)
-    {
-        acornsConsumed++;
-        ModifyScoreValue(acorn.scoreValue);
-    }
-
-    private void GrapeConsumed(Grape grape)
-    {
-        grapesConsumed++;
-        ModifyScoreValue(grape.scoreValue);
-    }
+        switch (consumableType)
+        {
+            case ConsumableTypes.Apple:
+                applesConsumed++;
+                ModifyScoreValue(GameData.gameData.appleScoreValue);
+                break;
+            case ConsumableTypes.Acorn:
+                acornsConsumed++;
+                ModifyScoreValue(GameData.gameData.acornScoreValue);
+                break;
+            case ConsumableTypes.Grape: 
+                grapesConsumed++;
+                ModifyScoreValue(GameData.gameData.grapeScoreValue);
+                break;
+            case ConsumableTypes.Mushroom:
+                mushroomsConsumed++;
+                ModifyScoreValue(GameData.gameData.mushroomScoreValue);
+                break;
+            case ConsumableTypes.Pumpkin:
+                pumpkinsConsumed++;
+                ModifyScoreValue(GameData.gameData.pumpkinScoreValue);
+                break;
+        }
+    }    
 
     public void ModifyScoreValue(int amount)
     {

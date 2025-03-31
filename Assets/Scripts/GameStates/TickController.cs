@@ -33,7 +33,8 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying += EnableTickTimer;
         GameStateController.OnGameOver += DisableTickTimer;
         GameStateController.OnPause += DisableTickTimer;
-        Grape.OnGrapeConsumed += GrapeConsumed;
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
+        
     }
 
     private void OnDisable()
@@ -42,7 +43,7 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying -= EnableTickTimer;
         GameStateController.OnGameOver -= DisableTickTimer;
         GameStateController.OnPause -= DisableTickTimer;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
     }
 
     private void Start()
@@ -105,9 +106,15 @@ public class TickController : MonoBehaviour
         }
     }
 
-    private void GrapeConsumed(Grape grape)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        ModifyGameTickSpeedMultiplier(-grape.gameSpeedChange, grape.gameSpeedChangeDuration);
+        if (consumableType == ConsumableTypes.Grape)
+        {
+            ModifyGameTickSpeedMultiplier(-GameData.gameData.grapeGameSpeedChange, GameData.gameData.grapeGameSpeedChangeDuration);
+        } else
+        {
+            return;
+        }
     }
 
     private void ResetGameTickTimer()

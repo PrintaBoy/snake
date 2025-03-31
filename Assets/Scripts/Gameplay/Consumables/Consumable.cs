@@ -1,12 +1,13 @@
 using UnityEngine;
 using System;
 
-public class Consumable : MonoBehaviour
+public class Consumable : MonoBehaviour, IConsumable
 {
     [HideInInspector] public IGridTile parent;
     [SerializeField] private GameObject consumeParticle;
     [SerializeField] private ConsumableTypes consumableType;
     [HideInInspector] public int scoreValue;
+    public static event Action<ConsumableTypes> OnConsumableConsumed;
 
     public virtual void OnEnable()
     {
@@ -32,8 +33,13 @@ public class Consumable : MonoBehaviour
         return consumableType;
     }
 
-    public virtual void DespawnConsumable()
+    public virtual void InvokeConsumableConsumedEvent()
     {
+        OnConsumableConsumed?.Invoke(consumableType);        
+    }
+
+    public virtual void DespawnConsumable()
+    {        
         parent = null;
         gameObject.SetActive(false);
         Instantiate(consumeParticle, gameObject.transform.position, gameObject.transform.rotation); // spawn consume particle
