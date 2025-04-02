@@ -8,6 +8,7 @@ public class Consumable : MonoBehaviour, IConsumable
     [SerializeField] private ConsumableTypes consumableType;
     [HideInInspector] public int scoreValue;
     public static event Action<ConsumableTypes> OnConsumableConsumed;
+    public static event Action<ConsumableTypes> OnConsumableDespawned;
 
     public virtual void OnEnable()
     {
@@ -43,5 +44,6 @@ public class Consumable : MonoBehaviour, IConsumable
         parent = null;
         gameObject.SetActive(false);
         Instantiate(consumeParticle, gameObject.transform.position, gameObject.transform.rotation); // spawn consume particle
+        OnConsumableDespawned?.Invoke(consumableType);
     }
 }

@@ -17,7 +17,8 @@ public class Apple : Consumable, ISpawnable
     public override void Collision(ISpawnable collisionObject)
     {
         if (collisionObject == this)
-        {            
+        {
+            base.InvokeConsumableConsumedEvent();
             DespawnConsumable();
         }
     }
@@ -27,14 +28,8 @@ public class Apple : Consumable, ISpawnable
         parent = appleParentTile;
     }
 
-    public override Vector2Int GetParentGridAddress()
-    {
-        return parent.GetGridTileAddress();
-    }
-
     public override void DespawnConsumable()
-    {        
-        base.InvokeConsumableConsumedEvent();        
+    {             
         base.DespawnConsumable();    
     }
 }

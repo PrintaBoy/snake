@@ -31,7 +31,8 @@ class ConsumableController : MonoBehaviour
     private void OnEnable()
     {
         SnakeController.OnSnakeSpawned += SnakeSpawned;   
-        Consumable.OnConsumableConsumed += ConsumableConsumed;        
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
+        Consumable.OnConsumableDespawned += ConsumableConsumed;
         TickController.OnGameTick += GameTick;
     }
 
@@ -39,6 +40,7 @@ class ConsumableController : MonoBehaviour
     {
         SnakeController.OnSnakeSpawned -= SnakeSpawned;
         Consumable.OnConsumableConsumed -= ConsumableConsumed;
+        Consumable.OnConsumableDespawned -= ConsumableConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -92,9 +94,10 @@ class ConsumableController : MonoBehaviour
             if (consumableInList.GetConsumableType() == consumableType)
             {
                 consumables.Remove(consumableInList);
+                Debug.Log(consumables);
                 return;
             }
-        }
+        }        
     }
 
     private void SnakeSpawned() // either loads consumables from save or starts as new game
@@ -137,15 +140,8 @@ class ConsumableController : MonoBehaviour
 
     private void SetupConsumable(GameObject spawnedConsumable, IGridTile generatedConsumableTile)
     {
-        if (spawnedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
-        {
-            spawnable.SetupSpawnable(generatedConsumableTile);            
-        }
-
-        if (spawnedConsumable.TryGetComponent<IConsumable>(out IConsumable consumable)) // add generated Consumable to list
-        {
-            consumables.Add(consumable);
-        }
+        spawnedConsumable.GetComponent<ISpawnable>().SetupSpawnable(generatedConsumableTile); // setup spawned consumable        
+        consumables.Add(spawnedConsumable.GetComponent<IConsumable>()); // add generated Consumable to list        
     }
 
     private bool CanSpawnConsumable(ConsumableTypes consumableType)

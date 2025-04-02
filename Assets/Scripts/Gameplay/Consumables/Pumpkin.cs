@@ -38,11 +38,6 @@ public class Pumpkin : Consumable, ISpawnable
         }
     }
 
-    public override Vector2Int GetParentGridAddress()
-    {
-        return parent.GetGridTileAddress();
-    }
-
     public void SetupSpawnable(IGridTile parentTile)
     {
         parent = parentTile;
