@@ -2,18 +2,22 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 
-public class GridController : MonoBehaviour
+public class GridController : MonoBehaviour, IGridController
 {
+    /// <summary>
+    /// Generates and maintains grid in snake level
+    /// </summary>
+    
     public static GridController instance; // Singleton
 
-    public GameObject gridParent;    
+    public GameObject gridParent; // keeps reference of game object under which all grid tiles are spawned
     [SerializeField] private GameObject gridTilePrefab;    
-    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>(); // first value is address
+    public Dictionary<Vector2Int, IGridTile> gridDictionary = new Dictionary<Vector2Int, IGridTile>(); // keeps all grid tiles and it's addresses in dictionary
 
     public static event Action OnGridGenerated; // invokes when all grid tiles are generated
     public static event Action OnGridMapGenerated; // invokes when all grid tiles have created map of adjecent grid tiles
 
-    private int gridTilesMapReady; // counts the amount of tiles which has map of adjecent tiles ready
+    private int gridTilesMapReady; // counts the amount of tiles with map of adjecent tiles already created
 
     private void Awake()
     {
@@ -29,20 +33,25 @@ public class GridController : MonoBehaviour
         GenerateGrid();        
     }
 
-    private void GenerateGrid()
-    {
-        if (gridTilePrefab.TryGetComponent<IGridTile>(out IGridTile gridTile))
+    private void GenerateGrid() // creates whole grid for SnakeLevel
+    {   
+        GameData gDataRef = GameData.gameData; // here to make code easier to read
+        for (int i = 0; i < gDataRef.levelWidth; i++)
         {
-            gridTile.GenerateGridTile();          
-        }
-        else
-        {
-            Debug.LogError(gridTile + "does not have IGridTile interface");
+            for (int j = 0; j < gDataRef.levelHeight; j++)
+            {
+                GameObject generatedTile = Instantiate(gridTilePrefab, new Vector3((gDataRef.generateLevelStartPoint.x) + (gDataRef.gridSize * i), 0, (gDataRef.generateLevelStartPoint.z) + (gDataRef.gridSize * j)), gameObject.transform.rotation);
+                generatedTile.GetComponent<IGridTile>().SetupGridTile(new Vector2Int(i, j));
+            }
         }
     }   
 
     public void AddToGridDictionary(Vector2Int address, IGridTile gridTile) 
     {
+        /// <summary>
+        /// When called this method will grid tile into gridDictionary with grid tile address
+        /// </summary>
+
         gridDictionary.Add(address, gridTile);
 
         if (gridDictionary.Count >= GameData.gameData.levelWidth * GameData.gameData.levelHeight) // checks if every generated GridTile is in dictionary
@@ -53,6 +62,11 @@ public class GridController : MonoBehaviour
 
     public void AdjecentTilesMapGenerated()
     {
+        /// <summary>
+        /// Called when grid tile creates it's map of adjecent tiles
+        /// When all tiles created their maps it will invoke an event
+        /// </summary>
+
         gridTilesMapReady++;
         if (gridTilesMapReady >= GameData.gameData.levelWidth * GameData.gameData.levelHeight)
         {
@@ -60,15 +74,19 @@ public class GridController : MonoBehaviour
         }
     }
 
-    public IGridTile GetTile(Vector2Int address)
+    public IGridTile GetTileOnAddress(Vector2Int address)
     {
+        /// <summary>
+        /// Returns grid tile on given address        
+        /// </summary>
         return gridDictionary[address];
     }
 
-    public IGridTile GetEmptyTile() // returns empty grid tile at random position
+    public IGridTile GetRandomEmptyTile() // returns empty grid tile at random position
     {        
         IGridTile emptyTile = null;
         bool emptyTileFound = false;
+
         while (!emptyTileFound)
         {
             gridDictionary.TryGetValue(GetRandomGridAddress(), out IGridTile possiblyEmptyTile);
@@ -77,24 +95,27 @@ public class GridController : MonoBehaviour
                 emptyTile = possiblyEmptyTile;
                 emptyTileFound = true;
             }
-        }        
+        }      
+        
         return emptyTile;
     }
 
-
     public IGridTile GetEmptyTileOutsideSafeZone(int safeZoneRadius) 
     {
-        // returns empty grid tile that is outside of snake head safe zone
-        // this is to prevent spawning obstacles and consumables right in front of snake head making collision unavoidable and unfair
+        /// <summary>
+        /// returns empty grid tile that is outside of snake head safe zone (safe zone radius is given in parameter)
+        /// this is to prevent spawning obstacles and consumables right in front of snake head making collision unavoidable and unfair    
+        /// </summary>
 
         IGridTile emptyTileOutsideSafeZone = null;
         bool emptyTileOutsideSafeZoneFound = false;
         IGridTile possiblyEmptyTile;
+
         List<IGridTile> safeZone = CreateSafeZone(SnakeController.instance.GetSnakeHeadTile(), safeZoneRadius);
 
         while (!emptyTileOutsideSafeZoneFound)
         {
-            possiblyEmptyTile = GetEmptyTile();
+            possiblyEmptyTile = GetRandomEmptyTile();
 
             if (!safeZone.Contains(possiblyEmptyTile))
             {
@@ -110,9 +131,10 @@ public class GridController : MonoBehaviour
     {
         int gridTileX = UnityEngine.Random.Range(0, GameData.gameData.levelWidth);
         int gridTileY = UnityEngine.Random.Range(0, GameData.gameData.levelHeight);
-        Vector2Int randomGridAddress;
 
-        return randomGridAddress = (new Vector2Int(gridTileX, gridTileY));
+        Vector2Int randomGridAddress = (new Vector2Int(gridTileX, gridTileY));
+
+        return randomGridAddress;
     }
 
     private List<IGridTile> CreateSafeZone(IGridTile origin, int radius) // create and return list of IGridTiles that create safe zone around origin in radius

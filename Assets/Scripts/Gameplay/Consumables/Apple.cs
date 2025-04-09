@@ -23,7 +23,7 @@ public class Apple : Consumable, ISpawnable
         }
     }
 
-    public void ParentToTile(GridTile appleParentTile)
+    public void ParentToTile(IGridTile appleParentTile)
     {
         parent = appleParentTile;
     }

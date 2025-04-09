@@ -58,31 +58,31 @@ class ConsumableController : MonoBehaviour
     {
         if (appleTickCounter >= GameData.gameData.appleSpawnRate && CanSpawnConsumable(ConsumableTypes.Apple))
         {
-            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetRandomEmptyTile());
             appleTickCounter = 0;
         }
 
         if (pumpkinTickCounter >= GameData.gameData.pumpkinSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.GetRandomEmptyTile());
             pumpkinTickCounter = 0;
         }
 
         if (mushroomTickCounter >= GameData.gameData.mushroomSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.GetRandomEmptyTile());
             mushroomTickCounter = 0;
         }
 
         if (acornTickCounter >= GameData.gameData.acornSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.GetRandomEmptyTile());
             acornTickCounter = 0;   
         }
 
         if (grapeTickCounter >= GameData.gameData.grapeSpawnRate)
         {            
-            SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.GetRandomEmptyTile());
             grapeTickCounter = 0;
         }
     }
@@ -127,7 +127,7 @@ class ConsumableController : MonoBehaviour
             }            
         } else
         {
-            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile()); // here to spawn apple right at the beginning of the level
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetRandomEmptyTile()); // here to spawn apple right at the beginning of the level
         }        
     }
 

@@ -56,7 +56,7 @@ public class Acorn : Consumable, ISpawnable
         }
     }
 
-    public void ParentToTile(GridTile acornParentTile)
+    public void ParentToTile(IGridTile acornParentTile)
     {
         parent = acornParentTile;
     }

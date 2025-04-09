@@ -58,7 +58,7 @@ public class Grape : Consumable, ISpawnable
         }
     }
 
-    public void ParentToTile(GridTile grapeParentTile)
+    public void ParentToTile(IGridTile grapeParentTile)
     {
         parent = grapeParentTile;
     }

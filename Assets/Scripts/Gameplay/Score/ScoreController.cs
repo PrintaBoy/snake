@@ -4,6 +4,12 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreController : MonoBehaviour
 {
+    /// <summary>
+    /// Keeps track of current score, highest score and consumables consumed
+    /// It also invokes event in cases when current and highest score is changed
+    /// This class does not update GUI - GUI is handled by different class based on values stored in this class
+    /// </summary>
+
     public static int scoreCurrent {  get; private set; }
     public static int applesConsumed { get; private set; }
     public static int pumpkinsConsumed { get; private set; }
@@ -65,8 +71,13 @@ public class ScoreController : MonoBehaviour
         }
     }    
 
-    public void ModifyScoreValue(int amount)
+    private void ModifyScoreValue(int amount)
     {
+        /// <summary>
+        /// This method is used to modify score amount (it doesn't update GUI - this is handled by different class based on scoreCurrent value)
+        /// if current score is higher than highest score, event will be invoked
+        /// </summary>
+
         scoreCurrent += amount;
 
         if (scoreCurrent > scoreHighest)

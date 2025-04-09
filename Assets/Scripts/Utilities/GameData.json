@@ -40,74 +40,62 @@
     "rockSpawnDuration": 15,
     "rockMaxSpawnCount": 3,
     "rockGroundStateDuration": 4,
-    "isGameSaved": true,
-    "currentScore": 1500,
+    "isGameSaved": false,
+    "currentScore": 2200,
     "highestScore": 11200,
-    "snakeSegmentsAmount": 8,
-    "lastMoveDirection": 0,
+    "snakeSegmentsAmount": 0,
+    "lastMoveDirection": 3,
     "snakeSegmentsAddresses": [
         {
-            "x": 13,
-            "y": 6
-        },
-        {
-            "x": 13,
-            "y": 5
-        },
-        {
-            "x": 13,
-            "y": 4
-        },
-        {
-            "x": 13,
-            "y": 3
-        },
-        {
-            "x": 13,
-            "y": 2
-        },
-        {
-            "x": 13,
-            "y": 1
-        },
-        {
-            "x": 12,
-            "y": 1
-        },
-        {
-            "x": 11,
-            "y": 1
-        }
-    ],
-    "rockObstaclesAmount": 2,
-    "rockObstaclesAddresses": [
-        {
-            "x": 9,
-            "y": 4
-        },
-        {
-            "x": 7,
-            "y": 11
-        }
-    ],
-    "consumableListTypes": [
-        1,
-        4,
-        2
-    ],
-    "consumableListAddresses": [
-        {
-            "x": 19,
-            "y": 1
-        },
-        {
-            "x": 4,
+            "x": 0,
             "y": 0
         },
         {
-            "x": 19,
-            "y": 5
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
         }
     ],
-    "consumableListAmount": 3
+    "rockObstaclesAmount": 0,
+    "rockObstaclesAddresses": [
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "consumableListTypes": [
+        0,
+        0,
+        0
+    ],
+    "consumableListAddresses": [
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
+        },
+        {
+            "x": 0,
+            "y": 0
+        }
+    ],
+    "consumableListAmount": 0
 }
