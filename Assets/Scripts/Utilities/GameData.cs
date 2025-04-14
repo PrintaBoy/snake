@@ -4,6 +4,12 @@ using System;
 [System.Serializable]
 public class GameData
 {
+    /// <summary>
+    /// Keeps all data from GameDataJSON
+    /// Loads data from JSON
+    /// Keeps data to be saved to JSON
+    /// </summary>
+
     public static GameData gameData; // singleton
 
     // data for grid

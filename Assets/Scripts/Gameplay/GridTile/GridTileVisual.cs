@@ -2,9 +2,18 @@ using UnityEngine;
 
 public class GridTileVisual : MonoBehaviour
 {
+    /// <summary>
+    /// This script handles visual aspect of GridTile
+    /// </summary>
+    
     [SerializeField] private Material[] gridTileMaterials;
     [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private GridTile gridTileScript;
+    private IGridTile gridTileScript;
+
+    private void Awake()
+    {
+        gridTileScript = GetComponent<IGridTile>();
+    }
 
     private void OnEnable()
     {
@@ -23,7 +32,7 @@ public class GridTileVisual : MonoBehaviour
 
     private void ChangeGridMaterial()
     {
-        Vector2Int gridAddressRemainder = new Vector2Int(gridTileScript.gridAddress.x % 2, gridTileScript.gridAddress.y % 2);
+        Vector2Int gridAddressRemainder = new Vector2Int(gridTileScript.GetGridTileAddress().x % 2, gridTileScript.GetGridTileAddress().y % 2);
 
         if (gridAddressRemainder == new Vector2Int(0, 0) || gridAddressRemainder == new Vector2Int(1, 1))
         {

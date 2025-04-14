@@ -3,14 +3,19 @@ using System.Collections.Generic;
 
 public class ObstacleController : MonoBehaviour
 {
+    /// <summary>
+    /// This class handles everything concerning obstacles - spawning, despawning, obstacles setup and keeps track of spawned obstacles
+    /// </summary>
+
     public static ObstacleController instance;
     private int gameTickCounter;
 
-     public List<Rock> obstacles;
+    public List<IObstacle> obstacles { get; private set; }
     [SerializeField] private ObjectPool rockObjectPool;
 
     private void Awake()
     {
+        obstacles = new List<IObstacle>();
         instance = this;
     }
 
@@ -28,7 +33,7 @@ public class ObstacleController : MonoBehaviour
         SnakeController.OnSnakeSpawned -= SnakeSpawned;
     }
 
-    private void ObstacleDespawn(Rock obstacle)
+    private void ObstacleDespawn(IObstacle obstacle)
     {
         obstacles.Remove(obstacle);
     }
@@ -68,14 +73,7 @@ public class ObstacleController : MonoBehaviour
 
     private void SetupObstacle(GameObject spawnedObstacle, IGridTile spawnedObstacleTile)
     {
-        if (spawnedObstacle.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
-        {
-            spawnable.SetupSpawnable(spawnedObstacleTile);
-        }
-
-        if (spawnedObstacle.TryGetComponent<Rock>(out Rock obstacle)) // add generated Obstacle to list
-        {
-            obstacles.Add(obstacle);
-        }
+        spawnedObstacle.GetComponent<ISpawnable>().SetupSpawnable(spawnedObstacleTile);
+        obstacles.Add(spawnedObstacle.GetComponent<IObstacle>()); // add generated Obstacle to list        
     }
 }

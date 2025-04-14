@@ -10,7 +10,6 @@ public class TickController : MonoBehaviour
     /// Tick systems need to be separated for game design reasons (to properly implement slow mo, speeding up/slowing down snake, etc.)
     /// </summary>
 
-
     private bool tickTimerRunning = false;
     private bool isGameTickSpeedModified = false;
 
@@ -33,7 +32,8 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying += EnableTickTimer;
         GameStateController.OnGameOver += DisableTickTimer;
         GameStateController.OnPause += DisableTickTimer;
-        Grape.OnGrapeConsumed += GrapeConsumed;
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
+        
     }
 
     private void OnDisable()
@@ -42,7 +42,7 @@ public class TickController : MonoBehaviour
         GameStateController.OnPlaying -= EnableTickTimer;
         GameStateController.OnGameOver -= DisableTickTimer;
         GameStateController.OnPause -= DisableTickTimer;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
     }
 
     private void Start()
@@ -89,8 +89,7 @@ public class TickController : MonoBehaviour
     {
         gameTickSpeedMultiplier += modifyAmount;
         gameTickModifiedDuration = gameTickSpeedChangeDuration;
-        isGameTickSpeedModified = true;
-        Debug.Log(gameTickSpeedMultiplier);
+        isGameTickSpeedModified = true;        
     }
     
     private void ModifyGameSpeedCounter() // this method counts how long the game speed should remain modified. Resets the game speed back once it expires
@@ -100,14 +99,16 @@ public class TickController : MonoBehaviour
         {
             gameTickSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
             isGameTickSpeedModified = false;
-            gameTickModifiedTickCounter = 0;
-            Debug.Log(gameTickSpeedMultiplier);
+            gameTickModifiedTickCounter = 0;            
         }
     }
 
-    private void GrapeConsumed(Grape grape)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        ModifyGameTickSpeedMultiplier(-grape.gameSpeedChange, grape.gameSpeedChangeDuration);
+        if (consumableType == ConsumableTypes.Grape)
+        {
+            ModifyGameTickSpeedMultiplier(-GameData.gameData.grapeGameSpeedChange, GameData.gameData.grapeGameSpeedChangeDuration);
+        }
     }
 
     private void ResetGameTickTimer()

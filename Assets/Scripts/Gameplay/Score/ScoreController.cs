@@ -1,8 +1,15 @@
 using UnityEngine;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ScoreController : MonoBehaviour
 {
+    /// <summary>
+    /// Keeps track of current score, highest score and consumables consumed
+    /// It also invokes event in cases when current and highest score is changed
+    /// This class does not update GUI - GUI is handled by different class based on values stored in this class
+    /// </summary>
+
     public static int scoreCurrent {  get; private set; }
     public static int applesConsumed { get; private set; }
     public static int pumpkinsConsumed { get; private set; }
@@ -16,20 +23,12 @@ public class ScoreController : MonoBehaviour
 
     private void OnEnable()
     {
-        Apple.OnAppleConsumed += AppleConsumed;
-        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
-        Mushroom.OnMushroomConsumed += MushroomConsumed;
-        Acorn.OnAcornConsumed += AcornConsumed;
-        Grape.OnGrapeConsumed += GrapeConsumed;
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
     }
 
     private void OnDisable()
     {
-        Apple.OnAppleConsumed -= AppleConsumed;
-        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
-        Mushroom.OnMushroomConsumed -= MushroomConsumed;
-        Acorn.OnAcornConsumed -= AcornConsumed;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
     }
 
     private void Awake()
@@ -45,38 +44,40 @@ public class ScoreController : MonoBehaviour
         OnScoreUpdated?.Invoke();
     }
 
-    private void PumpkinConsumed(Pumpkin pumpkin)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        pumpkinsConsumed++;
-        ModifyScoreValue(pumpkin.scoreValue);        
-    }
+        switch (consumableType)
+        {
+            case ConsumableTypes.Apple:
+                applesConsumed++;
+                ModifyScoreValue(GameData.gameData.appleScoreValue);
+                break;
+            case ConsumableTypes.Acorn:
+                acornsConsumed++;
+                ModifyScoreValue(GameData.gameData.acornScoreValue);
+                break;
+            case ConsumableTypes.Grape: 
+                grapesConsumed++;
+                ModifyScoreValue(GameData.gameData.grapeScoreValue);
+                break;
+            case ConsumableTypes.Mushroom:
+                mushroomsConsumed++;
+                ModifyScoreValue(GameData.gameData.mushroomScoreValue);
+                break;
+            case ConsumableTypes.Pumpkin:
+                pumpkinsConsumed++;
+                ModifyScoreValue(GameData.gameData.pumpkinScoreValue);
+                break;
+        }
+    }    
 
-    private void AppleConsumed(Apple apple)
+    private void ModifyScoreValue(int amount)
     {
-        applesConsumed++;
-        ModifyScoreValue(apple.scoreValue);        
-    }
+        /// <summary>
+        /// This method is used to modify score amount (it doesn't update GUI - this is handled by different class based on scoreCurrent value)
+        /// if current score is higher than highest score, event will be invoked
+        /// </summary>
 
-    private void MushroomConsumed(Mushroom mushroom)
-    {
-        mushroomsConsumed++;
-        ModifyScoreValue(mushroom.scoreValue);  
-    }
-
-    private void AcornConsumed(Acorn acorn)
-    {
-        acornsConsumed++;
-        ModifyScoreValue(acorn.scoreValue);
-    }
-
-    private void GrapeConsumed(Grape grape)
-    {
-        grapesConsumed++;
-        ModifyScoreValue(grape.scoreValue);
-    }
-
-    public void ModifyScoreValue(int amount)
-    {
         scoreCurrent += amount;
 
         if (scoreCurrent > scoreHighest)

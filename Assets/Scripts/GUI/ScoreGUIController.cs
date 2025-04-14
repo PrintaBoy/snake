@@ -8,7 +8,6 @@ public class ScoreGUIController : MonoBehaviour
     /// It takes data from ScoreController class
     /// </summary>
 
-
     [SerializeField] private TMP_Text scoreValueText;
     [SerializeField] private TMP_Text scoreHighestValueText;
     [SerializeField] private TMP_Text applesValueText;

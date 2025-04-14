@@ -5,11 +5,13 @@ using UnityEditor;
 public class SceneController : MonoBehaviour
 {
     /// <summary>
+    /// This class manages loading, unloading and restarting scenes
     /// Scene indexes
     /// 0 = Bootstrapper
     /// 1 = MainMenu
     /// 2 = SnakeLevel
     /// </summary>
+    
     private int loadSceneIndex = 1; // this variable is changed based on which scene to load, default is MainMenu
     public static bool isNewGame; // if true, player started new game. If false, player continues previous saved game
 
@@ -38,7 +40,7 @@ public class SceneController : MonoBehaviour
         LoadScene(loadSceneIndex);
     }
 
-    public void ChangeLoadSceneIndex(int sceneIndex)
+    private void ChangeLoadSceneIndex(int sceneIndex) // to change a scene it is important to first change loadSceneIndex
     {
         loadSceneIndex = sceneIndex;
     }

@@ -2216,7 +2216,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c581f14e77aba714e8b8328a5cf66cf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakeSegments: []
   snakeSegmentPrefab: {fileID: 5235585412816339680, guid: a2126a6b9692cae4fa7bdf37bce98a89, type: 3}
   lastCommandDirection: 3
 --- !u!1 &410087039
@@ -3713,7 +3712,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8027b6136f9de894e81f237d53d613d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  consumables: []
   appleObjectPool: {fileID: 1930521440}
   pumpkinObjectPool: {fileID: 1617202870}
   mushroomObjectPool: {fileID: 497830208}
@@ -9296,7 +9294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ccbb99054943b48ba0f9264efae8cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacles: []
   rockObjectPool: {fileID: 1378593836}
 --- !u!1 &1554334525
 GameObject:

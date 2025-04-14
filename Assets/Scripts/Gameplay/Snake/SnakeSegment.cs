@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class SnakeSegment : MonoBehaviour, ISpawnable
+public class SnakeSegment : MonoBehaviour, ISpawnable, ISnakeSegment
 {
     private IGridTile parent;
     private IGridTile previousParent;
@@ -34,7 +34,6 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         if (collisionObject == this)
         {
             OnSnakeSegmentCollision?.Invoke();
-            // TODO disable snake segment the snake bit into
         }        
     }
 
@@ -51,7 +50,7 @@ public class SnakeSegment : MonoBehaviour, ISpawnable
         gameObject.transform.position = tileToMoveTo.gameObject.transform.position;
     } 
 
-    public void ParentToTile(GridTile snakeParentTile)
+    public void ParentToTile(IGridTile snakeParentTile)
     {
         previousParent = parent;
         parent = snakeParentTile;        

@@ -1,10 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class ConsumableController : MonoBehaviour
+class ConsumableController : MonoBehaviour
 {
+    /// <summary>
+    /// This class spawns and keeps track of consumables    
+    /// </summary>
+    
     public static ConsumableController instance;
 
-    [HideInInspector] public List<Consumable> consumables;
+    public List<IConsumable> consumables {  get; private set; }
     [SerializeField] private ObjectPool appleObjectPool;
     [SerializeField] private ObjectPool pumpkinObjectPool;
     [SerializeField] private ObjectPool mushroomObjectPool;
@@ -20,36 +24,23 @@ public class ConsumableController : MonoBehaviour
 
     private void Awake()
     {
+        consumables = new List<IConsumable>();
         instance = this;
     }
 
     private void OnEnable()
     {
-        SnakeController.OnSnakeSpawned += SnakeSpawned;        
-        Apple.OnAppleConsumed += AppleConsumed;
-        Pumpkin.OnPumpkinConsumed += PumpkinConsumed;
-        Pumpkin.OnPumpkinDespawn += PumpkinConsumed;
-        Mushroom.OnMushroomConsumed += MushrooomConsumed;
-        Mushroom.OnMushroomDespawn += MushrooomConsumed;
-        Acorn.OnAcornDespawn += AcornConsumed;
-        Acorn.OnAcornConsumed += AcornConsumed;
-        Grape.OnGrapeConsumed += GrapeConsumed;
-        Grape.OnGrapeDespawn += GrapeConsumed;
+        SnakeController.OnSnakeSpawned += SnakeSpawned;   
+        Consumable.OnConsumableConsumed += ConsumableConsumed;
+        Consumable.OnConsumableDespawned += ConsumableConsumed;
         TickController.OnGameTick += GameTick;
     }
 
     private void OnDisable()
     {
-        SnakeController.OnSnakeSpawned -= SnakeSpawned;        
-        Apple.OnAppleConsumed -= AppleConsumed;
-        Pumpkin.OnPumpkinConsumed -= PumpkinConsumed;
-        Pumpkin.OnPumpkinDespawn -= PumpkinConsumed;
-        Mushroom.OnMushroomConsumed -= MushrooomConsumed;
-        Mushroom.OnMushroomDespawn -= MushrooomConsumed;
-        Acorn.OnAcornDespawn -= AcornConsumed;
-        Acorn.OnAcornConsumed -= AcornConsumed;
-        Grape.OnGrapeConsumed -= GrapeConsumed;
-        Grape.OnGrapeDespawn -= GrapeConsumed;
+        SnakeController.OnSnakeSpawned -= SnakeSpawned;
+        Consumable.OnConsumableConsumed -= ConsumableConsumed;
+        Consumable.OnConsumableDespawned -= ConsumableConsumed;
         TickController.OnGameTick -= GameTick;
     }
 
@@ -67,58 +58,46 @@ public class ConsumableController : MonoBehaviour
     {
         if (appleTickCounter >= GameData.gameData.appleSpawnRate && CanSpawnConsumable(ConsumableTypes.Apple))
         {
-            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetRandomEmptyTile());
             appleTickCounter = 0;
         }
 
         if (pumpkinTickCounter >= GameData.gameData.pumpkinSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(pumpkinObjectPool), GridController.instance.GetRandomEmptyTile());
             pumpkinTickCounter = 0;
         }
 
         if (mushroomTickCounter >= GameData.gameData.mushroomSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(mushroomObjectPool), GridController.instance.GetRandomEmptyTile());
             mushroomTickCounter = 0;
         }
 
         if (acornTickCounter >= GameData.gameData.acornSpawnRate)
         {         
-            SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(acornObjectPool), GridController.instance.GetRandomEmptyTile());
             acornTickCounter = 0;   
         }
 
         if (grapeTickCounter >= GameData.gameData.grapeSpawnRate)
         {            
-            SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.GetEmptyTile());
+            SetupConsumable(GenerateConsumable(grapeObjectPool), GridController.instance.GetRandomEmptyTile());
             grapeTickCounter = 0;
         }
     }
 
-    private void AppleConsumed(Apple apple)
+    private void ConsumableConsumed(ConsumableTypes consumableType)
     {
-        consumables.Remove(apple);        
-    }
-
-    private void PumpkinConsumed(Pumpkin pumpkin)
-    {
-        consumables.Remove(pumpkin);        
-    }
-
-    private void MushrooomConsumed(Mushroom mushroom)
-    {
-        consumables.Remove(mushroom);        
-    }
-
-    private void AcornConsumed(Acorn acorn)
-    {
-        consumables.Remove(acorn);
-    }
-
-    private void GrapeConsumed(Grape grape)
-    {
-        consumables.Remove(grape);
+        foreach (IConsumable consumableInList in consumables)
+        {
+            if (consumableInList.GetConsumableType() == consumableType)
+            {
+                consumables.Remove(consumableInList);
+                Debug.Log(consumables);
+                return;
+            }
+        }        
     }
 
     private void SnakeSpawned() // either loads consumables from save or starts as new game
@@ -148,7 +127,7 @@ public class ConsumableController : MonoBehaviour
             }            
         } else
         {
-            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetEmptyTile()); // here to spawn apple right at the beginning of the level
+            SetupConsumable(GenerateConsumable(appleObjectPool), GridController.instance.GetRandomEmptyTile()); // here to spawn apple right at the beginning of the level
         }        
     }
 
@@ -161,15 +140,8 @@ public class ConsumableController : MonoBehaviour
 
     private void SetupConsumable(GameObject spawnedConsumable, IGridTile generatedConsumableTile)
     {
-        if (spawnedConsumable.TryGetComponent<ISpawnable>(out ISpawnable spawnable)) // setup spawned consumable
-        {
-            spawnable.SetupSpawnable(generatedConsumableTile);
-        }
-
-        if (spawnedConsumable.TryGetComponent<Consumable>(out Consumable consumable)) // add generated Consumable to list
-        {
-            consumables.Add(consumable);
-        }
+        spawnedConsumable.GetComponent<ISpawnable>().SetupSpawnable(generatedConsumableTile); // setup spawned consumable        
+        consumables.Add(spawnedConsumable.GetComponent<IConsumable>()); // add generated Consumable to list        
     }
 
     private bool CanSpawnConsumable(ConsumableTypes consumableType)

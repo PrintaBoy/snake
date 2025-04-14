@@ -2,8 +2,7 @@ using UnityEngine;
 
 public interface IGridTile
 {
-    GameObject gameObject { get; }
-    void GenerateGridTile();      
+    GameObject gameObject { get; }  
     IGridTile GetAdjecentTile(Directions direction);
     void MapAdjecentTiles();   
 

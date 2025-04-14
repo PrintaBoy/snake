@@ -1,9 +1,16 @@
 using UnityEngine;
 using System;
 
-public class Rock : MonoBehaviour, ISpawnable
+public class Rock : MonoBehaviour, ISpawnable, IObstacle
 {
-    private IGridTile parent;
+    /// <summary>
+    /// Rock is type of spawnable and obstacle object
+    /// Can be spawned by obstacle controller if conditions are met
+    /// Can cause game over if snake collides with it
+    /// Has two states - ground and raised. Ground state is harmless before it turns into raised
+    /// </summary>
+
+    [HideInInspector] public IGridTile parent;
     private int gameTicksSinceSpawn = 0; // keeps track of gameTicks that have passed since spawn
 
     [SerializeField] private GameObject groundStateVisual; 
@@ -42,6 +49,11 @@ public class Rock : MonoBehaviour, ISpawnable
         }
     }
 
+    public Vector2Int GetParentGridAddress()
+    {
+        return parent.GetGridTileAddress();
+    }
+
     private void ToggleRockStateVisual()
     {
         if (isRaised)
@@ -75,19 +87,13 @@ public class Rock : MonoBehaviour, ISpawnable
             } else
             {
                 DespawnRock();
-            }
-            
+            }            
         }
     }
 
-    public void ParentToTile(GridTile obstacleParentTile)
+    public void ParentToTile(IGridTile obstacleParentTile)
     {
         parent = obstacleParentTile;
-    }
-
-    public Vector2Int GetParentGridAddress()
-    {
-        return parent.GetGridTileAddress();
     }
 
     private void DespawnRock()

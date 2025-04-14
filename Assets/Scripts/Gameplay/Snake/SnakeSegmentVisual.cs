@@ -4,7 +4,12 @@ public class SnakeSegmentVisual : MonoBehaviour
 {
     [SerializeField] private Material[] snakeSegmentMaterials;
     [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private SnakeSegment snakeSegmentScript;
+    private ISnakeSegment snakeSegmentScript;
+
+    private void Awake()
+    {
+        snakeSegmentScript = GetComponent<ISnakeSegment>();
+    }
 
     private void OnEnable()
     {

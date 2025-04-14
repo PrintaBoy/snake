@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 public class Pumpkin : Consumable, ISpawnable
 {
@@ -7,8 +6,6 @@ public class Pumpkin : Consumable, ISpawnable
     /// Pumpkin removes existing snake segments and adds score
     /// </summary>
 
-    public static event Action<Pumpkin> OnPumpkinConsumed;
-    public static event Action<Pumpkin> OnPumpkinDespawn;
     private int gameTicksSinceSpawn = 0;
 
     [HideInInspector] public int removeSnakeSegmentAmount;
@@ -36,15 +33,9 @@ public class Pumpkin : Consumable, ISpawnable
 
         if (gameTicksSinceSpawn >= GameData.gameData.pumpkinSpawnDuration) // checks if it's time to despawn a pumpkin
         {
-            OnPumpkinDespawn?.Invoke(this);
-            parent.ClearChild(); // when pumpkin is not consumed by apple the parent tile needs to clear it's child
+            parent.ClearChild(); // when pumpkin is not consumed by snake the parent tile needs to clear it's child
             DespawnConsumable();
         }
-    }
-
-    public override Vector2Int GetParentGridAddress()
-    {
-        return parent.GetGridTileAddress();
     }
 
     public void SetupSpawnable(IGridTile parentTile)
@@ -59,12 +50,12 @@ public class Pumpkin : Consumable, ISpawnable
     {
         if (collisionObject == this)
         {
-            OnPumpkinConsumed?.Invoke(this);
+            base.InvokeConsumableConsumedEvent();
             DespawnConsumable();
         }
     }
 
-    public void ParentToTile(GridTile appleParentTile)
+    public void ParentToTile(IGridTile appleParentTile)
     {
         parent = appleParentTile;
     }

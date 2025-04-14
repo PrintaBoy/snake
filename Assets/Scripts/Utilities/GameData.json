@@ -23,15 +23,15 @@
     "pumpkinRemoveSnakeSegmentAmount": 1,
     "pumpkinScoreValue": 200,
     "pumpkinSpawnRate": 30,
-    "pumpkinSpawnDuration": 6,
+    "pumpkinSpawnDuration": 8,
     "mushroomScoreValue": 1000,
     "mushroomSpawnRate": 13,
     "mushroomSpawnDuration": 10,
-    "acornSnakeSpeedChange": 0.7,
+    "acornSnakeSpeedChange": 0.699999988079071,
     "acornScoreValue": 500,
     "acornSpawnRate": 25,
     "acornSpawnDuration": 8,
-    "grapeGameSpeedChange": 0.9,
+    "grapeGameSpeedChange": 0.8999999761581421,
     "grapeGameSpeedChangeDuration": 3,
     "grapeScoreValue": 300,
     "grapeSpawnRate": 15,
@@ -40,39 +40,60 @@
     "rockSpawnDuration": 15,
     "rockMaxSpawnCount": 3,
     "rockGroundStateDuration": 4,
-    "isGameSaved": false,
-    "currentScore": 100,
+    "isGameSaved": true,
+    "currentScore": 1300,
     "highestScore": 11200,
-    "snakeSegmentsAmount": 0,
-    "lastMoveDirection": 3,
+    "snakeSegmentsAmount": 6,
+    "lastMoveDirection": 2,
     "snakeSegmentsAddresses": [
         {
-            "x": 0,
-            "y": 0
+            "x": 12,
+            "y": 1
         },
         {
-            "x": 0,
-            "y": 0
+            "x": 11,
+            "y": 1
         },
         {
-            "x": 0,
-            "y": 0
+            "x": 10,
+            "y": 1
         },
         {
-            "x": 0,
-            "y": 0
+            "x": 10,
+            "y": 2
+        },
+        {
+            "x": 10,
+            "y": 3
+        },
+        {
+            "x": 10,
+            "y": 4
         }
     ],
-    "rockObstaclesAmount": 0,
-    "rockObstaclesAddresses": [],
+    "rockObstaclesAmount": 3,
+    "rockObstaclesAddresses": [
+        {
+            "x": 16,
+            "y": 2
+        },
+        {
+            "x": 0,
+            "y": 8
+        },
+        {
+            "x": 18,
+            "y": 9
+        }
+    ],
     "consumableListTypes": [
-        0
+        1
     ],
     "consumableListAddresses": [
         {
-            "x": 0,
-            "y": 0
+            "x": 9,
+            "y": 1
         }
     ],
-    "consumableListAmount": 0
+    "consumableListAmount": 1
 }

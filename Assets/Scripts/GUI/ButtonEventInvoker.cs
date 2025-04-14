@@ -3,6 +3,11 @@ using System;
 
 public class ButtonEventInvoker : MonoBehaviour
 {
+    /// <summary>
+    /// This class contains all events that can happen when player clicks on a button
+    /// Class is assigned to button and in OnClick section of Button component developer can select which method to call. Each method calls event with same name
+    /// </summary>
+
     public static event Action OnResumeButtonPressed; // resumes current game from pause menu
     public static event Action OnRestartButtonPressed;
     public static event Action OnQuitGameButtonPressed;
