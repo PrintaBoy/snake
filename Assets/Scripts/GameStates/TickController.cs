@@ -10,7 +10,6 @@ public class TickController : MonoBehaviour
     /// Tick systems need to be separated for game design reasons (to properly implement slow mo, speeding up/slowing down snake, etc.)
     /// </summary>
 
-
     private bool tickTimerRunning = false;
     private bool isGameTickSpeedModified = false;
 
@@ -90,8 +89,7 @@ public class TickController : MonoBehaviour
     {
         gameTickSpeedMultiplier += modifyAmount;
         gameTickModifiedDuration = gameTickSpeedChangeDuration;
-        isGameTickSpeedModified = true;
-        Debug.Log(gameTickSpeedMultiplier);
+        isGameTickSpeedModified = true;        
     }
     
     private void ModifyGameSpeedCounter() // this method counts how long the game speed should remain modified. Resets the game speed back once it expires
@@ -101,8 +99,7 @@ public class TickController : MonoBehaviour
         {
             gameTickSpeedMultiplier = GameData.gameData.gameSpeedMultiplier;
             isGameTickSpeedModified = false;
-            gameTickModifiedTickCounter = 0;
-            Debug.Log(gameTickSpeedMultiplier);
+            gameTickModifiedTickCounter = 0;            
         }
     }
 
@@ -111,9 +108,6 @@ public class TickController : MonoBehaviour
         if (consumableType == ConsumableTypes.Grape)
         {
             ModifyGameTickSpeedMultiplier(-GameData.gameData.grapeGameSpeedChange, GameData.gameData.grapeGameSpeedChangeDuration);
-        } else
-        {
-            return;
         }
     }
 

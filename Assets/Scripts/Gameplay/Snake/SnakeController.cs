@@ -4,7 +4,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class SnakeController : MonoBehaviour
+public class SnakeController : MonoBehaviour, ISnakeController
 {
     /// <summary>
     /// This class handles everything concerning snake:

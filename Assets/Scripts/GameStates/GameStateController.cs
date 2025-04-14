@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class GameStateController : MonoBehaviour
+public class GameStateController : MonoBehaviour, IGameStateController
 {
     /// <summary>
     /// This class handles game states (if the game is paused, started, game over...)

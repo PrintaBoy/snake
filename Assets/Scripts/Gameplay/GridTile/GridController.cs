@@ -82,8 +82,12 @@ public class GridController : MonoBehaviour, IGridController
         return gridDictionary[address];
     }
 
-    public IGridTile GetRandomEmptyTile() // returns empty grid tile at random position
-    {        
+    public IGridTile GetRandomEmptyTile() 
+    {
+        /// <summary>
+        /// Returns empty grid tile at random position      
+        /// </summary>
+
         IGridTile emptyTile = null;
         bool emptyTileFound = false;
 
