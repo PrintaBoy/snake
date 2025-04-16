@@ -1603,6 +1603,7 @@ Transform:
   - {fileID: 667716716}
   - {fileID: 1553931496}
   - {fileID: 1590664403}
+  - {fileID: 1136453607}
   m_Father: {fileID: 2081254598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &271087504
@@ -4884,8 +4885,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveInput: {fileID: -3450195528973988826, guid: bbc54fedc6c485c459740aa91d957882, type: 3}
   pauseMenuInput: {fileID: -6331538515441863730, guid: bbc54fedc6c485c459740aa91d957882, type: 3}
-  snakeController: {fileID: 394395126}
-  gameStateController: {fileID: 1862440057}
 --- !u!114 &941230286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6254,6 +6253,85 @@ RectTransform:
   m_AnchoredPosition: {x: -210, y: 15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1136453606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1136453607}
+  - component: {fileID: 1136453609}
+  - component: {fileID: 1136453608}
+  m_Layer: 0
+  m_Name: ExtenjectSceneContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1136453607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136453606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 245228755}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1136453608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136453606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31cb60f71bc949f4281ee45fdfcc60e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snakeController: {fileID: 394395126}
+  gameStateController: {fileID: 1862440057}
+--- !u!114 &1136453609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1136453606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scriptableObjectInstallers: []
+  _monoInstallers:
+  - {fileID: 1136453608}
+  _installerPrefabs: []
+  _autoRun: 1
+  OnPreInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostInstall:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPostResolve:
+    m_PersistentCalls:
+      m_Calls: []
+  _parentNewObjectsUnderSceneContext: 0
+  _contractNames: []
+  _parentContractNames: []
 --- !u!1 &1142033691
 GameObject:
   m_ObjectHideFlags: 0

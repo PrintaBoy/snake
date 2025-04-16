@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ObjectPool : MonoBehaviour
+public class ObjectPool : MonoBehaviour, IObjectPool
 {
     /// <summary>
     /// This class is used to pool objects so there is no need for instancing. This allows to reuse assets in scene and helps with performance

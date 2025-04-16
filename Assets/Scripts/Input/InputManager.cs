@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Zenject;
 
 public class InputManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference moveInput;
     [SerializeField] private InputActionReference pauseMenuInput;
-    [SerializeField] private SnakeController snakeController;
-    [SerializeField] private GameStateController gameStateController;
+
+    [Inject] private SnakeController snakeController;
+    [Inject] private GameStateController gameStateController;
 
     private void OnEnable()
     {
